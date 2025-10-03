@@ -3,52 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Free Tools - Srjahir</title>
+  <title>All Free Online Tools - Srjahir.in</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Security Headers -->
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta name="referrer" content="no-referrer-when-downgrade">
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; frame-ancestors 'none';">
 </head>
 <body>
   <header>
     <h1>All Free Online Tools</h1>
-    <p class="tagline">PDF Tools • Finance • Utilities — 100% Free, Secure & No Signup</p>
-    <div class="security-note">
-      🔒 <strong>Security First:</strong> All processing is done locally in your browser. 
-      We never store or share your files.
-    </div>
+    <p>PDF Tools · Finance Calculators · Utilities — 100% Free, Secure & No Signup</p>
   </header>
 
   <main>
-    <section class="tools-grid">
-      <div class="tool-card">
-        📄 <h3>Merge PDF</h3>
-        <p>Combine multiple PDF files into one.</p>
+    <!-- PDF TOOLS -->
+    <section>
+      <h2>📄 PDF Tools</h2>
+      <div class="tool-grid">
+        <a href="#" onclick="openTool('merge-pdf')" class="tool-card">Merge PDF</a>
+        <a href="#" onclick="openTool('split-pdf')" class="tool-card">Split PDF</a>
+        <a href="#" onclick="openTool('word-to-pdf')" class="tool-card">Word → PDF</a>
+        <a href="#" onclick="openTool('pdf-to-word')" class="tool-card">PDF → Word</a>
+        <a href="#" onclick="openTool('text-to-pdf')" class="tool-card">Text → PDF</a>
       </div>
-      <div class="tool-card">
-        ✂️ <h3>Split PDF</h3>
-        <p>Extract or split PDF pages.</p>
+    </section>
+
+    <!-- FINANCE TOOLS -->
+    <section>
+      <h2>💰 Finance Tools</h2>
+      <div class="tool-grid">
+        <a href="#" onclick="openTool('sip-calculator')" class="tool-card">SIP Calculator</a>
+        <a href="#" onclick="openTool('emi-calculator')" class="tool-card">EMI Calculator</a>
       </div>
-      <div class="tool-card">
-        💰 <h3>SIP Calculator</h3>
-        <p>Plan your investments easily.</p>
-      </div>
-      <div class="tool-card">
-        🏦 <h3>EMI Calculator</h3>
-        <p>Calculate loan repayments quickly.</p>
+    </section>
+
+    <!-- UTILITIES -->
+    <section>
+      <h2>⚙️ Utilities</h2>
+      <div class="tool-grid">
+        <a href="#" onclick="openTool('image-compressor')" class="tool-card">Image Compressor</a>
+        <a href="#" onclick="openTool('text-case-converter')" class="tool-card">Text Case Converter</a>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 Srjahir Technologies — 
-      <a href="privacy.html">Privacy Policy</a> | 
-      <a href="security.html">Security</a>
-    </p>
+    <p>© 2025 Srjahir Technologies — All Free Tools</p>
+    <a href="Privacy.html">Privacy Policy</a> | 
+    <a href="security.html">Security</a>
   </footer>
 
   <script src="script.js"></script>

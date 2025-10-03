@@ -1,0 +1,3 @@
+Contact: mailto:security@srjahir.in
+Encryption: https://srjahir.in/pgp-key.txt
+Acknowledgements: https://srjahir.in/security

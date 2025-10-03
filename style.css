@@ -1,0 +1,59 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #f1f1f1;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: #1e1e1e;
+}
+
+.tagline {
+  color: #bbb;
+}
+
+.security-note {
+  background: #222;
+  color: #0f0;
+  padding: 10px;
+  margin: 15px auto;
+  width: 80%;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
+.tool-card {
+  background: #1c1c1c;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.tool-card:hover {
+  background: #292929;
+  transform: scale(1.03);
+}
+
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #1e1e1e;
+  font-size: 13px;
+}
+footer a {
+  color: #0af;
+  text-decoration: none;
+}

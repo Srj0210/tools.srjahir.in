@@ -1,13 +1,16 @@
-// Placeholder for future tools
+// Call backend API from frontend
+function openTool(tool) {
+  alert("Opening " + tool + " tool...");
 
-// Example: EMI Calculator function
-function calculateEMI(principal, rate, years) {
-  let monthlyRate = rate / (12 * 100);
-  let n = years * 12;
-  let emi = (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) /
-            (Math.pow(1 + monthlyRate, n) - 1);
-  return emi.toFixed(2);
+  // Example: API endpoint call
+  fetch(`https://api.srjahir.in/${tool}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log("API Response:", data);
+      alert("Tool Loaded: " + JSON.stringify(data));
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error loading tool: " + tool);
+    });
 }
-
-// Example usage in console
-console.log("EMI Example:", calculateEMI(100000, 10, 5));

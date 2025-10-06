@@ -1,73 +1,78 @@
-async function handleTool(tool) {
-    const fileInput = document.getElementById(tool + "-file");
-    const textInput = document.getElementById(tool + "-text");
-    const button = document.getElementById(tool + "-btn");
+// 📘 SRJahir Tools - Frontend Script
+// Handles all PDF tool actions with backend API
 
-    button.disabled = true;
-    const originalHTML = button.innerHTML;
-    button.innerHTML = `<div class="loader"></div> Processing...`;
-    button.style.opacity = "0.7";
+async function handlePDF(tool, fileInputId, textAreaId = null) {
+  const fileInput = document.getElementById(fileInputId);
+  const textInput = textAreaId ? document.getElementById(textAreaId).value : null;
 
-    const formData = new FormData();
-    if (tool === "merge-pdf") {
-        for (let f of fileInput.files) formData.append("files", f);
-    } else if (fileInput && fileInput.files.length > 0) {
-        formData.append("file", fileInput.files[0]);
-    } else if (textInput && textInput.value.trim()) {
-        formData.append("text", textInput.value);
-    } else {
-        showToast("⚠️ Please select or enter content first.");
-        resetButton(button, originalHTML);
-        return;
-    }
+  // Show popup while processing
+  alert("⏳ Please wait... converting your file!");
 
-    try {
-        const response = await fetch("https://api.srjahir.in/" + tool, {
-            method: "POST",
-            body: formData,
-        });
+  const formData = new FormData();
 
-        if (!response.ok) {
-            console.error("HTTP Error:", response.status);
-            showToast("❌ Server Error " + response.status);
-            return;
-        }
+  if (tool === "merge-pdf") {
+    // Multiple PDFs for merging
+    for (let f of fileInput.files) formData.append("files", f);
+  } else if (tool === "text-to-pdf") {
+    // Text to PDF conversion
+    formData.append("text", textInput);
+  } else {
+    // Single file tools (Word→PDF, PDF→Word, Split)
+    formData.append("file", fileInput.files[0]);
+  }
 
-        const blob = await response.blob();
-        const contentDisposition = response.headers.get("Content-Disposition");
-        let filename = "output.pdf";
-        if (contentDisposition) {
-            const match = contentDisposition.match(/filename="?([^"]+)"?/);
-            if (match) filename = match[1];
-        }
+  try {
+    const response = await fetch(`https://api.srjahir.in/${tool}`, {
+      method: "POST",
+      body: formData,
+    });
 
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+    if (!response.ok) throw new Error("HTTP error " + response.status);
 
-        showToast("✅ Download complete!");
-    } catch (err) {
-        console.error(err);
-        showToast("⚠️ Something went wrong!");
-    } finally {
-        resetButton(button, originalHTML);
-    }
+    // Get file response
+    const blob = await response.blob();
+    const link = document.createElement("a");
+
+    // Generate file name
+    const fileName = fileInput.files[0]
+      ? fileInput.files[0].name.replace(/\.[^/.]+$/, "") + "_converted.pdf"
+      : tool + "_output.pdf";
+
+    // Download
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+
+    alert("✅ Conversion successful!");
+  } catch (err) {
+    alert("❌ Error: " + err.message);
+  }
 }
 
-function resetButton(button, originalHTML) {
-    button.innerHTML = originalHTML;
-    button.disabled = false;
-    button.style.opacity = "1";
-}
+// 🧩 Event bindings for all buttons
+document.addEventListener("DOMContentLoaded", () => {
+  // Word → PDF
+  document.getElementById("wordToPdfBtn").addEventListener("click", () => {
+    handlePDF("word-to-pdf", "wordToPdfInput");
+  });
 
-function showToast(message) {
-    const toast = document.createElement("div");
-    toast.innerText = message;
-    toast.className = "custom-toast";
-    document.body.appendChild(toast);
-    setTimeout(() => (toast.style.opacity = "0"), 2500);
-    setTimeout(() => toast.remove(), 3000);
-}
+  // PDF → Word
+  document.getElementById("pdfToWordBtn").addEventListener("click", () => {
+    handlePDF("pdf-to-word", "pdfToWordInput");
+  });
+
+  // Merge PDF
+  document.getElementById("mergePdfBtn").addEventListener("click", () => {
+    handlePDF("merge-pdf", "mergePdfInput");
+  });
+
+  // Split PDF
+  document.getElementById("splitPdfBtn").addEventListener("click", () => {
+    handlePDF("split-pdf", "splitPdfInput");
+  });
+
+  // Text → PDF
+  document.getElementById("textToPdfBtn").addEventListener("click", () => {
+    handlePDF("text-to-pdf", null, "textToPdfInput");
+  });
+});

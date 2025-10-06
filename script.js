@@ -15,7 +15,7 @@ async function uploadFile(tool, inputId) {
     }
 
     try {
-        let response = await fetch("https://api.srjahir.in/" + tool, {
+        let response = await fetch("https://api-srjahir-in.onrender.com/" + tool, {
             method: "POST",
             body: formData
         });

@@ -3,57 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRJahir Tools – All Free Online Tools</title>
+  <title>All Free Online Tools</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
+  <div class="container">
     <h1>⚡ All Free Online Tools</h1>
     <p>PDF Tools • Finance Calculators • Utilities — 100% Free, Secure & No Signup</p>
-  </header>
 
-  <section class="tool-section">
-    <h2>📁 PDF Tools</h2>
+    <section>
+      <h2>📄 PDF Tools</h2>
 
-    <!-- Word to PDF -->
-    <div class="tool-card">
-      <h3>Word → PDF</h3>
-      <input type="file" id="wordToPdfFile" />
-      <button class="convert-btn" data-tool="word-to-pdf">Convert</button>
-    </div>
+      <!-- Word → PDF -->
+      <div class="tool">
+        <h3>Word → PDF</h3>
+        <input type="file" id="word-to-pdf-input" accept=".doc,.docx" />
+        <button onclick="handleTool('word-to-pdf')">Convert</button>
+      </div>
 
-    <!-- PDF to Word -->
-    <div class="tool-card">
-      <h3>PDF → Word</h3>
-      <input type="file" id="pdfToWordFile" />
-      <button class="convert-btn" data-tool="pdf-to-word">Convert</button>
-    </div>
+      <!-- PDF → Word -->
+      <div class="tool">
+        <h3>PDF → Word</h3>
+        <input type="file" id="pdf-to-word-input" accept=".pdf" />
+        <button onclick="handleTool('pdf-to-word')">Convert</button>
+      </div>
 
-    <!-- Merge PDF -->
-    <div class="tool-card">
-      <h3>Merge PDF</h3>
-      <input type="file" id="mergePdfFiles" multiple />
-      <button class="convert-btn" data-tool="merge-pdf">Merge</button>
-    </div>
+      <!-- Merge PDFs -->
+      <div class="tool">
+        <h3>Merge PDF</h3>
+        <input type="file" id="merge-pdf-input" accept=".pdf" multiple />
+        <button onclick="handleTool('merge-pdf')">Merge</button>
+      </div>
 
-    <!-- Split PDF -->
-    <div class="tool-card">
-      <h3>Split PDF</h3>
-      <input type="file" id="splitPdfFile" />
-      <button class="convert-btn" data-tool="split-pdf">Split</button>
-    </div>
+      <!-- Text → PDF -->
+      <div class="tool">
+        <h3>Text → PDF</h3>
+        <textarea id="text-to-pdf-text" placeholder="Enter your text here..."></textarea>
+        <button onclick="handleTool('text-to-pdf')">Convert</button>
+      </div>
+    </section>
+  </div>
 
-    <!-- Text to PDF -->
-    <div class="tool-card">
-      <h3>Text → PDF</h3>
-      <textarea id="textToPdfInput" placeholder="Write your text here..."></textarea>
-      <button class="convert-btn" data-tool="text-to-pdf">Convert</button>
-    </div>
-  </section>
-
-  <footer>
-    <p>© 2025 <strong>SRJahir Tools</strong> — Built by <strong>Suraj (SRJ Ahir)</strong></p>
-  </footer>
+  <div id="popup" class="popup">Processing... Please wait ⏳</div>
 
   <script src="script.js"></script>
 </body>

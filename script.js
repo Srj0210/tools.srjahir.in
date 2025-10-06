@@ -1,72 +1,53 @@
-// script.js - frontend fetch + download helper
-const API_BASE = "https://api.srjahir.in"; // use your API domain
+document.addEventListener("DOMContentLoaded", () => {
+  const buttons = document.querySelectorAll(".convert-btn");
 
-async function callTool(tool, fileInputElement, textValue) {
-  let formData = new FormData();
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const tool = btn.dataset.tool;
+      const parent = btn.parentElement;
+      const formData = new FormData();
 
-  if (tool === "merge-pdf") {
-    const files = fileInputElement.files;
-    if (!files || files.length === 0) throw new Error("No files selected");
-    for (let f of files) formData.append("files", f);
-  } else if (tool === "text-to-pdf") {
-    formData.append("text", textValue || "");
-  } else {
-    // single file tools
-    const f = fileInputElement.files[0];
-    if (!f) throw new Error("No file selected");
-    formData.append("file", f);
-  }
+      if (tool === "merge-pdf") {
+        const files = parent.querySelector("input[type='file']").files;
+        if (files.length === 0) return alert("Please select PDF files!");
+        for (let f of files) formData.append("files", f);
+      } else if (tool === "text-to-pdf") {
+        const text = parent.querySelector("textarea").value.trim();
+        if (!text) return alert("Please write some text!");
+        formData.append("text", text);
+      } else {
+        const file = parent.querySelector("input[type='file']").files[0];
+        if (!file) return alert("Please select a file first!");
+        formData.append("file", file);
+      }
 
-  const endpoint = `${API_BASE}/${tool}`;
+      // 🔔 popup message
+      alert("Processing your file... Please wait ⏳");
 
-  const resp = await fetch(endpoint, {
-    method: "POST",
-    body: formData
+      try {
+        const response = await fetch(`https://api.srjahir.in/${tool}`, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) throw new Error("HTTP error " + response.status);
+
+        const blob = await response.blob();
+        const downloadLink = document.createElement("a");
+        const fileName = `${tool}_output.${
+          tool.includes("word") ? "docx" : tool.includes("split") ? "zip" : "pdf"
+        }`;
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = fileName;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+        alert("✅ File is ready and downloaded!");
+      } catch (err) {
+        console.error("Error:", err);
+        alert("❌ Conversion failed: " + err.message);
+      }
+    });
   });
-
-  if (!resp.ok) {
-    // try to show JSON message if present
-    let txt;
-    try { txt = await resp.json(); } catch (e) { txt = await resp.text(); }
-    throw new Error(`HTTP ${resp.status} - ${JSON.stringify(txt)}`);
-  }
-
-  const blob = await resp.blob();
-  // guess filename from Content-Disposition if present
-  let filename = "download";
-  const cd = resp.headers.get("content-disposition");
-  if (cd) {
-    const match = cd.match(/filename\*?=([^;]+)/);
-    if (match) {
-      filename = match[1].replace(/utf-8''/i, "").trim();
-      filename = filename.replace(/["']/g, "");
-    }
-  } else {
-    // fallback naming
-    const ext = blob.type === "application/pdf" ? ".pdf" : (blob.type === "application/zip" ? ".zip" : "");
-    filename = tool + ext;
-  }
-
-  // download
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
-
-// Example wiring (call this when user clicks convert)
-async function onConvertClicked(tool, fileInputId, textareaId) {
-  try {
-    const fileInput = document.getElementById(fileInputId);
-    const textValue = textareaId ? document.getElementById(textareaId).value : "";
-    // show loader if you want
-    await callTool(tool, fileInput, textValue);
-    // hide loader
-  } catch (err) {
-    alert("Error: " + (err.message || err));
-  }
-}
+});

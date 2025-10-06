@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Srjahir Tools</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRJahir Tools – All Free Online Tools</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -12,82 +12,47 @@
     <p>PDF Tools • Finance Calculators • Utilities — 100% Free, Secure & No Signup</p>
   </header>
 
-  <main>
-    <!-- PDF TOOLS -->
-    <section>
-      <h2>📂 PDF Tools</h2>
-      <div class="tool-box">
-        
-        <!-- Word to PDF -->
-        <div class="tool">
-          <h3>Word → PDF</h3>
-          <input type="file" id="wordFile" accept=".doc,.docx">
-          <button onclick="uploadFile('word-to-pdf','wordFile')">Convert</button>
-        </div>
+  <section class="tool-section">
+    <h2>📁 PDF Tools</h2>
 
-        <!-- PDF to Word -->
-        <div class="tool">
-          <h3>PDF → Word</h3>
-          <input type="file" id="pdfWordFile" accept=".pdf">
-          <button onclick="uploadFile('pdf-to-word','pdfWordFile')">Convert</button>
-        </div>
+    <!-- Word to PDF -->
+    <div class="tool-card">
+      <h3>Word → PDF</h3>
+      <input type="file" id="wordToPdfFile" />
+      <button class="convert-btn" data-tool="word-to-pdf">Convert</button>
+    </div>
 
-        <!-- Merge PDF -->
-        <div class="tool">
-          <h3>Merge PDF</h3>
-          <input type="file" id="mergeFiles" accept=".pdf" multiple>
-          <button onclick="uploadFile('merge-pdf','mergeFiles')">Merge</button>
-        </div>
+    <!-- PDF to Word -->
+    <div class="tool-card">
+      <h3>PDF → Word</h3>
+      <input type="file" id="pdfToWordFile" />
+      <button class="convert-btn" data-tool="pdf-to-word">Convert</button>
+    </div>
 
-        <!-- Split PDF -->
-        <div class="tool">
-          <h3>Split PDF</h3>
-          <input type="file" id="splitFile" accept=".pdf">
-          <button onclick="uploadFile('split-pdf','splitFile')">Split</button>
-        </div>
+    <!-- Merge PDF -->
+    <div class="tool-card">
+      <h3>Merge PDF</h3>
+      <input type="file" id="mergePdfFiles" multiple />
+      <button class="convert-btn" data-tool="merge-pdf">Merge</button>
+    </div>
 
-        <!-- Text to PDF -->
-        <div class="tool">
-          <h3>Text → PDF</h3>
-          <textarea id="textInput" placeholder="Write your text here..."></textarea>
-          <button onclick="textToPdf()">Convert</button>
-        </div>
-      </div>
-    </section>
+    <!-- Split PDF -->
+    <div class="tool-card">
+      <h3>Split PDF</h3>
+      <input type="file" id="splitPdfFile" />
+      <button class="convert-btn" data-tool="split-pdf">Split</button>
+    </div>
 
-    <!-- FINANCE TOOLS -->
-    <section>
-      <h2>💰 Finance Tools</h2>
-      <div class="tool-box">
-        <div class="tool">
-          <h3>SIP Calculator</h3>
-          <p>Coming soon...</p>
-        </div>
-        <div class="tool">
-          <h3>EMI Calculator</h3>
-          <p>Coming soon...</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- UTILITIES -->
-    <section>
-      <h2>⚙️ Utilities</h2>
-      <div class="tool-box">
-        <div class="tool">
-          <h3>Image Compressor</h3>
-          <p>Coming soon...</p>
-        </div>
-        <div class="tool">
-          <h3>Text Case Converter</h3>
-          <p>Coming soon...</p>
-        </div>
-      </div>
-    </section>
-  </main>
+    <!-- Text to PDF -->
+    <div class="tool-card">
+      <h3>Text → PDF</h3>
+      <textarea id="textToPdfInput" placeholder="Write your text here..."></textarea>
+      <button class="convert-btn" data-tool="text-to-pdf">Convert</button>
+    </div>
+  </section>
 
   <footer>
-    <p>© 2025 Srjahir Technologies — All Free Tools</p>
+    <p>© 2025 <strong>SRJahir Tools</strong> — Built by <strong>Suraj (SRJ Ahir)</strong></p>
   </footer>
 
   <script src="script.js"></script>

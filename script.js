@@ -1,83 +1,66 @@
-const API_BASE = "https://api.srjahir.in"; // backend root URL
-
-function showPopup(msg) {
-  const popup = document.getElementById("popup");
-  popup.innerText = msg;
-  popup.style.display = "block";
-}
-
-function hidePopup() {
-  const popup = document.getElementById("popup");
-  popup.style.display = "none";
-}
+const API_BASE = "https://api.srjahir.in"; // backend API root
 
 async function handleTool(tool) {
+  const overlay = document.getElementById("loader-overlay");
+  const toast = document.getElementById("toast");
+  overlay.style.display = "flex";
+
+  const form = new FormData();
+
   try {
-    showPopup("Processing... Please wait ⏳");
-
-    let endpoint = `${API_BASE}/${tool}`;
-    let formData = new FormData();
-
-    // Determine what to send based on the tool
     if (tool === "text-to-pdf") {
       const text = document.getElementById("text-to-pdf-text").value.trim();
-      if (!text) {
-        alert("Please enter text");
-        hidePopup();
-        return;
-      }
-      formData.append("text", text);
+      if (!text) throw new Error("Please enter text");
+      form.append("text", text);
     } else if (tool === "merge-pdf") {
       const files = document.getElementById("merge-pdf-input").files;
-      if (files.length === 0) {
-        alert("Please select at least one PDF");
-        hidePopup();
-        return;
-      }
-      for (let f of files) formData.append("files", f);
+      if (!files.length) throw new Error("Please select PDF files");
+      for (let f of files) form.append("files", f);
     } else {
-      // for single-file tools like word-to-pdf, pdf-to-word
       const fileInput = document.getElementById(`${tool}-input`);
       const file = fileInput?.files[0];
-      if (!file) {
-        alert("Please select a file");
-        hidePopup();
-        return;
-      }
-      formData.append("file", file);
+      if (!file) throw new Error("Please select a file");
+      form.append("file", file);
     }
 
-    const response = await fetch(endpoint, { method: "POST", body: formData });
+    const res = await fetch(`${API_BASE}/${tool}`, { method: "POST", body: form });
+    if (!res.ok) throw new Error("Server error " + res.status);
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      alert("Error: " + (err.error || response.statusText));
-      hidePopup();
-      return;
-    }
+    const blob = await res.blob();
+    const cd = res.headers.get("Content-Disposition");
+    let filename = "output.pdf";
+    if (cd && cd.includes("filename="))
+      filename = cd.split("filename=")[1].replace(/['"]/g, "");
 
-    // if everything okay — download the returned file
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
+    // Download file
+    const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-
-    // detect filename from content-disposition
-    const cd = response.headers.get("Content-Disposition");
-    let filename = "output.pdf";
-    if (cd && cd.includes("filename=")) {
-      filename = cd.split("filename=")[1].replace(/['"]/g, "");
-    }
-
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
 
-  } catch (err) {
-    alert("Unexpected error: " + err.message);
+    // Toast success
+    toast.style.display = "block";
+    setTimeout(() => (toast.style.display = "none"), 2500);
+
+    // Cleanup on backend
+    setTimeout(async () => {
+      await fetch(`${API_BASE}/cleanup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: `outputs/${filename}` }),
+      });
+    }, 4000);
+
+    // Cleanup local
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 6000);
+  } catch (e) {
+    alert("❌ " + e.message);
   } finally {
-    hidePopup();
+    overlay.style.display = "none";
   }
 }

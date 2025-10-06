@@ -1,78 +1,72 @@
-// 📘 SRJahir Tools - Frontend Script
-// Handles all PDF tool actions with backend API
+// script.js - frontend fetch + download helper
+const API_BASE = "https://api.srjahir.in"; // use your API domain
 
-async function handlePDF(tool, fileInputId, textAreaId = null) {
-  const fileInput = document.getElementById(fileInputId);
-  const textInput = textAreaId ? document.getElementById(textAreaId).value : null;
-
-  // Show popup while processing
-  alert("⏳ Please wait... converting your file!");
-
-  const formData = new FormData();
+async function callTool(tool, fileInputElement, textValue) {
+  let formData = new FormData();
 
   if (tool === "merge-pdf") {
-    // Multiple PDFs for merging
-    for (let f of fileInput.files) formData.append("files", f);
+    const files = fileInputElement.files;
+    if (!files || files.length === 0) throw new Error("No files selected");
+    for (let f of files) formData.append("files", f);
   } else if (tool === "text-to-pdf") {
-    // Text to PDF conversion
-    formData.append("text", textInput);
+    formData.append("text", textValue || "");
   } else {
-    // Single file tools (Word→PDF, PDF→Word, Split)
-    formData.append("file", fileInput.files[0]);
+    // single file tools
+    const f = fileInputElement.files[0];
+    if (!f) throw new Error("No file selected");
+    formData.append("file", f);
   }
 
-  try {
-    const response = await fetch(`https://api.srjahir.in/${tool}`, {
-      method: "POST",
-      body: formData,
-    });
+  const endpoint = `${API_BASE}/${tool}`;
 
-    if (!response.ok) throw new Error("HTTP error " + response.status);
+  const resp = await fetch(endpoint, {
+    method: "POST",
+    body: formData
+  });
 
-    // Get file response
-    const blob = await response.blob();
-    const link = document.createElement("a");
-
-    // Generate file name
-    const fileName = fileInput.files[0]
-      ? fileInput.files[0].name.replace(/\.[^/.]+$/, "") + "_converted.pdf"
-      : tool + "_output.pdf";
-
-    // Download
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
-
-    alert("✅ Conversion successful!");
-  } catch (err) {
-    alert("❌ Error: " + err.message);
+  if (!resp.ok) {
+    // try to show JSON message if present
+    let txt;
+    try { txt = await resp.json(); } catch (e) { txt = await resp.text(); }
+    throw new Error(`HTTP ${resp.status} - ${JSON.stringify(txt)}`);
   }
+
+  const blob = await resp.blob();
+  // guess filename from Content-Disposition if present
+  let filename = "download";
+  const cd = resp.headers.get("content-disposition");
+  if (cd) {
+    const match = cd.match(/filename\*?=([^;]+)/);
+    if (match) {
+      filename = match[1].replace(/utf-8''/i, "").trim();
+      filename = filename.replace(/["']/g, "");
+    }
+  } else {
+    // fallback naming
+    const ext = blob.type === "application/pdf" ? ".pdf" : (blob.type === "application/zip" ? ".zip" : "");
+    filename = tool + ext;
+  }
+
+  // download
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
-// 🧩 Event bindings for all buttons
-document.addEventListener("DOMContentLoaded", () => {
-  // Word → PDF
-  document.getElementById("wordToPdfBtn").addEventListener("click", () => {
-    handlePDF("word-to-pdf", "wordToPdfInput");
-  });
-
-  // PDF → Word
-  document.getElementById("pdfToWordBtn").addEventListener("click", () => {
-    handlePDF("pdf-to-word", "pdfToWordInput");
-  });
-
-  // Merge PDF
-  document.getElementById("mergePdfBtn").addEventListener("click", () => {
-    handlePDF("merge-pdf", "mergePdfInput");
-  });
-
-  // Split PDF
-  document.getElementById("splitPdfBtn").addEventListener("click", () => {
-    handlePDF("split-pdf", "splitPdfInput");
-  });
-
-  // Text → PDF
-  document.getElementById("textToPdfBtn").addEventListener("click", () => {
-    handlePDF("text-to-pdf", null, "textToPdfInput");
-  });
-});
+// Example wiring (call this when user clicks convert)
+async function onConvertClicked(tool, fileInputId, textareaId) {
+  try {
+    const fileInput = document.getElementById(fileInputId);
+    const textValue = textareaId ? document.getElementById(textareaId).value : "";
+    // show loader if you want
+    await callTool(tool, fileInput, textValue);
+    // hide loader
+  } catch (err) {
+    alert("Error: " + (err.message || err));
+  }
+}

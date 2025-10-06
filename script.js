@@ -1,53 +1,47 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const buttons = document.querySelectorAll(".convert-btn");
+const API_BASE = "https://api.srjahir.in/";
 
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const tool = btn.dataset.tool;
-      const parent = btn.parentElement;
-      const formData = new FormData();
+async function handleTool(tool) {
+  const fileInput = document.getElementById(`${tool}-input`);
+  const textInput = document.getElementById(`${tool}-text`);
 
-      if (tool === "merge-pdf") {
-        const files = parent.querySelector("input[type='file']").files;
-        if (files.length === 0) return alert("Please select PDF files!");
-        for (let f of files) formData.append("files", f);
-      } else if (tool === "text-to-pdf") {
-        const text = parent.querySelector("textarea").value.trim();
-        if (!text) return alert("Please write some text!");
-        formData.append("text", text);
-      } else {
-        const file = parent.querySelector("input[type='file']").files[0];
-        if (!file) return alert("Please select a file first!");
-        formData.append("file", file);
-      }
+  // show loader
+  showLoader();
 
-      // 🔔 popup message
-      alert("Processing your file... Please wait ⏳");
+  const formData = new FormData();
 
-      try {
-        const response = await fetch(`https://api.srjahir.in/${tool}`, {
-          method: "POST",
-          body: formData,
-        });
+  try {
+    if (tool === "merge-pdf") {
+      for (let f of fileInput.files) formData.append("files", f);
+    } else if (tool === "text-to-pdf") {
+      formData.append("text", textInput.value.trim());
+    } else {
+      formData.append("file", fileInput.files[0]);
+    }
 
-        if (!response.ok) throw new Error("HTTP error " + response.status);
-
-        const blob = await response.blob();
-        const downloadLink = document.createElement("a");
-        const fileName = `${tool}_output.${
-          tool.includes("word") ? "docx" : tool.includes("split") ? "zip" : "pdf"
-        }`;
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = fileName;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-
-        alert("✅ File is ready and downloaded!");
-      } catch (err) {
-        console.error("Error:", err);
-        alert("❌ Conversion failed: " + err.message);
-      }
+    let response = await fetch(API_BASE + tool, {
+      method: "POST",
+      body: formData,
     });
-  });
-});
+
+    if (!response.ok) throw new Error("HTTP Error " + response.status);
+
+    let blob = await response.blob();
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = tool + "_output.pdf";
+    link.click();
+  } catch (err) {
+    alert("❌ Error: " + err.message);
+    console.error(err);
+  } finally {
+    hideLoader();
+  }
+}
+
+function showLoader() {
+  document.getElementById("loader-overlay").style.display = "flex";
+}
+
+function hideLoader() {
+  document.getElementById("loader-overlay").style.display = "none";
+}

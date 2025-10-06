@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>All Free Online Tools</title>
+  <title>SRJahir Tools | All Free Online Tools</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="container">
-    <h1>⚡ All Free Online Tools</h1>
-    <p>PDF Tools • Finance Calculators • Utilities — 100% Free, Secure & No Signup</p>
+    <h1>⚡ SRJahir Tools</h1>
+    <p>All-in-one PDF utilities — 100% Free, Secure & Fast</p>
 
     <section>
       <h2>📄 PDF Tools</h2>
@@ -30,9 +31,16 @@
 
       <!-- Merge PDFs -->
       <div class="tool">
-        <h3>Merge PDF</h3>
+        <h3>Merge PDFs</h3>
         <input type="file" id="merge-pdf-input" accept=".pdf" multiple />
         <button onclick="handleTool('merge-pdf')">Merge</button>
+      </div>
+
+      <!-- Split PDF -->
+      <div class="tool">
+        <h3>Split PDF</h3>
+        <input type="file" id="split-pdf-input" accept=".pdf" />
+        <button onclick="handleTool('split-pdf')">Split</button>
       </div>
 
       <!-- Text → PDF -->
@@ -44,7 +52,14 @@
     </section>
   </div>
 
-  <div id="popup" class="popup">Processing... Please wait ⏳</div>
+  <!-- Loader overlay -->
+  <div id="loader-overlay">
+    <div class="loader"></div>
+    <p class="loader-text">Converting... please wait</p>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast">✅ File ready for download</div>
 
   <script src="script.js"></script>
 </body>

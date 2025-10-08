@@ -58,8 +58,13 @@ async function handleTool(tool) {
     a.click();
 
     // Toast success
+    toast.innerText = "✅ File downloaded successfully! Refresh site to use again 🔁";
     toast.style.display = "block";
-    setTimeout(() => (toast.style.display = "none"), 2500);
+
+    setTimeout(() => {
+      toast.style.display = "none";
+      toast.innerText = "✅ File ready for download"; // reset text for next use
+    }, 3500);
 
     // Cleanup local
     setTimeout(() => {

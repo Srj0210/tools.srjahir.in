@@ -12,10 +12,27 @@ async function handleTool(tool) {
       const text = document.getElementById("text-to-pdf-text").value.trim();
       if (!text) throw new Error("Please enter text");
       form.append("text", text);
+
     } else if (tool === "merge-pdf") {
       const files = document.getElementById("merge-pdf-input").files;
       if (!files.length) throw new Error("Please select PDF files");
       for (let f of files) form.append("files", f);
+
+    } else if (tool === "split-pdf") {
+      const file = document.getElementById("split-pdf-input").files[0];
+      const pages = document.getElementById("split-pages").value.trim();
+
+      if (!file) throw new Error("Please select a PDF file");
+      if (!pages) {
+        const confirmAll = confirm(
+          "You didn't enter any pages. Do you want to split all pages?"
+        );
+        if (!confirmAll) throw new Error("Operation cancelled");
+      }
+
+      form.append("file", file);
+      form.append("pages", pages);
+
     } else {
       const fileInput = document.getElementById(`${tool}-input`);
       const file = fileInput?.files[0];
@@ -44,20 +61,12 @@ async function handleTool(tool) {
     toast.style.display = "block";
     setTimeout(() => (toast.style.display = "none"), 2500);
 
-    // Cleanup on backend
-    setTimeout(async () => {
-      await fetch(`${API_BASE}/cleanup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: `outputs/${filename}` }),
-      });
-    }, 4000);
-
     // Cleanup local
     setTimeout(() => {
       URL.revokeObjectURL(url);
       document.body.removeChild(a);
     }, 6000);
+
   } catch (e) {
     alert("❌ " + e.message);
   } finally {

@@ -40,6 +40,14 @@
       <div class="tool">
         <h3>Split PDF</h3>
         <input type="file" id="split-pdf-input" accept=".pdf" />
+        <input
+          type="text"
+          id="split-pages"
+          placeholder="Enter pages (e.g. 1,3-5,8 or 5689)"
+        />
+        <p class="hint">
+          💡 Tip: Type page numbers or ranges (like 1,3-5,8) — we'll combine only those pages.
+        </p>
         <button onclick="handleTool('split-pdf')">Split</button>
       </div>
 

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word to PDF | SRJ Tools</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .logo {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    .upload-card {
+      background: linear-gradient(180deg, #0a0a0a, #0d1a2e);
+      padding: 40px;
+      border-radius: 20px;
+      display: inline-block;
+      box-shadow: 0 0 25px rgba(0, 119, 255, 0.3);
+    }
+    .upload-btn, .convert-btn, .download-btn {
+      display: block;
+      margin: 15px auto;
+      background: linear-gradient(90deg, #00bfff, #0066ff);
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .upload-btn:hover, .convert-btn:hover {
+      transform: scale(1.05);
+    }
+    .hidden { display: none; }
+    #status { margin-top: 15px; color: #9cc3ff; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <img src="tools.png" alt="Logo" class="logo">
+  <h1>Word to PDF Converter</h1>
+  <p>Convert your Word documents to PDF instantly.</p>
+
+  <div class="upload-card">
+    <input type="file" id="docFile" accept=".doc,.docx" hidden>
+    <label for="docFile" class="upload-btn">Select Word File</label>
+    <button id="convertBtn" class="convert-btn hidden">Convert to PDF</button>
+    <a id="downloadLink" class="download-btn hidden" download>Download PDF</a>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById("docFile");
+    const convertBtn = document.getElementById("convertBtn");
+    const downloadLink = document.getElementById("downloadLink");
+    const status = document.getElementById("status");
+
+    fileInput.addEventListener("change", () => {
+      convertBtn.classList.remove("hidden");
+      status.textContent = "";
+      downloadLink.classList.add("hidden");
+    });
+
+    convertBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+      if (!file) return alert("Please select a Word file first!");
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      status.textContent = "⏳ Converting... please wait";
+      convertBtn.disabled = true;
+
+      try {
+        const res = await fetch("https://api.srjahir.in/word-to-pdf", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!res.ok) throw new Error("Conversion failed.");
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        downloadLink.href = url;
+        downloadLink.download = file.name.replace(/\.docx?$/i, ".pdf");
+        downloadLink.classList.remove("hidden");
+        status.textContent = "✅ Conversion complete!";
+      } catch (err) {
+        status.textContent = "❌ " + err.message;
+      } finally {
+        convertBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

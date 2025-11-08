@@ -1,130 +1,122 @@
-/* ============================================================
-   SRJ Tools — Smart · Fast · Secure — All-in-One PDF Suite
-   by SRJahir Tech
-   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
 
-// ✅ Define All Tool Data
-const tools = [
-  {
-    name: "Word to PDF",
-    icon: "📝",
-    desc: "Convert Word files to PDF",
-    link: "wordtopdf.html"
-  },
-  {
-    name: "PDF to Word",
-    icon: "📄",
-    desc: "Make your PDF editable",
-    link: "#pdftoword"
-  },
-  {
-    name: "Merge PDF",
-    icon: "➕",
-    desc: "Combine multiple PDFs",
-    link: "#mergepdf"
-  },
-  {
-    name: "Split PDF",
-    icon: "✂️",
-    desc: "Separate pages easily",
-    link: "#splitpdf"
-  },
-  {
-    name: "Compress PDF",
-    icon: "🗜️",
-    desc: "Reduce file size easily",
-    link: "#compresspdf"
-  },
-  {
-    name: "Unlock PDF",
-    icon: "🔓",
-    desc: "Remove password protection",
-    link: "#unlockpdf"
-  },
-  {
-    name: "Protect PDF",
-    icon: "🔒",
-    desc: "Add password security",
-    link: "#protectpdf"
+  // ======== WORD → PDF ===========
+  const uploadWord = document.getElementById("wordFile");
+  const convertWordBtn = document.getElementById("convertBtn");
+  const downloadWordBtn = document.getElementById("downloadBtn");
+  const statusWord = document.getElementById("statusText");
+  const fileWordName = document.getElementById("fileNameText");
+
+  let selectedWord = null;
+  let convertedWordPDF = null;
+
+  if (uploadWord) {
+    uploadWord.addEventListener("change", (e) => {
+      selectedWord = e.target.files[0];
+      if (selectedWord) {
+        fileWordName.textContent = `📄 ${selectedWord.name}`;
+        fileWordName.style.display = "block";
+        convertWordBtn.disabled = false;
+      }
+    });
+
+    convertWordBtn.addEventListener("click", async () => {
+      if (!selectedWord) return;
+      statusWord.innerHTML = "⏳ Converting...";
+      convertWordBtn.disabled = true;
+
+      const formData = new FormData();
+      formData.append("file", selectedWord);
+
+      try {
+        const response = await fetch("https://api.srjahir.in/word-to-pdf", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) throw new Error("Conversion failed!");
+
+        const blob = await response.blob();
+        convertedWordPDF = window.URL.createObjectURL(blob);
+        const baseName = selectedWord.name.replace(/\.[^/.]+$/, "");
+
+        statusWord.innerHTML = "✅ Conversion complete!";
+        downloadWordBtn.style.display = "block";
+
+        downloadWordBtn.onclick = () => {
+          const a = document.createElement("a");
+          a.href = convertedWordPDF;
+          a.download = `${baseName}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+      } catch (err) {
+        statusWord.innerHTML = "❌ Error: " + err.message;
+      } finally {
+        convertWordBtn.disabled = false;
+      }
+    });
   }
-];
 
-// ✅ Select Grid Container
-const grid = document.getElementById("toolsGrid");
+  // ======== PDF → WORD ===========
+  const pdfInput = document.getElementById("pdfFile");
+  const pdfConvertBtn = document.getElementById("pdfConvertBtn");
+  const pdfDownloadBtn = document.getElementById("pdfDownloadBtn");
+  const pdfFileName = document.getElementById("pdfFileName");
+  const pdfStatus = document.getElementById("pdfStatus");
 
-// ✅ Create Dynamic Cards
-tools.forEach(tool => {
-  const div = document.createElement("div");
-  div.className = "tool-card fade-in-up";
+  let selectedPDF = null;
+  let convertedDOCX = null;
 
-  div.innerHTML = `
-    <div class="tool-icon">${tool.icon}</div>
-    <div class="tool-name">${tool.name}</div>
-    <div class="tool-sub">${tool.desc}</div>
-  `;
+  if (pdfInput) {
+    pdfInput.addEventListener("change", (e) => {
+      selectedPDF = e.target.files[0];
+      if (selectedPDF) {
+        pdfFileName.textContent = `📄 ${selectedPDF.name}`;
+        pdfFileName.style.display = "block";
+        pdfConvertBtn.disabled = false;
+      }
+    });
 
-  div.addEventListener("click", () => {
-    // If tool has a valid link (not coming soon)
-    if (tool.link && !tool.link.startsWith("#")) {
-      window.location.href = tool.link;
-    } else {
-      alert(`${tool.name} coming soon!`);
-    }
-  });
+    pdfConvertBtn.addEventListener("click", async () => {
+      if (!selectedPDF) return;
 
-  grid.appendChild(div);
-});
+      pdfStatus.innerHTML = "⏳ Converting PDF...";
+      pdfConvertBtn.disabled = true;
+      pdfDownloadBtn.style.display = "none";
 
-// ✅ GSAP Animation Integration
-window.addEventListener("load", () => {
-  // Animate Header
-  gsap.from(".logo", {
-    duration: 1.2,
-    opacity: 0,
-    y: -30,
-    ease: "power2.out"
-  });
+      const formData = new FormData();
+      formData.append("file", selectedPDF);
 
-  gsap.from("h1", {
-    duration: 1.2,
-    opacity: 0,
-    y: -10,
-    delay: 0.3,
-    ease: "power2.out"
-  });
+      try {
+        const response = await fetch("https://api.srjahir.in/pdf-to-word", {
+          method: "POST",
+          body: formData,
+        });
 
-  gsap.from(".subtitle", {
-    duration: 1,
-    opacity: 0,
-    y: 20,
-    delay: 0.5
-  });
+        if (!response.ok) throw new Error("Conversion failed!");
 
-  // Animate Tool Cards (on scroll)
-  gsap.to(".fade-in-up", {
-    scrollTrigger: {
-      trigger: ".tools-section",
-      start: "top 90%",
-      toggleActions: "play none none reverse"
-    },
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: "power2.out"
-  });
-});
+        const blob = await response.blob();
+        convertedDOCX = window.URL.createObjectURL(blob);
+        const baseName = selectedPDF.name.replace(/\.[^/.]+$/, "");
 
-// ✅ Add Smooth Scroll to Top Button (optional polish)
-const scrollBtn = document.createElement("button");
-scrollBtn.className = "scroll-top";
-scrollBtn.innerHTML = "⬆️";
-document.body.appendChild(scrollBtn);
+        pdfStatus.innerHTML = "✅ Conversion complete!";
+        pdfDownloadBtn.style.display = "block";
 
-scrollBtn.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-window.addEventListener("scroll", () => {
-  scrollBtn.style.display = window.scrollY > 400 ? "block" : "none";
+        pdfDownloadBtn.onclick = () => {
+          const a = document.createElement("a");
+          a.href = convertedDOCX;
+          a.download = `${baseName}.docx`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+      } catch (err) {
+        pdfStatus.innerHTML = "❌ Error: " + err.message;
+      } finally {
+        pdfConvertBtn.disabled = false;
+      }
+    });
+  }
 });

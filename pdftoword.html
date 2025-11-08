@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF to Word Converter | SRJ Tools</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="animation.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="container fade-in">
+    <img src="tools.png" class="logo" alt="SRJ Tools Logo" />
+    <h1>PDF to Word Converter</h1>
+    <p>Make your PDF files editable instantly.</p>
+
+    <div class="card">
+      <button id="pdfFileBtn" onclick="document.getElementById('pdfFile').click()">Select PDF File</button>
+      <input type="file" id="pdfFile" accept=".pdf" hidden>
+
+      <p id="pdfFileName" style="display:none; color:#00bfff; margin-bottom:10px; font-weight:500;"></p>
+
+      <button id="pdfConvertBtn" disabled>Convert to Word</button>
+      <button id="pdfDownloadBtn" style="display:none;">Download Word File</button>
+      <p id="pdfStatus"></p>
+    </div>
+  </div>
+</body>
+</html>

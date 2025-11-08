@@ -1,73 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRJahir Tools | All Free Online Tools</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SRJ Tools — Online PDF Converter</title>
+  <link rel="icon" type="image/png" href="tools.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
-
 <body>
-  <div class="container">
-    <h1>⚡ SRJahir Tools</h1>
-    <p>All-in-one PDF utilities — 100% Free, Secure & Fast</p>
+  <header>
+    <img src="tools.png" alt="SRJ Tools Logo" class="logo">
+    <h1>SRJ Tools</h1>
+    <p>Smart, Fast & Secure — Convert your PDFs easily.</p>
+  </header>
 
-    <section>
-      <h2>📄 PDF Tools</h2>
+  <main>
+    <div class="tools-grid" id="toolsGrid">
+      <!-- Tools cards will be dynamically loaded from JS -->
+    </div>
+  </main>
 
-      <!-- Word → PDF -->
-      <div class="tool">
-        <h3>Word → PDF</h3>
-        <input type="file" id="word-to-pdf-input" accept=".doc,.docx" />
-        <button onclick="handleTool('word-to-pdf')">Convert</button>
-      </div>
-
-      <!-- PDF → Word -->
-      <div class="tool">
-        <h3>PDF → Word</h3>
-        <input type="file" id="pdf-to-word-input" accept=".pdf" />
-        <button onclick="handleTool('pdf-to-word')">Convert</button>
-      </div>
-
-      <!-- Merge PDFs -->
-      <div class="tool">
-        <h3>Merge PDFs</h3>
-        <input type="file" id="merge-pdf-input" accept=".pdf" multiple />
-        <button onclick="handleTool('merge-pdf')">Merge</button>
-      </div>
-
-      <!-- Split PDF -->
-      <div class="tool">
-        <h3>Split PDF</h3>
-        <input type="file" id="split-pdf-input" accept=".pdf" />
-        <input
-          type="text"
-          id="split-pages"
-          placeholder="Enter pages (e.g. 1,3-5,8 or 5689)"
-        />
-        <p class="hint">
-          💡 Tip: Type page numbers or ranges (like 1,3-5,8) — we'll combine only those pages.
-        </p>
-        <button onclick="handleTool('split-pdf')">Split</button>
-      </div>
-
-      <!-- Text → PDF -->
-      <div class="tool">
-        <h3>Text → PDF</h3>
-        <textarea id="text-to-pdf-text" placeholder="Enter your text here..."></textarea>
-        <button onclick="handleTool('text-to-pdf')">Convert</button>
-      </div>
-    </section>
-  </div>
-
-  <!-- Loader overlay -->
-  <div id="loader-overlay">
-    <div class="loader"></div>
-    <p class="loader-text">Converting... please wait</p>
-  </div>
-
-  <!-- Toast -->
-  <div id="toast">✅ File ready for download</div>
+  <footer>
+    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

@@ -1,6 +1,23 @@
+// =====================================================
+// SRJ Tools - Universal Converter Script
+// Supports: Word → PDF & PDF → Word
+// =====================================================
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ======== WORD → PDF ===========
+  // 🟦 GLOBAL STYLE EFFECTS (Optional Visual Startup Animation)
+  const fadeElems = document.querySelectorAll(".fade-in");
+  fadeElems.forEach((el, i) => {
+    setTimeout(() => {
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0)";
+    }, i * 100);
+  });
+
+  // =====================================================
+  // 📝 WORD → PDF CONVERTER
+  // =====================================================
+
   const uploadWord = document.getElementById("wordFile");
   const convertWordBtn = document.getElementById("convertBtn");
   const downloadWordBtn = document.getElementById("downloadBtn");
@@ -17,13 +34,22 @@ document.addEventListener("DOMContentLoaded", () => {
         fileWordName.textContent = `📄 ${selectedWord.name}`;
         fileWordName.style.display = "block";
         convertWordBtn.disabled = false;
+      } else {
+        fileWordName.textContent = "";
+        fileWordName.style.display = "none";
+        convertWordBtn.disabled = true;
       }
     });
 
     convertWordBtn.addEventListener("click", async () => {
-      if (!selectedWord) return;
-      statusWord.innerHTML = "⏳ Converting...";
+      if (!selectedWord) {
+        alert("Please select a Word file first!");
+        return;
+      }
+
+      statusWord.innerHTML = "⏳ Converting... please wait";
       convertWordBtn.disabled = true;
+      downloadWordBtn.style.display = "none";
 
       const formData = new FormData();
       formData.append("file", selectedWord);
@@ -38,8 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const blob = await response.blob();
         convertedWordPDF = window.URL.createObjectURL(blob);
-        const baseName = selectedWord.name.replace(/\.[^/.]+$/, "");
 
+        const baseName = selectedWord.name.replace(/\.[^/.]+$/, "");
         statusWord.innerHTML = "✅ Conversion complete!";
         downloadWordBtn.style.display = "block";
 
@@ -59,7 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ======== PDF → WORD ===========
+  // =====================================================
+  // 📄 PDF → WORD CONVERTER
+  // =====================================================
+
   const pdfInput = document.getElementById("pdfFile");
   const pdfConvertBtn = document.getElementById("pdfConvertBtn");
   const pdfDownloadBtn = document.getElementById("pdfDownloadBtn");
@@ -76,13 +105,20 @@ document.addEventListener("DOMContentLoaded", () => {
         pdfFileName.textContent = `📄 ${selectedPDF.name}`;
         pdfFileName.style.display = "block";
         pdfConvertBtn.disabled = false;
+      } else {
+        pdfFileName.textContent = "";
+        pdfFileName.style.display = "none";
+        pdfConvertBtn.disabled = true;
       }
     });
 
     pdfConvertBtn.addEventListener("click", async () => {
-      if (!selectedPDF) return;
+      if (!selectedPDF) {
+        alert("Please select a PDF file first!");
+        return;
+      }
 
-      pdfStatus.innerHTML = "⏳ Converting PDF...";
+      pdfStatus.innerHTML = "⏳ Converting PDF to Word...";
       pdfConvertBtn.disabled = true;
       pdfDownloadBtn.style.display = "none";
 
@@ -99,8 +135,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const blob = await response.blob();
         convertedDOCX = window.URL.createObjectURL(blob);
-        const baseName = selectedPDF.name.replace(/\.[^/.]+$/, "");
 
+        const baseName = selectedPDF.name.replace(/\.[^/.]+$/, "");
         pdfStatus.innerHTML = "✅ Conversion complete!";
         pdfDownloadBtn.style.display = "block";
 
@@ -119,4 +155,5 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
 });

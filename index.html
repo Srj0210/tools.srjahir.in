@@ -1,30 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SRJ Tools — Online PDF Converter</title>
-  <link rel="icon" type="image/png" href="tools.png">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🌐 META TITLE & DESCRIPTION -->
+  <title>SRJ Tools — Smart Online PDF Suite by SRJahir Tech</title>
+  <meta name="description" content="Free online PDF tools by SRJahir Tech — convert, merge, split, compress, protect, and edit PDFs easily." />
+  <meta name="keywords" content="SRJ Tools, SRJahir Tech, PDF to Word, Word to PDF, Merge PDF, Split PDF, Compress PDF, Unlock PDF, Protect PDF" />
+  <meta name="author" content="SRJahir Tech" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- 🧠 OPEN GRAPH / SOCIAL PREVIEW -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SRJ Tools — Free Smart PDF Converter" />
+  <meta property="og:description" content="All-in-one online PDF suite built by SRJahir Tech" />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in" />
+
+  <!-- 🌟 FAVICONS -->
+  <link rel="icon" type="image/png" sizes="16x16" href="tools.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="tools.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="tools.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="tools.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="tools.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="tools.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- 📜 STYLES -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ⚡ GSAP Animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body>
+  <!-- HEADER -->
   <header>
-    <img src="tools.png" alt="SRJ Tools Logo" class="logo">
+    <img src="tools.png" alt="SRJ Tools Logo" class="logo" />
     <h1>SRJ Tools</h1>
-    <p>Smart, Fast & Secure — Convert your PDFs easily.</p>
+    <p class="subtitle">Smart · Fast · Secure — All-in-One PDF Converter</p>
   </header>
 
+  <!-- MAIN TOOL GRID -->
   <main>
-    <div class="tools-grid" id="toolsGrid">
-      <!-- Tools cards will be dynamically loaded from JS -->
-    </div>
+    <section class="tools-section" id="toolsGrid">
+      <!-- Tool cards are dynamically injected by JS -->
+    </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
+  <!-- ⚙️ SCRIPTS -->
+  <script src="animation.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

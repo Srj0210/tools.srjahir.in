@@ -233,3 +233,26 @@ footer {
   opacity: 0;
   transform: translateY(30px);
 }
+
+
+
+
+.scroll-top {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  background: linear-gradient(135deg, #0066ff, #00bfff);
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
+  transition: transform 0.3s ease;
+}
+.scroll-top:hover {
+  transform: scale(1.1);
+}

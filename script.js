@@ -1,13 +1,12 @@
 // =====================================================
-// SRJ Tools - Universal Converter Script
-// Supports: Word → PDF & PDF → Word
+// SRJ Tools - Universal Script
+// Handles: Index Page + Word↔PDF Converters
 // =====================================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // 🟦 GLOBAL STYLE EFFECTS (Optional Visual Startup Animation)
-  const fadeElems = document.querySelectorAll(".fade-in");
-  fadeElems.forEach((el, i) => {
+  // 🌈 Fade-in animations for all sections
+  document.querySelectorAll(".fade-in").forEach((el, i) => {
     setTimeout(() => {
       el.style.opacity = "1";
       el.style.transform = "translateY(0)";
@@ -15,9 +14,32 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================================================
+  // 🏠 HOME PAGE LOGIC (index.html)
+  // =====================================================
+  const toolCards = document.querySelectorAll(".tool-card");
+
+  if (toolCards.length > 0) {
+    toolCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const tool = card.dataset.tool;
+
+        switch (tool) {
+          case "wordtopdf":
+            window.location.href = "wordtopdf.html";
+            break;
+          case "pdftoword":
+            window.location.href = "pdftoword.html";
+            break;
+          default:
+            alert(`${tool} coming soon! 🚀`);
+        }
+      });
+    });
+  }
+
+  // =====================================================
   // 📝 WORD → PDF CONVERTER
   // =====================================================
-
   const uploadWord = document.getElementById("wordFile");
   const convertWordBtn = document.getElementById("convertBtn");
   const downloadWordBtn = document.getElementById("downloadBtn");
@@ -35,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
         fileWordName.style.display = "block";
         convertWordBtn.disabled = false;
       } else {
-        fileWordName.textContent = "";
         fileWordName.style.display = "none";
         convertWordBtn.disabled = true;
       }
@@ -59,13 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           body: formData,
         });
-
         if (!response.ok) throw new Error("Conversion failed!");
 
         const blob = await response.blob();
         convertedWordPDF = window.URL.createObjectURL(blob);
-
         const baseName = selectedWord.name.replace(/\.[^/.]+$/, "");
+
         statusWord.innerHTML = "✅ Conversion complete!";
         downloadWordBtn.style.display = "block";
 
@@ -88,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================================================
   // 📄 PDF → WORD CONVERTER
   // =====================================================
-
   const pdfInput = document.getElementById("pdfFile");
   const pdfConvertBtn = document.getElementById("pdfConvertBtn");
   const pdfDownloadBtn = document.getElementById("pdfDownloadBtn");
@@ -106,7 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
         pdfFileName.style.display = "block";
         pdfConvertBtn.disabled = false;
       } else {
-        pdfFileName.textContent = "";
         pdfFileName.style.display = "none";
         pdfConvertBtn.disabled = true;
       }
@@ -118,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      pdfStatus.innerHTML = "⏳ Converting PDF to Word...";
+      pdfStatus.innerHTML = "⏳ Converting PDF...";
       pdfConvertBtn.disabled = true;
       pdfDownloadBtn.style.display = "none";
 
@@ -130,13 +148,12 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           body: formData,
         });
-
         if (!response.ok) throw new Error("Conversion failed!");
 
         const blob = await response.blob();
         convertedDOCX = window.URL.createObjectURL(blob);
-
         const baseName = selectedPDF.name.replace(/\.[^/.]+$/, "");
+
         pdfStatus.innerHTML = "✅ Conversion complete!";
         pdfDownloadBtn.style.display = "block";
 

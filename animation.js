@@ -1,31 +1,32 @@
-// SRJahir Tech — Dual Layer Wave Animation
+// SRJ Tools — Header Wave Animation
 const canvas = document.getElementById("waveCanvas");
 const ctx = canvas.getContext("2d");
 
-let width, height, increment = 0;
-function resize() {
+let width, height, t = 0;
+function resizeCanvas() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = 260;
 }
-window.addEventListener("resize", resize);
-resize();
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-function drawWave(color, alpha, amp, freq, speed, offset) {
+function draw() {
+  ctx.clearRect(0, 0, width, height);
+  drawWave("#0077ff", 0.015, 15, 0);
+  drawWave("#00aaff", 0.02, 20, 100);
+  drawWave("#0055ff", 0.018, 10, 200);
+  t += 0.015;
+  requestAnimationFrame(draw);
+}
+
+function drawWave(color, waveLength, amplitude, offset) {
   ctx.beginPath();
   for (let x = 0; x < width; x++) {
-    const y = height / 2 + Math.sin(x * freq + increment * speed + offset) * amp;
+    const y = Math.sin(x * waveLength + t + offset) * amplitude + height / 2;
     ctx.lineTo(x, y);
   }
-  ctx.strokeStyle = `rgba(${color}, ${alpha})`;
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
   ctx.stroke();
 }
-
-function animate() {
-  ctx.clearRect(0, 0, width, height);
-  drawWave("0,150,255", 0.45, 25, 0.015, 1.2, 0);
-  drawWave("0,90,255", 0.25, 35, 0.01, 0.8, 2);
-  increment += 0.04;
-  requestAnimationFrame(animate);
-}
-animate();
+draw();

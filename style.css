@@ -318,3 +318,23 @@ button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 25px rgba(0, 150, 255, 0.5);
 }
+
+
+
+
+/* ============================================================
+   Fix: Hide extra bottom wave under footer
+   ============================================================ */
+#waveCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1 !important;
+  pointer-events: none;
+  opacity: 0.25;
+  filter: blur(0.5px);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+}

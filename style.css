@@ -32,7 +32,7 @@ body {
 }
 
 /* ============================================================
-   Header + Logo Layout
+   Header Layout
    ============================================================ */
 .header {
   padding: 70px 20px 30px;
@@ -42,12 +42,13 @@ body {
 }
 
 /* ============================================================
-   Perfectly Aligned Animated Logo (Pixel-Matched to tools.png)
+   🔰 ISOLATED SECTION — ANIMATED LOGO (PIXEL PERFECT)
    ============================================================ */
+
 .logo-container {
   position: relative;
-  width: 180px;
-  height: 160px;
+  width: 175px;
+  height: 155px;
   margin: 0 auto 10px;
   display: flex;
   align-items: center;
@@ -56,8 +57,8 @@ body {
 
 .logo-part {
   position: absolute;
-  left: 50%;
   top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
   height: auto;
@@ -65,57 +66,51 @@ body {
   user-select: none;
 }
 
-/* Cloud (base) */
+/* CLOUD (base layer) */
 .cloud {
-  width: 100%;
+  width: 98%;
   top: 49%;
   z-index: 1;
-  filter: none; /* No glow */
+  filter: none; /* no glow */
 }
 
-/* Gear (rotating) */
+/* GEAR (rotating, smaller than before) */
 .gear {
-  width: 81%;
-  top: 50.7%;
+  width: 74%;
+  top: 50.2%;
   z-index: 2;
   transform-origin: center center;
-  animation: rotateGear 12s linear infinite;
+  animation: rotateGear 10s linear infinite;
   filter: none;
 }
 
-/* Center "<>" */
+/* CENTER < > symbol */
 .center {
-  width: 40%;
-  top: 50.8%;
+  width: 38%;
+  top: 51.4%;
   z-index: 3;
   filter: none;
 }
 
-/* Rotation animation */
+/* ROTATION ANIMATION */
 @keyframes rotateGear {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Mobile Fine-Tune */
+/* RESPONSIVE (mobile fine tune) */
 @media (max-width: 600px) {
   .logo-container {
-    width: 160px;
-    height: 145px;
+    width: 150px;
+    height: 135px;
   }
-
   .gear {
-    width: 81.5%;
-    top: 50.8%;
+    width: 74.5%;
+    top: 50.3%;
   }
-
   .center {
-    width: 40.5%;
-    top: 51%;
+    width: 38.5%;
+    top: 51.5%;
   }
 }
 
@@ -223,7 +218,7 @@ button:hover {
 }
 
 .progress-container {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   border-radius: 10px;
   height: 12px;
   overflow: hidden;
@@ -246,6 +241,6 @@ button:hover {
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
-  border-top: 1px solid rgba(0, 150, 255, 0.15);
+  border-top: 1px solid rgba(0,150,255,0.15);
   z-index: 2;
 }

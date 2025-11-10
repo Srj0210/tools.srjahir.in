@@ -1,8 +1,7 @@
-/* ============================================================
-   SRJ Tools — Dynamic Homepage + Converter Logic
-   ============================================================ */
+// ============================================================
+// SRJ Tools — Homepage Dynamic Cards + Fade Animation
+// ============================================================
 
-// ✅ Tool Data
 const tools = [
   { name: "Word to PDF", icon: "📝", desc: "Convert Word files to PDF", link: "wordtopdf.html" },
   { name: "PDF to Word", icon: "📄", desc: "Make your PDF editable", link: "pdftoword.html" },
@@ -13,7 +12,6 @@ const tools = [
   { name: "Protect PDF", icon: "🔒", desc: "Add password security", link: "#" }
 ];
 
-// ✅ Generate Tools on Homepage
 document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("toolsGrid");
   if (grid) {
@@ -35,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
       grid.appendChild(div);
     });
 
-    // Fade-in for cards
     setTimeout(() => {
       document.querySelectorAll(".fade-in").forEach((el, i) => {
         setTimeout(() => el.classList.add("visible"), i * 100);

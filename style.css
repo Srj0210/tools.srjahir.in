@@ -244,3 +244,68 @@ button:hover {
   border-top: 1px solid rgba(0,150,255,0.15);
   z-index: 2;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.logo-container {
+  position: relative;
+  width: 165px;
+  height: 150px;
+  margin: 0 auto 10px; /* 👈 keep centered, no lift */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-part {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Cloud (unchanged) */
+.cloud {
+  width: 100%;
+  z-index: 1;
+}
+
+/* Gear — slightly smaller + slower rotation */
+.gear {
+  width: 83%;
+  z-index: 2;
+  animation: rotateGear 12s linear infinite;
+  transform-origin: center center;
+}
+
+/* Center "<>" — slightly moved down */
+.center {
+  width: 42%;
+  z-index: 3;
+  top: 51%;
+}
+
+@keyframes rotateGear {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}

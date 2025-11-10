@@ -1,7 +1,6 @@
 /* ============================================================
-   SRJ Tools — Dark Elegant Design (Final Fixed Version)
+   SRJ Tools — Final Clean Version
    ============================================================ */
-
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -12,7 +11,7 @@ body {
 }
 
 /* ============================================================
-   Dynamic Wave Background
+   Wave Background
    ============================================================ */
 #waveCanvas {
   position: fixed;
@@ -20,8 +19,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0 !important; /* Ensure it stays behind */
-  pointer-events: none;  /* Prevent canvas from blocking clicks */
+  z-index: 0 !important;
+  pointer-events: none;
 }
 
 /* ============================================================
@@ -105,9 +104,11 @@ body {
     padding: 10px 20px;
     border-radius: 10px;
   }
+
   .nav-right.active {
     display: flex;
   }
+
   .nav-toggle {
     display: block;
   }
@@ -142,20 +143,16 @@ h1 {
   color: #a9bcd0;
 }
 
-/* Smooth Hero Fade Animation */
-.header.fade-in {
-  animation: fadeInUp 1.2s ease both;
+/* Fade Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ============================================================
@@ -207,115 +204,6 @@ h1 {
   color: #a9bcd0;
 }
 
-/* Fade In Animations for Cards */
-.fade-in {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ============================================================
-   Converter Section (Word/PDF)
-   ============================================================ */
-.converter-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 70vh;
-  position: relative;
-  z-index: 10;
-}
-
-.converter-box {
-  background: rgba(0, 30, 60, 0.35);
-  padding: 30px;
-  border-radius: 18px;
-  width: 85%;
-  max-width: 400px;
-  box-shadow: 0 0 25px rgba(0, 150, 255, 0.2);
-}
-
-/* Buttons */
-button {
-  background: linear-gradient(to right, #00aaff, #0077ff);
-  border: none;
-  color: white;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  font-size: 1rem;
-  width: 100%;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: scale(1.02);
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* File name text */
-.filename {
-  color: #a9bcd0;
-  margin-bottom: 8px;
-  display: block;
-  font-size: 0.9rem;
-}
-
-/* Progress Bar */
-.progress-container {
-  width: 100%;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 10px;
-  display: none;
-}
-
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(to right, #00aaff, #0077ff);
-  transition: width 0.3s ease;
-}
-
-/* Status Text */
-#statusText, #pdfStatus {
-  margin-top: 10px;
-  font-size: 0.9rem;
-}
-
-/* ============================================================
-   Back to Home Button
-   ============================================================ */
-.back-home {
-  display: inline-block;
-  margin-bottom: 10px;
-  background: linear-gradient(to right, #00aaff, #0077ff);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 120, 255, 0.3);
-}
-
-.back-home:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(0, 150, 255, 0.5);
-}
-
 /* ============================================================
    Footer
    ============================================================ */
@@ -329,9 +217,27 @@ button:disabled {
 }
 
 /* ============================================================
-   Mobile Canvas Fix Layer
+   Scroll Button
    ============================================================ */
-body, .header, .tools-section, .footer, .converter-box, .navbar {
+.scroll-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #00aaff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  padding: 10px;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
+}
+
+/* ============================================================
+   Layer Fix
+   ============================================================ */
+body, .header, .tools-section, .footer, .navbar {
   position: relative;
   z-index: 10;
 }

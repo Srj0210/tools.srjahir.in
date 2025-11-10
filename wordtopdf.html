@@ -1,38 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word to PDF Converter | SRJ Tools</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+
 <body>
   <canvas id="waveCanvas"></canvas>
+
+  <!-- ✅ Navbar -->
   <nav class="navbar">
     <div class="nav-left">
-      <img src="tools.png" class="nav-logo">
+      <img src="tools.png" alt="SRJ Tools Logo" class="nav-logo" />
       <span class="nav-title">SRJ Tools</span>
     </div>
     <div class="nav-right" id="navMenu">
       <a href="index.html">Home</a>
-      <a href="index.html#toolsGrid">PDF Tools</a>
+      <a href="#convertSection">Converter</a>
     </div>
     <div class="nav-toggle" id="navToggle">☰</div>
   </nav>
 
+  <!-- ✅ Header -->
   <header class="header">
+    <img src="tools.png" alt="logo" class="logo" />
     <h1>Word to PDF Converter</h1>
+    <p class="subtitle">Convert your Word documents to PDF instantly.</p>
   </header>
 
-  <div class="converter-box">
-    <input type="file" id="wordFile" accept=".doc,.docx" hidden>
-    <button id="selectBtn">Select Word File</button>
-    <span id="fileNameText" class="filename"></span>
+  <!-- ✅ Converter Section -->
+  <section class="converter-section" id="convertSection">
+    <div class="converter-box">
+      <input type="file" id="wordFile" accept=".doc,.docx" hidden>
+      <button id="selectBtn">Select Word File</button>
+      <span id="fileNameText" class="filename"></span>
 
-    <button id="convertBtn" disabled>Convert to PDF</button>
-    <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
-    <button id="downloadBtn" style="display:none;">Download PDF</button>
-    <p id="statusText"></p>
-  </div>
+      <button id="convertBtn" disabled>Convert to PDF</button>
 
+      <div class="progress-container" id="progressContainer" style="display:none;">
+        <div id="progressBar"></div>
+      </div>
+
+      <button id="downloadBtn" style="display:none;">Download PDF</button>
+      <p id="statusText"></p>
+    </div>
+  </section>
+
+  <!-- ✅ Footer -->
   <footer class="footer">
-    <a href="index.html" class="back-home">⬅️ Back to Home</a>
+    <a href="index.html" class="back-home">⬅ Back to Home</a>
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
   <script src="animation.js"></script>
+
   <script>
   const uploadInput = document.getElementById("wordFile");
   const selectBtn = document.getElementById("selectBtn");
@@ -40,37 +64,40 @@
   const downloadBtn = document.getElementById("downloadBtn");
   const statusText = document.getElementById("statusText");
   const fileNameText = document.getElementById("fileNameText");
+  const progressContainer = document.getElementById("progressContainer");
   const progressBar = document.getElementById("progressBar");
-  const progressContainer = document.querySelector(".progress-container");
 
   let selectedFile = null;
+  let pdfBlob = null;
 
-  selectBtn.onclick = () => uploadInput.click();
+  selectBtn.addEventListener("click", () => uploadInput.click());
 
-  uploadInput.onchange = e => {
+  uploadInput.addEventListener("change", e => {
     selectedFile = e.target.files[0];
     if (selectedFile) {
       fileNameText.textContent = "📄 " + selectedFile.name;
+      fileNameText.style.display = "block";
       convertBtn.disabled = false;
     }
-  };
+  });
 
-  convertBtn.onclick = async () => {
+  convertBtn.addEventListener("click", async () => {
     if (!selectedFile) return;
-    statusText.textContent = "⏳ Converting...";
+    statusText.innerHTML = "⏳ Converting... please wait";
+    convertBtn.disabled = true;
     progressContainer.style.display = "block";
     progressBar.style.width = "0%";
-    convertBtn.disabled = true;
 
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    // Fake progress while upload
+    // Simulate progress bar
     let progress = 0;
-    const fake = setInterval(() => {
-      progress += 5;
-      progressBar.style.width = progress + "%";
-      if (progress >= 90) clearInterval(fake);
+    const fakeProgress = setInterval(() => {
+      if (progress < 90) {
+        progress += 5;
+        progressBar.style.width = progress + "%";
+      }
     }, 200);
 
     try {
@@ -81,23 +108,25 @@
       if (!response.ok) throw new Error("Server error");
 
       const blob = await response.blob();
-      clearInterval(fake);
+      pdfBlob = window.URL.createObjectURL(blob);
+      clearInterval(fakeProgress);
       progressBar.style.width = "100%";
-      statusText.textContent = "✅ Conversion complete!";
-      const url = window.URL.createObjectURL(blob);
 
+      statusText.innerHTML = "✅ Conversion complete!";
       downloadBtn.style.display = "block";
       downloadBtn.onclick = () => {
         const a = document.createElement("a");
-        a.href = url;
+        a.href = pdfBlob;
         a.download = selectedFile.name.replace(/\.[^/.]+$/, "") + ".pdf";
         a.click();
       };
-    } catch (e) {
-      statusText.textContent = "❌ Conversion failed.";
+    } catch (err) {
+      clearInterval(fakeProgress);
+      statusText.innerHTML = "❌ Conversion failed. Try again.";
     } finally {
       convertBtn.disabled = false;
     }
-  };
+  });
   </script>
 </body>
+</html>

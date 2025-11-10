@@ -1,68 +1,54 @@
 /* ============================================================
-   SRJ Tools — Dynamic Homepage + GSAP Fade Animations
+   SRJ Tools — Script (Tools, Scroll & Animation)
    ============================================================ */
 
-// ✅ Tool Data
+// Tool List
 const tools = [
-  { name: "Word to PDF", icon: "📝", desc: "Convert Word files to PDF", link: "wordtopdf.html" },
-  { name: "PDF to Word", icon: "📄", desc: "Make your PDF editable", link: "pdftoword.html" },
-  { name: "Merge PDF", icon: "➕", desc: "Combine multiple PDFs", link: "#" },
-  { name: "Split PDF", icon: "✂️", desc: "Separate pages easily", link: "#" },
-  { name: "Compress PDF", icon: "🗜️", desc: "Reduce file size easily", link: "#" },
-  { name: "Unlock PDF", icon: "🔓", desc: "Remove password protection", link: "#" },
-  { name: "Protect PDF", icon: "🔒", desc: "Add password security", link: "#" }
+  { icon: "📝", name: "Word to PDF", sub: "Convert Word files to PDF", link: "wordtopdf.html" },
+  { icon: "📄", name: "PDF to Word", sub: "Make your PDF editable", link: "pdftoword.html" },
+  { icon: "➕", name: "Merge PDF", sub: "Combine multiple PDFs", link: "#" },
+  { icon: "✂️", name: "Split PDF", sub: "Separate pages easily", link: "#" },
+  { icon: "📦", name: "Compress PDF", sub: "Reduce file size easily", link: "#" },
+  { icon: "🔓", name: "Unlock PDF", sub: "Remove password protection", link: "#" },
+  { icon: "🔒", name: "Protect PDF", sub: "Add password security", link: "#" }
 ];
 
-// ✅ Generate Tools Grid
-document.addEventListener("DOMContentLoaded", () => {
-  const grid = document.getElementById("toolsGrid");
-  if (grid) {
-    tools.forEach(tool => {
-      const div = document.createElement("div");
-      div.className = "tool-card fade-in";
-      div.innerHTML = `
-        <div class="tool-icon">${tool.icon}</div>
-        <div class="tool-name">${tool.name}</div>
-        <div class="tool-sub">${tool.desc}</div>
-      `;
-      div.addEventListener("click", () => {
-        if (tool.link === "#" || tool.link.startsWith("#")) {
-          alert(`${tool.name} coming soon! 🚀`);
-        } else {
-          window.location.href = tool.link;
-        }
-      });
-      grid.appendChild(div);
-    });
-
-    // Fade-in delay animation
-    setTimeout(() => {
-      document.querySelectorAll(".fade-in").forEach((el, i) => {
-        setTimeout(() => el.classList.add("visible"), i * 100);
-      });
-    }, 500);
-  }
+const grid = document.getElementById("toolsGrid");
+tools.forEach(tool => {
+  const card = document.createElement("div");
+  card.className = "tool-card fade-in";
+  card.innerHTML = `
+    <div class="tool-icon">${tool.icon}</div>
+    <div class="tool-name">${tool.name}</div>
+    <div class="tool-sub">${tool.sub}</div>
+  `;
+  card.onclick = () => {
+    if (tool.link !== "#") window.location.href = tool.link;
+  };
+  grid.appendChild(card);
 });
 
-// ✅ Mobile Navbar Toggle
-const navToggle = document.getElementById("navToggle");
-const navMenu = document.getElementById("navMenu");
-if (navToggle && navMenu) {
-  navToggle.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
-  });
-}
-
-// ✅ Scroll to Top (Optional - Disabled by Default)
-const scrollBtn = document.createElement("button");
-scrollBtn.className = "scroll-top";
-scrollBtn.innerHTML = "⬆️";
-document.body.appendChild(scrollBtn);
-
+// Scroll-to-top button
+const scrollBtn = document.getElementById("scrollTopBtn");
+window.addEventListener("scroll", () => {
+  scrollBtn.style.display = window.scrollY > 400 ? "block" : "none";
+});
 scrollBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+// Navbar toggle for mobile
+const navToggle = document.getElementById("navToggle");
+const navMenu = document.getElementById("navMenu");
+navToggle.addEventListener("click", () => navMenu.classList.toggle("active"));
+
+// Fade-in animations
+const fadeElements = document.querySelectorAll(".fade-in");
 window.addEventListener("scroll", () => {
-  scrollBtn.style.display = window.scrollY > 400 ? "block" : "none";
+  fadeElements.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 100) {
+      el.classList.add("visible");
+    }
+  });
 });

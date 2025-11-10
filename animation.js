@@ -1,34 +1,51 @@
 /* ============================================================
-   SRJ Tools — Background Wave Animation (behind cards)
+   SRJ Tools — Floating Particle Background Animation
    ============================================================ */
-const canvas = document.getElementById("waveCanvas");
+const canvas = document.getElementById("particleCanvas");
 const ctx = canvas.getContext("2d");
 
+let particles = [];
+let width, height;
+
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  particles = [];
+
+  // Create particles
+  for (let i = 0; i < 70; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 2 + 1,
+      dx: (Math.random() - 0.5) * 0.4,
+      dy: (Math.random() - 0.5) * 0.4,
+    });
+  }
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-let step = 0;
-function drawWave() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const colors = ["#002b5b", "#004080", "#0077ff"];
-  step += 0.02;
+function animate() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+  ctx.fillRect(0, 0, width, height);
 
-  colors.forEach((color, i) => {
+  particles.forEach((p) => {
+    p.x += p.dx;
+    p.y += p.dy;
+
+    // Bounce off edges
+    if (p.x < 0 || p.x > width) p.dx *= -1;
+    if (p.y < 0 || p.y > height) p.dy *= -1;
+
     ctx.beginPath();
-    const angle = step + i * Math.PI / 2;
-    for (let x = 0; x <= canvas.width; x++) {
-      const y = Math.sin(x * 0.01 + angle) * 20 + 150 + i * 30;
-      ctx.lineTo(x, y);
-    }
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(0,170,255,0.8)";
+    ctx.shadowColor = "rgba(0,170,255,0.8)";
+    ctx.shadowBlur = 12;
+    ctx.fill();
   });
 
-  requestAnimationFrame(drawWave);
+  requestAnimationFrame(animate);
 }
-drawWave();
+animate();

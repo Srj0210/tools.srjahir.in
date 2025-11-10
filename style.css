@@ -1,6 +1,7 @@
 /* ============================================================
-   SRJahir Tech — Final Unified Style (All Pages)
+   SRJahir Tech — Final Home Page (Animated Logo)
    ============================================================ */
+
 :root {
   --accent1: #00aaff;
   --accent2: #0077ff;
@@ -8,6 +9,7 @@
   --bg: #000814;
 }
 
+/* 🌌 Base Body */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -17,9 +19,7 @@ body {
   position: relative;
 }
 
-/* ============================================================
-   Wave Background
-   ============================================================ */
+/* 🌊 Wave */
 #waveCanvas {
   position: fixed;
   top: 0;
@@ -27,115 +27,75 @@ body {
   width: 100%;
   height: 260px;
   z-index: 0;
-  opacity: 0.4;
+  opacity: 0.35;
   pointer-events: none;
 }
 
-/* ============================================================
-   Header + Logo Layout
-   ============================================================ */
+/* 🔰 Header Layout */
 .header {
-  padding: 70px 20px 30px;
+  padding: 75px 20px 40px;
   text-align: center;
   position: relative;
   z-index: 2;
 }
 
-/* ============================================================
-   Perfectly Aligned Animated Logo (Based on Original)
-   ============================================================ */
+/* ⚙️ Animated Logo Container */
 .logo-container {
   position: relative;
-  width: 165px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   margin: 0 auto 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.logo-part {
+/* Cloud Background */
+.logo-part.cloud {
+  width: 100%;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: auto;
-  pointer-events: none;
-  user-select: none;
+  top: 0;
+  left: 0;
 }
 
-/* Cloud - Base background (non-moving) */
-.cloud {
-  width: 100%;
-  z-index: 1;
-  filter: drop-shadow(0 0 25px rgba(0, 150, 255, 0.35));
+/* Rotating Gear */
+.logo-part.gear {
+  position: absolute;
+  width: 86%;
+  top: 7%;
+  left: 7%;
+  animation: spin 9s linear infinite;
 }
 
-/* Gear - Rotating */
-.gear {
-  width: 88%;
-  z-index: 2;
-  animation: rotateGear 7.5s linear infinite;
-  transform-origin: center center;
-  filter: drop-shadow(0 0 10px rgba(0, 100, 255, 0.25));
+/* Static Code Symbol */
+.logo-part.center {
+  position: absolute;
+  width: 38%;
+  top: 31%;
+  left: 31%;
 }
 
-/* Center "<>" - Static */
-.center {
-  width: 43%;
-  z-index: 3;
-  top: 49%;
-  filter: drop-shadow(0 0 15px rgba(0, 150, 255, 0.3));
+/* 🌀 Rotation Animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* Rotation animation */
-@keyframes rotateGear {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 600px) {
-  .logo-container {
-    width: 130px;
-    height: 120px;
-  }
-
-  .gear {
-    width: 90%;
-  }
-
-  .center {
-    width: 46%;
-  }
-}
-
-/* ============================================================
-   Title & Subtitle
-   ============================================================ */
+/* Title */
 .title-under-logo {
   font-size: 2.6rem;
-  margin: 8px 0 10px;
+  margin: 5px 0 10px;
   background: linear-gradient(to right, var(--accent1), var(--accent2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 0.5px;
 }
 
+/* Subtitle */
 .subtitle {
   font-size: 1rem;
   color: var(--muted);
   letter-spacing: 0.5px;
 }
 
-/* ============================================================
-   Tools Section
-   ============================================================ */
+/* ⚙️ Tools Section */
 .tools-section {
   padding: 40px 15px 80px;
   position: relative;
@@ -176,65 +136,7 @@ body {
   color: var(--muted);
 }
 
-/* ============================================================
-   Converter Pages (Word ⇄ PDF)
-   ============================================================ */
-.converter-section {
-  padding: 40px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.converter-box {
-  width: 100%;
-  max-width: 500px;
-  background: rgba(0, 25, 55, 0.5);
-  border-radius: 18px;
-  border: 1px solid rgba(0, 150, 255, 0.2);
-  box-shadow: 0 0 25px rgba(0, 150, 255, 0.1);
-  padding: 25px;
-  text-align: center;
-  z-index: 2;
-}
-
-button {
-  width: 100%;
-  background: linear-gradient(135deg, rgba(0, 100, 255, 0.25), rgba(0, 150, 255, 0.35));
-  border: 1px solid rgba(0, 150, 255, 0.35);
-  box-shadow: 0 0 10px rgba(0, 150, 255, 0.25);
-  color: #fff;
-  font-weight: 600;
-  border-radius: 14px;
-  padding: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-}
-
-button:hover {
-  background: linear-gradient(135deg, rgba(0, 150, 255, 0.45), rgba(0, 200, 255, 0.55));
-  box-shadow: 0 0 25px rgba(0, 150, 255, 0.45);
-  transform: translateY(-3px);
-}
-
-.progress-container {
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-  height: 12px;
-  overflow: hidden;
-  margin-top: 15px;
-}
-
-#progressBar {
-  width: 0;
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent1), var(--accent2));
-  transition: width 0.3s ease;
-}
-
-/* ============================================================
-   Footer
-   ============================================================ */
+/* 📘 Footer */
 .footer {
   background: #000814;
   padding: 25px;

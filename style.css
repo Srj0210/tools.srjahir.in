@@ -27,32 +27,39 @@ body {
   width: 100%;
   height: 260px;
   z-index: 0;
-  opacity: 0.35;
+  opacity: 0.4;
   pointer-events: none;
 }
 
 /* ============================================================
-   Header Section
+   Header + Logo Layout
    ============================================================ */
 .header {
-  padding: 90px 20px 40px;
+  padding: 80px 20px 40px;
   text-align: center;
   position: relative;
   z-index: 2;
 }
 
 .logo {
-  width: 130px;
-  margin-bottom: 15px;
-  filter: drop-shadow(0 0 15px rgba(0,150,255,0.3));
+  width: 170px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 18px rgba(0,150,255,0.4));
+  animation: float 3.5s ease-in-out infinite;
 }
 
-h1 {
-  font-size: 2.4rem;
-  margin: 12px 0;
+.title-under-logo {
+  font-size: 2.6rem;
+  margin: 8px 0 10px;
   background: linear-gradient(to right, var(--accent1), var(--accent2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 .subtitle {
@@ -62,7 +69,7 @@ h1 {
 }
 
 /* ============================================================
-   Home Tools Section
+   Tools Section
    ============================================================ */
 .tools-section {
   padding: 40px 15px 80px;
@@ -107,42 +114,50 @@ h1 {
 /* ============================================================
    Converter Pages (Word ⇄ PDF)
    ============================================================ */
-.converter-card {
-  background: rgba(0, 20, 40, 0.4);
-  border-radius: 20px;
-  border: 1px solid rgba(0, 150, 255, 0.15);
-  box-shadow: 0 0 20px rgba(0, 150, 255, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.converter-grid {
-  display: grid;
-  gap: 16px;
-  padding: 22px;
-}
-
-/* File select label */
-.file-picker .tool-card {
+.converter-section {
+  padding: 40px 20px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(0, 25, 55, 0.6);
-  border: 1px solid rgba(0,150,255,0.25);
+  justify-content: center;
 }
 
-/* File info text */
-#fileInfo {
-  font-size: 0.9rem;
-  color: var(--muted);
-  word-break: break-word;
+.converter-box {
+  width: 100%;
+  max-width: 500px;
+  background: rgba(0, 25, 55, 0.5);
+  border-radius: 18px;
+  border: 1px solid rgba(0, 150, 255, 0.2);
+  box-shadow: 0 0 25px rgba(0, 150, 255, 0.1);
+  padding: 25px;
+  text-align: center;
+  z-index: 2;
 }
 
-/* Progress bar container */
+button {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(0, 100, 255, 0.25), rgba(0, 150, 255, 0.35));
+  border: 1px solid rgba(0, 150, 255, 0.35);
+  box-shadow: 0 0 10px rgba(0, 150, 255, 0.25);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: linear-gradient(135deg, rgba(0, 150, 255, 0.45), rgba(0, 200, 255, 0.55));
+  box-shadow: 0 0 25px rgba(0, 150, 255, 0.45);
+  transform: translateY(-3px);
+}
+
 .progress-container {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.1);
   border-radius: 10px;
   height: 12px;
   overflow: hidden;
+  margin-top: 15px;
 }
 
 #progressBar {
@@ -153,73 +168,14 @@ h1 {
 }
 
 /* ============================================================
-   Converter Buttons (Convert / Download)
-   ============================================================ */
-#convertBtn,
-#downloadBtn,
-#convertPDFBtn,
-#downloadWordBtn {
-  background: linear-gradient(135deg, rgba(0, 100, 255, 0.25), rgba(0, 150, 255, 0.35));
-  border: 1px solid rgba(0, 150, 255, 0.35);
-  box-shadow: 0 0 10px rgba(0, 150, 255, 0.25);
-  color: #fff;
-  font-weight: 600;
-  text-shadow: 0 0 6px rgba(0, 150, 255, 0.3);
-  border-radius: 14px;
-  padding: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#convertBtn:hover,
-#downloadBtn:hover,
-#convertPDFBtn:hover,
-#downloadWordBtn:hover {
-  background: linear-gradient(135deg, rgba(0, 150, 255, 0.45), rgba(0, 200, 255, 0.55));
-  box-shadow: 0 0 25px rgba(0, 150, 255, 0.45);
-  transform: translateY(-3px);
-}
-
-/* Status text */
-#statusText,
-#statusMsg {
-  font-size: 0.95rem;
-  color: var(--muted);
-  text-align: left;
-}
-
-/* ============================================================
    Footer
    ============================================================ */
 .footer {
   background: #000814;
-  padding: 30px;
+  padding: 25px;
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
   border-top: 1px solid rgba(0,150,255,0.15);
-  position: relative;
   z-index: 2;
-}
-
-.back-home {
-  display: inline-block;
-  margin-bottom: 10px;
-  color: var(--accent1);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.back-home:hover {
-  color: var(--accent2);
-}
-
-/* ============================================================
-   Responsive
-   ============================================================ */
-@media (max-width: 600px) {
-  h1 { font-size: 1.9rem; }
-  .logo { width: 90px; }
-  .tools-grid { gap: 18px; }
-  .converter-card { padding: 10px; }
 }

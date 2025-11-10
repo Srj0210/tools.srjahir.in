@@ -1,54 +1,65 @@
 /* ============================================================
-   SRJ Tools — Script (Tools, Scroll & Animation)
+   SRJahir Tech - Interactive Script
+   Author: SRJ (srjahir.in)
    ============================================================ */
 
-// Tool List
-const tools = [
-  { icon: "📝", name: "Word to PDF", sub: "Convert Word files to PDF", link: "wordtopdf.html" },
-  { icon: "📄", name: "PDF to Word", sub: "Make your PDF editable", link: "pdftoword.html" },
-  { icon: "➕", name: "Merge PDF", sub: "Combine multiple PDFs", link: "#" },
-  { icon: "✂️", name: "Split PDF", sub: "Separate pages easily", link: "#" },
-  { icon: "📦", name: "Compress PDF", sub: "Reduce file size easily", link: "#" },
-  { icon: "🔓", name: "Unlock PDF", sub: "Remove password protection", link: "#" },
-  { icon: "🔒", name: "Protect PDF", sub: "Add password security", link: "#" }
-];
+// Scroll-to-top Button Setup
+const scrollBtn = document.createElement("button");
+scrollBtn.innerHTML = "↑";
+scrollBtn.className = "scroll-top";
+document.body.appendChild(scrollBtn);
 
-const grid = document.getElementById("toolsGrid");
-tools.forEach(tool => {
-  const card = document.createElement("div");
-  card.className = "tool-card fade-in";
-  card.innerHTML = `
-    <div class="tool-icon">${tool.icon}</div>
-    <div class="tool-name">${tool.name}</div>
-    <div class="tool-sub">${tool.sub}</div>
-  `;
-  card.onclick = () => {
-    if (tool.link !== "#") window.location.href = tool.link;
-  };
-  grid.appendChild(card);
-});
-
-// Scroll-to-top button
-const scrollBtn = document.getElementById("scrollTopBtn");
 window.addEventListener("scroll", () => {
-  scrollBtn.style.display = window.scrollY > 400 ? "block" : "none";
+  scrollBtn.style.display = window.scrollY > 250 ? "block" : "none";
 });
 scrollBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// Navbar toggle for mobile
-const navToggle = document.getElementById("navToggle");
-const navMenu = document.getElementById("navMenu");
-navToggle.addEventListener("click", () => navMenu.classList.toggle("active"));
+// Smooth hover effect on tool cards
+const cards = document.querySelectorAll(".tool-card");
+cards.forEach(card => {
+  card.addEventListener("mousemove", e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(0,150,255,0.15), rgba(0,30,60,0.35))`;
+  });
+  card.addEventListener("mouseleave", () => {
+    card.style.background = "rgba(0, 30, 60, 0.35)";
+  });
+});
 
-// Fade-in animations
-const fadeElements = document.querySelectorAll(".fade-in");
-window.addEventListener("scroll", () => {
-  fadeElements.forEach(el => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight - 100) {
-      el.classList.add("visible");
+// File upload preview logic (common for tools)
+const fileInputs = document.querySelectorAll("input[type='file']");
+fileInputs.forEach(input => {
+  input.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (file) {
+      const infoBox = document.createElement("div");
+      infoBox.textContent = `✅ Selected: ${file.name}`;
+      infoBox.style.color = "#00aaff";
+      infoBox.style.marginTop = "10px";
+      infoBox.style.fontSize = "0.9rem";
+      input.insertAdjacentElement("afterend", infoBox);
+      setTimeout(() => infoBox.remove(), 5000);
     }
   });
+});
+
+// Responsive Navbar Shadow on Scroll
+const navbar = document.querySelector(".navbar");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 40) {
+    navbar.style.boxShadow = "0 0 15px rgba(0,150,255,0.25)";
+  } else {
+    navbar.style.boxShadow = "none";
+  }
+});
+
+// Simple fade-in animation on load
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.style.opacity = 0;
+  document.body.style.transition = "opacity 0.8s ease";
+  requestAnimationFrame(() => (document.body.style.opacity = 1));
 });

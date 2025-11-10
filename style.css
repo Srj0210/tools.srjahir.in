@@ -1,49 +1,51 @@
 /* ============================================================
-   SRJahir Tech — Final Dark Theme Layout
+   SRJahir Tech — Premium UI Revamp (Dual Wave + Polished Layout)
    ============================================================ */
 :root {
   --accent1: #00aaff;
   --accent2: #0077ff;
-  --text-muted: #a9bcd0;
+  --muted: #a9bcd0;
+  --bg: #000814;
 }
 
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: #000814;
-  color: white;
+  background: radial-gradient(circle at top center, #001530 0%, var(--bg) 70%);
+  color: #fff;
   overflow-x: hidden;
   position: relative;
 }
 
-/* 🌊 Wave Canvas */
+/* 🌊 Wave Background */
 #waveCanvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 200px;
+  height: 260px;
   z-index: 0;
-  opacity: 0.2; /* slightly visible behind everything */
+  opacity: 0.35; /* more visible */
   pointer-events: none;
 }
 
 /* 🔰 Header */
 .header {
-  padding: 70px 20px 30px;
+  padding: 90px 20px 40px;
   text-align: center;
   position: relative;
   z-index: 2;
 }
 
 .logo {
-  width: 90px;
-  margin-bottom: 10px;
+  width: 130px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 0 15px rgba(0,150,255,0.3));
 }
 
 h1 {
-  font-size: 2rem;
-  margin: 10px 0;
+  font-size: 2.4rem;
+  margin: 12px 0;
   background: linear-gradient(to right, var(--accent1), var(--accent2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -51,63 +53,66 @@ h1 {
 
 .subtitle {
   font-size: 1rem;
-  color: var(--text-muted);
+  color: var(--muted);
+  letter-spacing: 0.5px;
 }
 
-/* ⚙️ Tools */
+/* ⚙️ Tools Section */
 .tools-section {
-  padding: 40px 10px 60px;
+  padding: 40px 15px 80px;
   position: relative;
   z-index: 2;
 }
 
 .tools-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 25px;
   max-width: 900px;
   margin: 0 auto;
 }
 
 .tool-card {
-  background: rgba(0, 30, 60, 0.4);
-  border: 1px solid rgba(0, 150, 255, 0.2);
-  border-radius: 18px;
-  padding: 25px;
+  background: rgba(0, 25, 55, 0.5);
+  border: 1px solid rgba(0,150,255,0.25);
+  border-radius: 20px;
+  padding: 26px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 3;
+  transition: all 0.35s ease;
+  box-shadow: 0 0 12px rgba(0, 100, 200, 0.15);
 }
 
 .tool-card:hover {
-  background: rgba(0, 150, 255, 0.15);
-  box-shadow: 0 0 20px rgba(0, 150, 255, 0.3);
-  transform: translateY(-5px);
+  background: rgba(0, 150, 255, 0.1);
+  box-shadow: 0 0 25px rgba(0,150,255,0.3);
+  transform: translateY(-6px);
 }
 
 .tool-name {
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 .tool-sub {
   font-size: 0.9rem;
-  color: var(--text-muted);
+  color: var(--muted);
 }
 
 /* 🧩 Footer */
 .footer {
   background: #000814;
-  padding: 25px;
-  color: var(--text-muted);
+  padding: 30px;
+  color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
+  border-top: 1px solid rgba(0,150,255,0.15);
   position: relative;
   z-index: 2;
 }
 
 /* 📱 Responsive */
 @media (max-width: 600px) {
-  h1 { font-size: 1.8rem; }
-  .logo { width: 70px; }
+  h1 { font-size: 1.9rem; }
+  .logo { width: 90px; }
+  .tools-grid { gap: 18px; }
 }

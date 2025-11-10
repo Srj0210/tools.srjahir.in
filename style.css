@@ -1,301 +1,148 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRJ Tools — Smart PDF Converter</title>
-  <link rel="icon" type="image/png" href="logo.png">
-  <style>
-    /* ============================================================
-       SRJ Tools — Restored Original Design (Perfect Version)
-       ============================================================ */
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #000;
-      color: white;
-      text-align: center;
-      overflow-x: hidden;
-    }
+/* ============================================================
+   SRJahir Tech — Final Optimized UI
+   ============================================================ */
+:root {
+  --bg-dark: #000814;
+  --accent1: #00aaff;
+  --accent2: #0077ff;
+  --muted: #a9bcd0;
+}
 
-    /* ============================================================
-       Wave Background (Top Section)
-       ============================================================ */
-    #waveCanvas {
-      position: absolute;
-      top: 100px; /* lowered behind logo */
-      left: 0;
-      width: 100%;
-      height: 250px;
-      z-index: 0 !important;
-      pointer-events: none;
-      opacity: 0.35;
-    }
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-dark);
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
 
-    /* ============================================================
-       Navbar
-       ============================================================ */
-    .navbar {
-      width: 100%;
-      background: rgba(0, 20, 50, 0.75);
-      backdrop-filter: blur(12px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 25px;
-      position: fixed;
-      top: 0;
-      z-index: 10;
-      border-bottom: 1px solid rgba(0, 150, 255, 0.2);
-    }
+/* ============================================================
+   Navbar
+   ============================================================ */
+.navbar {
+  width: 100%;
+  background: rgba(0, 20, 50, 0.75);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 25px;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid rgba(0, 150, 255, 0.2);
+}
+.nav-left { display: flex; align-items: center; gap: 10px; }
+.nav-logo { width: 36px; height: 36px; }
+.nav-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(to right, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.nav-right { display: flex; gap: 18px; }
+.nav-right a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  position: relative;
+}
+.nav-right a::after {
+  content: "";
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0%; height: 2px;
+  background: linear-gradient(to right, var(--accent1), var(--accent2));
+  transition: width 0.3s;
+}
+.nav-right a:hover::after { width: 100%; }
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+/* ============================================================
+   Wave
+   ============================================================ */
+#waveCanvas {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: 180px;
+  z-index: 0;
+  opacity: 0.4;
+  pointer-events: none;
+}
 
-    .nav-logo {
-      width: 36px;
-      height: 36px;
-    }
+/* ============================================================
+   Header
+   ============================================================ */
+.header {
+  padding: 120px 20px 30px;
+  position: relative;
+  z-index: 2;
+}
+.logo {
+  width: 100px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 3;
+}
+h1 {
+  font-size: 2.2rem;
+  margin: 10px 0;
+  background: linear-gradient(to right, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle {
+  font-size: 1rem;
+  color: var(--muted);
+}
 
-    .nav-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      background: linear-gradient(to right, #00aaff, #0077ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+/* ============================================================
+   Tools Section
+   ============================================================ */
+.tools-section {
+  padding: 40px 10px 60px;
+  position: relative;
+  z-index: 2;
+}
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.tool-card {
+  background: rgba(0, 30, 60, 0.35);
+  border: 1px solid rgba(0, 150, 255, 0.2);
+  border-radius: 18px;
+  padding: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.tool-card:hover {
+  background: rgba(0, 150, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 150, 255, 0.3);
+  transform: translateY(-5px);
+}
+.tool-name { font-weight: 600; font-size: 1.1rem; }
+.tool-sub { font-size: 0.9rem; color: var(--muted); }
 
-    .nav-right {
-      display: flex;
-      gap: 18px;
-    }
-
-    .nav-right a {
-      color: #a9bcd0;
-      text-decoration: none;
-      font-size: 0.95rem;
-      position: relative;
-    }
-
-    .nav-right a::after {
-      content: "";
-      position: absolute;
-      bottom: -3px;
-      left: 0;
-      width: 0%;
-      height: 2px;
-      background: linear-gradient(to right, #00aaff, #0077ff);
-      transition: width 0.3s;
-    }
-
-    .nav-right a:hover::after {
-      width: 100%;
-    }
-
-    /* ============================================================
-       Header
-       ============================================================ */
-    .header {
-      padding: 120px 20px 30px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .logo {
-      width: 100px;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 3;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      margin: 10px 0;
-      background: linear-gradient(to right, #00aaff, #0077ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      color: #a9bcd0;
-    }
-
-    /* ============================================================
-       Tools Section
-       ============================================================ */
-    .tools-section {
-      padding: 40px 10px 60px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 25px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .tool-card {
-      background: rgba(0, 30, 60, 0.35);
-      border: 1px solid rgba(0, 150, 255, 0.2);
-      border-radius: 18px;
-      padding: 25px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .tool-card:hover {
-      background: rgba(0, 150, 255, 0.1);
-      box-shadow: 0 0 20px rgba(0, 150, 255, 0.3);
-      transform: translateY(-5px);
-    }
-
-    .tool-name {
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-
-    .tool-sub {
-      font-size: 0.9rem;
-      color: #a9bcd0;
-    }
-
-    /* ============================================================
-       Footer
-       ============================================================ */
-    .footer {
-      background: #000814;
-      padding: 25px;
-      color: #a9bcd0;
-      font-size: 0.85rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Sanskrit logo footer (as per SRJahir Tech rule) */
-    .footer img {
-      width: 120px;
-      margin-top: 10px;
-      opacity: 0.8;
-    }
-
-    /* ============================================================
-       Scroll Button
-       ============================================================ */
-    .scroll-top {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #00aaff;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      padding: 10px;
-      cursor: pointer;
-      display: none;
-      box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
-      z-index: 10;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ============================================================
-       Navbar
-       ============================================================ -->
-  <nav class="navbar">
-    <div class="nav-left">
-      <img src="logo.png" class="nav-logo" alt="SRJ Tools Logo">
-      <span class="nav-title">SRJ Tools</span>
-    </div>
-    <div class="nav-right">
-      <a href="#">Home</a>
-      <a href="#">PDF Tools</a>
-      <a href="#">About</a>
-    </div>
-  </nav>
-
-  <!-- ============================================================
-       Wave Background (Canvas)
-       ============================================================ -->
-  <canvas id="waveCanvas"></canvas>
-
-  <!-- ============================================================
-       Header Section
-       ============================================================ -->
-  <header class="header">
-    <img src="logo.png" alt="SRJ Logo" class="logo">
-    <h1>SRJ Tools</h1>
-    <p class="subtitle">Smart · Fast · Secure — All-in-One PDF Converter</p>
-  </header>
-
-  <!-- ============================================================
-       Tools Section
-       ============================================================ -->
-  <section class="tools-section">
-    <div class="tools-grid">
-      <div class="tool-card"><div class="tool-name">Word to PDF</div><div class="tool-sub">Convert Word files to PDF</div></div>
-      <div class="tool-card"><div class="tool-name">PDF to Word</div><div class="tool-sub">Make your PDF editable</div></div>
-      <div class="tool-card"><div class="tool-name">Merge PDF</div><div class="tool-sub">Combine multiple PDFs</div></div>
-      <div class="tool-card"><div class="tool-name">Split PDF</div><div class="tool-sub">Separate pages easily</div></div>
-      <div class="tool-card"><div class="tool-name">Compress PDF</div><div class="tool-sub">Reduce file size easily</div></div>
-      <div class="tool-card"><div class="tool-name">Unlock PDF</div><div class="tool-sub">Remove password protection</div></div>
-      <div class="tool-card"><div class="tool-name">Protect PDF</div><div class="tool-sub">Add password security</div></div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       Footer Section
-       ============================================================ -->
-  <footer class="footer">
-    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-    <img src="sanskrit.png" alt="Sanskrit Logo">
-  </footer>
-
-  <!-- ============================================================
-       Scroll Top Button
-       ============================================================ -->
-  <button class="scroll-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
-
-  <!-- ============================================================
-       Wave Animation Script
-       ============================================================ -->
-  <script>
-    const canvas = document.getElementById('waveCanvas');
-    const ctx = canvas.getContext('2d');
-    let width, height, waveHeight = 40, increment = 0;
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = 200;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      ctx.beginPath();
-      ctx.moveTo(0, height / 2);
-
-      for (let x = 0; x < width; x++) {
-        ctx.lineTo(x, height / 2 + Math.sin(x * 0.02 + increment) * waveHeight);
-      }
-
-      ctx.strokeStyle = 'rgba(0, 150, 255, 0.5)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      increment += 0.05;
-      requestAnimationFrame(animate);
-    }
-    animate();
-  </script>
-
-</body>
-</html>
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer {
+  background: #000814;
+  padding: 25px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  position: relative;
+  z-index: 2;
+}
+.footer img {
+  width: 120px;
+  margin-top: 10px;
+  opacity: 0.8;
+}

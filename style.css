@@ -77,7 +77,7 @@ body {
 /* GEAR (rotating, smaller than before) */
 .gear {
   width: 74%;
-  top: 50.2%;
+  top: 55.2%;
   z-index: 2;
   transform-origin: center center;
   animation: rotateGear 10s linear infinite;
@@ -87,7 +87,7 @@ body {
 /* CENTER < > symbol */
 .center {
   width: 38%;
-  top: 51.4%;
+  top: 53.4%;
   z-index: 3;
   filter: none;
 }

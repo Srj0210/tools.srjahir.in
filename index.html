@@ -10,13 +10,27 @@
 </head>
 
 <body>
+  <canvas id="waveCanvas"></canvas>
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <img src="tools.png" alt="SRJ Tools Logo" class="nav-logo">
+      <span class="nav-title">SRJ Tools</span>
+    </div>
+    <div class="nav-right" id="navMenu">
+      <a href="index.html">Home</a>
+      <a href="#toolsGrid">PDF Tools</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="nav-toggle" id="navToggle">☰</div>
+  </nav>
+
   <header class="header fade-in">
     <img src="tools.png" alt="SRJ Tools Logo" class="logo" />
     <h1>SRJ Tools</h1>
     <p class="subtitle">Smart · Fast · Secure — All-in-One PDF Converter</p>
   </header>
 
-  <!-- ✅ Tools Section -->
   <section class="tools-section fade-in">
     <div id="toolsGrid" class="tools-grid"></div>
   </section>
@@ -25,6 +39,7 @@
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
+  <script src="animation.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

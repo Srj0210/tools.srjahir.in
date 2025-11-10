@@ -6,27 +6,39 @@
   <title>SRJ Tools | Smart · Fast · Secure — All-in-One PDF Converter</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 
 <body>
+  <!-- Wave Background -->
   <canvas id="waveCanvas"></canvas>
 
+  <!-- Header Section -->
   <header class="header">
-    <!-- 🔥 SRJahir Tech Animated Logo -->
     <div class="logo-container">
-      <img src="assets/cloud.png" alt="Cloud" class="logo-part cloud" />
-      <img src="assets/gear-ring.png" alt="Gear" class="logo-part gear" />
-      <img src="assets/code-center.png" alt="Code Center" class="logo-part center" />
+      <img src="cloud.png" alt="Cloud" class="logo-part cloud" />
+      <img src="gear-ring.png" alt="Gear" class="logo-part gear" />
+      <img src="code-center.png" alt="Code Center" class="logo-part center" />
     </div>
-
     <h1 class="title-under-logo">SRJ Tools</h1>
     <p class="subtitle">Smart · Fast · Secure — All-in-One PDF Converter</p>
   </header>
 
+  <!-- Tools Section -->
   <section class="tools-section">
-    <div id="toolsGrid" class="tools-grid"></div>
+    <div id="toolsGrid" class="tools-grid">
+      <div class="tool-card" onclick="window.location.href='wordtopdf.html'">
+        <h3 class="tool-name">Word to PDF</h3>
+        <p class="tool-sub">Convert Word files to PDF</p>
+      </div>
+      <div class="tool-card" onclick="window.location.href='pdftoword.html'">
+        <h3 class="tool-name">PDF to Word</h3>
+        <p class="tool-sub">Make your PDF editable</p>
+      </div>
+    </div>
   </section>
 
+  <!-- Footer -->
   <footer class="footer">
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>

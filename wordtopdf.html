@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Word to PDF | SRJ Tools</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 
@@ -14,32 +14,41 @@
   <header class="header">
     <img src="tools.png" alt="SRJ Tools Logo" class="logo" />
     <h1 class="title-under-logo">Word to PDF</h1>
-    <p class="subtitle">Convert Word documents to PDF instantly and securely.</p>
+    <p class="subtitle">Convert Word files to PDF instantly</p>
   </header>
 
   <section class="converter-section">
     <div class="converter-box">
-      <input type="file" id="wordFile" accept=".doc,.docx" hidden>
-      <button id="selectBtn">Select Word File</button>
-      <span id="fileNameText" class="filename"></span>
+      <input type="file" id="wordFile" accept=".doc,.docx" />
+      <button id="convertBtn">Convert to PDF</button>
 
-      <button id="convertBtn" disabled>Convert to PDF</button>
-
-      <div class="progress-container" id="progressContainer" style="display:none;">
+      <div class="progress-container">
         <div id="progressBar"></div>
       </div>
 
-      <button id="downloadBtn" style="display:none;">Download PDF</button>
-      <p id="statusText"></p>
+      <button onclick="window.location.href='index.html'" style="margin-top:20px;">← Back to Home</button>
     </div>
   </section>
 
   <footer class="footer">
-    <a href="index.html" class="back-home">⬅ Back to Home</a>
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
   <script src="animation.js"></script>
-  <script src="script.js"></script>
+  <script>
+    document.getElementById("convertBtn").addEventListener("click", () => {
+      const bar = document.getElementById("progressBar");
+      bar.style.width = "0%";
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 10;
+        bar.style.width = progress + "%";
+        if (progress >= 100) {
+          clearInterval(interval);
+          alert("✅ Word file converted to PDF successfully!");
+        }
+      }, 200);
+    });
+  </script>
 </body>
 </html>

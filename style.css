@@ -1,5 +1,5 @@
 /* ============================================================
-   SRJahir Tech — Premium UI Revamp (Dual Wave + Polished Layout)
+   SRJahir Tech — Final Unified Style (All Pages)
    ============================================================ */
 :root {
   --accent1: #00aaff;
@@ -17,7 +17,9 @@ body {
   position: relative;
 }
 
-/* 🌊 Wave Background */
+/* ============================================================
+   Wave Background
+   ============================================================ */
 #waveCanvas {
   position: fixed;
   top: 0;
@@ -25,11 +27,13 @@ body {
   width: 100%;
   height: 260px;
   z-index: 0;
-  opacity: 0.35; /* more visible */
+  opacity: 0.35;
   pointer-events: none;
 }
 
-/* 🔰 Header */
+/* ============================================================
+   Header Section
+   ============================================================ */
 .header {
   padding: 90px 20px 40px;
   text-align: center;
@@ -57,7 +61,9 @@ h1 {
   letter-spacing: 0.5px;
 }
 
-/* ⚙️ Tools Section */
+/* ============================================================
+   Home Tools Section
+   ============================================================ */
 .tools-section {
   padding: 40px 15px 80px;
   position: relative;
@@ -98,7 +104,93 @@ h1 {
   color: var(--muted);
 }
 
-/* 🧩 Footer */
+/* ============================================================
+   Converter Pages (Word ⇄ PDF)
+   ============================================================ */
+.converter-card {
+  background: rgba(0, 20, 40, 0.4);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 150, 255, 0.15);
+  box-shadow: 0 0 20px rgba(0, 150, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.converter-grid {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+}
+
+/* File select label */
+.file-picker .tool-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 25, 55, 0.6);
+  border: 1px solid rgba(0,150,255,0.25);
+}
+
+/* File info text */
+#fileInfo {
+  font-size: 0.9rem;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+/* Progress bar container */
+.progress-container {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  height: 12px;
+  overflow: hidden;
+}
+
+#progressBar {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  transition: width 0.3s ease;
+}
+
+/* ============================================================
+   Converter Buttons (Convert / Download)
+   ============================================================ */
+#convertBtn,
+#downloadBtn,
+#convertPDFBtn,
+#downloadWordBtn {
+  background: linear-gradient(135deg, rgba(0, 100, 255, 0.25), rgba(0, 150, 255, 0.35));
+  border: 1px solid rgba(0, 150, 255, 0.35);
+  box-shadow: 0 0 10px rgba(0, 150, 255, 0.25);
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(0, 150, 255, 0.3);
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#convertBtn:hover,
+#downloadBtn:hover,
+#convertPDFBtn:hover,
+#downloadWordBtn:hover {
+  background: linear-gradient(135deg, rgba(0, 150, 255, 0.45), rgba(0, 200, 255, 0.55));
+  box-shadow: 0 0 25px rgba(0, 150, 255, 0.45);
+  transform: translateY(-3px);
+}
+
+/* Status text */
+#statusText,
+#statusMsg {
+  font-size: 0.95rem;
+  color: var(--muted);
+  text-align: left;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
 .footer {
   background: #000814;
   padding: 30px;
@@ -110,9 +202,24 @@ h1 {
   z-index: 2;
 }
 
-/* 📱 Responsive */
+.back-home {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--accent1);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-home:hover {
+  color: var(--accent2);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
 @media (max-width: 600px) {
   h1 { font-size: 1.9rem; }
   .logo { width: 90px; }
   .tools-grid { gap: 18px; }
+  .converter-card { padding: 10px; }
 }

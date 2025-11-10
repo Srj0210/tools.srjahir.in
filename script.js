@@ -1,8 +1,8 @@
 /* ============================================================
-   SRJ Tools — Homepage Logic
+   SRJ Tools — Dynamic Homepage + GSAP Fade Animations
    ============================================================ */
 
-// ✅ Tools Data
+// ✅ Tool Data
 const tools = [
   { name: "Word to PDF", icon: "📝", desc: "Convert Word files to PDF", link: "wordtopdf.html" },
   { name: "PDF to Word", icon: "📄", desc: "Make your PDF editable", link: "pdftoword.html" },
@@ -13,14 +13,7 @@ const tools = [
   { name: "Protect PDF", icon: "🔒", desc: "Add password security", link: "#" }
 ];
 
-// ✅ Navbar Toggle
-const navToggle = document.getElementById("navToggle");
-const navMenu = document.getElementById("navMenu");
-navToggle.addEventListener("click", () => {
-  navMenu.classList.toggle("active");
-});
-
-// ✅ Generate Tool Cards
+// ✅ Generate Tools Grid
 document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("toolsGrid");
   if (grid) {
@@ -42,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       grid.appendChild(div);
     });
 
+    // Fade-in delay animation
     setTimeout(() => {
       document.querySelectorAll(".fade-in").forEach((el, i) => {
         setTimeout(() => el.classList.add("visible"), i * 100);
@@ -50,7 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ✅ Scroll to Top Button
+// ✅ Mobile Navbar Toggle
+const navToggle = document.getElementById("navToggle");
+const navMenu = document.getElementById("navMenu");
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+}
+
+// ✅ Scroll to Top (Optional - Disabled by Default)
 const scrollBtn = document.createElement("button");
 scrollBtn.className = "scroll-top";
 scrollBtn.innerHTML = "⬆️";

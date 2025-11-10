@@ -3,43 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SRJ Tools | Smart · Fast · Secure — All-in-One PDF Converter</title>
+  <title>SRJ Tools — Smart PDF Converter</title>
+  <link rel="icon" href="logo.png" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
-
 <body>
-  <canvas id="waveCanvas"></canvas>
-
+  <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-left">
-      <img src="tools.png" alt="SRJ Tools Logo" class="nav-logo" />
+      <img src="logo.png" class="nav-logo" alt="SRJ Tools Logo" />
       <span class="nav-title">SRJ Tools</span>
     </div>
-    <div class="nav-right" id="navMenu">
+    <div class="nav-right">
       <a href="index.html">Home</a>
-      <a href="#toolsGrid">PDF Tools</a>
-      <a href="#about">About</a>
+      <a href="pdftoword.html">PDF to Word</a>
+      <a href="wordtopdf.html">Word to PDF</a>
     </div>
-    <div class="nav-toggle" id="navToggle">☰</div>
   </nav>
 
-  <header class="header fade-in">
-    <img src="tools.png" alt="SRJ Tools Logo" class="logo" />
+  <!-- Wave Background -->
+  <canvas id="waveCanvas"></canvas>
+
+  <!-- Header -->
+  <header class="header">
+    <img src="logo.png" class="logo" alt="SRJ Logo" />
     <h1>SRJ Tools</h1>
     <p class="subtitle">Smart · Fast · Secure — All-in-One PDF Converter</p>
   </header>
 
-  <section class="tools-section fade-in">
-    <div id="toolsGrid" class="tools-grid"></div>
+  <!-- Tools Grid -->
+  <section class="tools-section">
+    <div class="tools-grid">
+      <div class="tool-card" onclick="window.location='wordtopdf.html'">
+        <div class="tool-name">Word to PDF</div>
+        <div class="tool-sub">Convert Word files to PDF</div>
+      </div>
+      <div class="tool-card" onclick="window.location='pdftoword.html'">
+        <div class="tool-name">PDF to Word</div>
+        <div class="tool-sub">Make your PDF editable</div>
+      </div>
+      <div class="tool-card"><div class="tool-name">Merge PDF</div><div class="tool-sub">Combine multiple PDFs</div></div>
+      <div class="tool-card"><div class="tool-name">Split PDF</div><div class="tool-sub">Separate pages easily</div></div>
+      <div class="tool-card"><div class="tool-name">Compress PDF</div><div class="tool-sub">Reduce file size</div></div>
+      <div class="tool-card"><div class="tool-name">Protect PDF</div><div class="tool-sub">Add password security</div></div>
+    </div>
   </section>
 
-  <footer class="footer fade-in">
+  <!-- Footer -->
+  <footer class="footer">
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+    <img src="sanskrit.png" alt="sanskrit logo" />
   </footer>
-
-  <button id="scrollTopBtn" class="scroll-top">↑</button>
 
   <script src="animation.js"></script>
   <script src="script.js"></script>

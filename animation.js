@@ -1,5 +1,5 @@
 /* ============================================================
-   SRJ Tools — Background Wave Animation
+   SRJ Tools — Background Wave Animation (behind cards)
    ============================================================ */
 const canvas = document.getElementById("waveCanvas");
 const ctx = canvas.getContext("2d");

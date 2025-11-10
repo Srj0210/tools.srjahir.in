@@ -1,24 +1,47 @@
-/* ============================================================
-   SRJ Tools - Dark Elegant Design
-   ============================================================ */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top, #000814 0%, #000000 80%);
   color: white;
-  text-align: center;
+  background: #000;
   overflow-x: hidden;
+  text-align: center;
 }
 
+#waveCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  background: rgba(0, 20, 50, 0.75);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 25px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(0, 150, 255, 0.2);
+}
+.nav-right a { color: #a9bcd0; text-decoration: none; position: relative; }
+.nav-right a::after {
+  content: "";
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0%; height: 2px;
+  background: linear-gradient(to right, #00aaff, #0077ff);
+  transition: width 0.3s;
+}
+.nav-right a:hover::after { width: 100%; }
+
 /* Header */
-.header {
-  padding: 60px 20px 30px;
-}
-.logo {
-  width: 100px;
-  margin-bottom: 15px;
-  filter: drop-shadow(0 0 12px #00aaff);
-}
+.header { padding: 120px 20px 30px; }
+.logo { width: 100px; filter: none; }
 h1 {
   font-size: 2.2rem;
   margin: 10px 0;
@@ -26,97 +49,9 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.subtitle {
-  font-size: 1rem;
-  color: #a9bcd0;
-}
+.subtitle { color: #a9bcd0; }
 
-/* Tools Grid */
-.tools-section {
-  padding: 40px 10px 60px;
-}
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 25px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-.tool-card {
-  background: rgba(0, 30, 60, 0.35);
-  border: 1px solid rgba(0, 150, 255, 0.2);
-  border-radius: 18px;
-  padding: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(30px);
-}
-.tool-card:hover {
-  background: rgba(0, 150, 255, 0.1);
-  box-shadow: 0 0 20px rgba(0, 150, 255, 0.3);
-  transform: translateY(-5px);
-}
-.tool-icon {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-.tool-name {
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-.tool-sub {
-  font-size: 0.9rem;
-  color: #a9bcd0;
-}
-
-/* Footer */
-.footer {
-  background: #000814;
-  padding: 25px;
-  color: #a9bcd0;
-  font-size: 0.85rem;
-}
-
-/* Scroll Button */
-.scroll-top {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #00aaff;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  padding: 10px;
-  cursor: pointer;
-  display: none;
-  box-shadow: 0 0 15px rgba(0, 150, 255, 0.4);
-}
-
-/* Fade Animation */
-.fade-in {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-
-
-
-
-
-.converter-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-}
-
+/* Converter UI */
 .converter-box {
   background: rgba(0, 30, 60, 0.35);
   padding: 30px;
@@ -124,6 +59,24 @@ h1 {
   width: 85%;
   max-width: 400px;
   box-shadow: 0 0 25px rgba(0, 150, 255, 0.2);
+  margin: 100px auto;
+}
+
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 10px;
+  display: none;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, #00aaff, #0077ff);
+  transition: width 0.3s ease;
 }
 
 button {
@@ -138,26 +91,7 @@ button {
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.filename {
-  color: #a9bcd0;
-  margin-bottom: 8px;
-  display: block;
-  font-size: 0.9rem;
-}
-
-#statusText, #pdfStatus {
-  margin-top: 10px;
-  font-size: 0.9rem;
-}
-
-/* ============================================================
-   Back to Home Button
-   ============================================================ */
+/* Back Button */
 .back-home {
   display: inline-block;
   margin-bottom: 10px;
@@ -167,11 +101,9 @@ button:disabled {
   border-radius: 8px;
   text-decoration: none;
   font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 120, 255, 0.3);
+  transition: all 0.3s;
 }
+.back-home:hover { transform: scale(1.05); }
 
-.back-home:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(0, 150, 255, 0.5);
-}
+/* Footer */
+.footer { padding: 25px; color: #a9bcd0; font-size: 0.85rem; }

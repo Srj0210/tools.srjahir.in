@@ -1,63 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SRJ Tools | Smart PDF Converters</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRJ Tools | Smart · Fast · Secure — All-in-One PDF Converter</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 
 <body>
   <canvas id="waveCanvas"></canvas>
 
-  <!-- ✅ Header -->
   <header class="header">
     <img src="tools.png" alt="SRJ Tools Logo" class="logo" />
     <h1 class="title-under-logo">SRJ Tools</h1>
     <p class="subtitle">Smart · Fast · Secure — All-in-One PDF Converter</p>
   </header>
 
-  <!-- ✅ Tools Section -->
   <section class="tools-section">
-    <div class="tools-grid">
-      <div class="tool-card" onclick="location.href='wordtopdf.html'">
-        <p class="tool-name">Word to PDF</p>
-        <p class="tool-sub">Convert Word files to PDF</p>
-      </div>
-
-      <div class="tool-card" onclick="location.href='pdftoword.html'">
-        <p class="tool-name">PDF to Word</p>
-        <p class="tool-sub">Make your PDF editable</p>
-      </div>
-
-      <div class="tool-card">
-        <p class="tool-name">Merge PDF</p>
-        <p class="tool-sub">Combine multiple PDFs</p>
-      </div>
-
-      <div class="tool-card">
-        <p class="tool-name">Split PDF</p>
-        <p class="tool-sub">Separate pages easily</p>
-      </div>
-
-      <div class="tool-card">
-        <p class="tool-name">Compress PDF</p>
-        <p class="tool-sub">Reduce file size easily</p>
-      </div>
-
-      <div class="tool-card">
-        <p class="tool-name">Protect PDF</p>
-        <p class="tool-sub">Add password security</p>
-      </div>
-    </div>
+    <div id="toolsGrid" class="tools-grid"></div>
   </section>
 
-  <!-- ✅ Footer -->
   <footer class="footer">
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
   <script src="animation.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

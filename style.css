@@ -35,77 +35,88 @@ body {
    Header + Logo Layout
    ============================================================ */
 .header {
-  padding: 80px 20px 40px;
+  padding: 70px 20px 30px;
   text-align: center;
   position: relative;
   z-index: 2;
 }
 
 /* ============================================================
-   Animated Logo
+   Perfectly Aligned Animated Logo (Based on Original)
    ============================================================ */
 .logo-container {
   position: relative;
-  width: 180px;
-  height: 180px;
-  margin: 0 auto 12px;
+  width: 165px;
+  height: 150px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo-part {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  height: 100%;
+  height: auto;
   pointer-events: none;
   user-select: none;
 }
 
-/* Cloud - Static */
+/* Cloud - Base background (non-moving) */
 .cloud {
+  width: 100%;
   z-index: 1;
   filter: drop-shadow(0 0 25px rgba(0, 150, 255, 0.35));
 }
 
 /* Gear - Rotating */
 .gear {
+  width: 88%;
   z-index: 2;
-  animation: rotateGear 8s linear infinite;
+  animation: rotateGear 7.5s linear infinite;
   transform-origin: center center;
-  filter: drop-shadow(0 0 12px rgba(0, 100, 255, 0.25));
+  filter: drop-shadow(0 0 10px rgba(0, 100, 255, 0.25));
 }
 
 /* Center "<>" - Static */
 .center {
+  width: 43%;
   z-index: 3;
+  top: 49%;
   filter: drop-shadow(0 0 15px rgba(0, 150, 255, 0.3));
 }
 
 /* Rotation animation */
 @keyframes rotateGear {
   0% {
-    transform: rotate(0deg);
-    filter: drop-shadow(0 0 0 rgba(0,150,255,0));
-  }
-  20% {
-    filter: drop-shadow(0 0 25px rgba(0,150,255,0.5));
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   100% {
-    transform: rotate(360deg);
-    filter: drop-shadow(0 0 15px rgba(0,150,255,0.25));
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
-/* Responsive */
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
   .logo-container {
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 120px;
+  }
+
+  .gear {
+    width: 90%;
+  }
+
+  .center {
+    width: 46%;
   }
 }
 
 /* ============================================================
-   Titles Under Logo
+   Title & Subtitle
    ============================================================ */
 .title-under-logo {
   font-size: 2.6rem;

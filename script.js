@@ -1,7 +1,8 @@
-// ============================================================
-// SRJ Tools — Homepage Dynamic Cards + Fade Animation
-// ============================================================
+/* ============================================================
+   SRJ Tools — Homepage Logic
+   ============================================================ */
 
+// ✅ Tools Data
 const tools = [
   { name: "Word to PDF", icon: "📝", desc: "Convert Word files to PDF", link: "wordtopdf.html" },
   { name: "PDF to Word", icon: "📄", desc: "Make your PDF editable", link: "pdftoword.html" },
@@ -12,6 +13,14 @@ const tools = [
   { name: "Protect PDF", icon: "🔒", desc: "Add password security", link: "#" }
 ];
 
+// ✅ Navbar Toggle
+const navToggle = document.getElementById("navToggle");
+const navMenu = document.getElementById("navMenu");
+navToggle.addEventListener("click", () => {
+  navMenu.classList.toggle("active");
+});
+
+// ✅ Generate Tool Cards
 document.addEventListener("DOMContentLoaded", () => {
   const grid = document.getElementById("toolsGrid");
   if (grid) {
@@ -39,4 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }, 500);
   }
+});
+
+// ✅ Scroll to Top Button
+const scrollBtn = document.createElement("button");
+scrollBtn.className = "scroll-top";
+scrollBtn.innerHTML = "⬆️";
+document.body.appendChild(scrollBtn);
+
+scrollBtn.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+window.addEventListener("scroll", () => {
+  scrollBtn.style.display = window.scrollY > 400 ? "block" : "none";
 });

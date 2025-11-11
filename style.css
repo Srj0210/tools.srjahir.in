@@ -63,29 +63,24 @@ body {
   filter: none;
 }
 
-/* Cloud */
 .cloud {
-  top: 18.27%;
-  left: 14.47%;
-  width: 69.71%;
+  top: 40.46%;
+  left: 48.55%;
+  width: 69.45%;
   z-index: 1;
 }
 
-/* Gear (lowered 3% down from old position) */
 .gear {
-  top: 29.9%;
-  left: 22.99%;
-  width: 53.78%;
+  top: 53.81%;
+  left: 49.80%;
+  width: 50.60%;
   z-index: 2;
-  animation: rotateGear 10s linear infinite;
-  transform-origin: center center;
 }
 
-/* Center "<>" adjusted with gear center */
 .center {
-  top: 42.3%;
-  left: 35.74%;
-  width: 28.88%;
+  top: 55.22%;
+  left: 50.43%;
+  width: 27.78%;
   z-index: 3;
 }
 

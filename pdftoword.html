@@ -4,19 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PDF to Word | SRJ Tools</title>
+
+  <!-- ✅ SEO -->
+  <meta name="description" content="Convert PDF documents to editable Word files using SRJ Tools — Secure and Instant." />
+  <meta name="author" content="SRJahir Tech" />
+  <link rel="icon" type="image/png" href="tools.png" />
+
+  <!-- ✅ Styles -->
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 
 <body>
+  <!-- 🌊 Wave Background -->
   <canvas id="waveCanvas"></canvas>
 
+  <!-- 🔰 Header -->
   <header class="header">
-    <img src="tools.png" alt="SRJ Tools Logo" class="logo" />
+    <div class="logo-container">
+      <img src="./assets/cloud.png" alt="Cloud" class="logo-part cloud" />
+      <img src="./assets/gear-ring.png" alt="Gear" class="logo-part gear" />
+      <img src="./assets/code-center.png" alt="Code Center" class="logo-part center" />
+    </div>
     <h1 class="title-under-logo">PDF to Word</h1>
     <p class="subtitle">Make your PDF editable with SRJ Tools</p>
   </header>
 
+  <!-- ⚙️ Converter Section -->
   <section class="converter-section">
     <div class="converter-box">
       <input type="file" id="pdfFile" accept=".pdf" />
@@ -26,15 +40,18 @@
         <div id="progressBar"></div>
       </div>
 
-      <button onclick="window.location.href='index.html'" style="margin-top:20px;">← Back to Home</button>
+      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
     </div>
   </section>
 
+  <!-- 🧩 Footer -->
   <footer class="footer">
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
+  <!-- ⚙️ Scripts -->
   <script src="animation.js"></script>
+  <script src="script.js"></script>
   <script>
     document.getElementById("convertBtn").addEventListener("click", () => {
       const bar = document.getElementById("progressBar");

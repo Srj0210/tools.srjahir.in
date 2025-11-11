@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SRJ Logo Positioner Tool</title>
+
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #001530, #000814);
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    margin: 20px 0 10px;
+    font-size: 1.8rem;
+    color: #00aaff;
+  }
+
+  .upload-box {
+    background: rgba(0, 50, 100, 0.3);
+    border: 1px solid rgba(0,150,255,0.4);
+    border-radius: 10px;
+    padding: 15px;
+    display: inline-block;
+    margin: 10px;
+  }
+
+  #canvas-area {
+    position: relative;
+    width: 330px;
+    height: 330px;
+    margin: 20px auto;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(0,150,255,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .layer {
+    position: absolute;
+    cursor: move;
+    user-select: none;
+    transition: transform 0.1s ease-out;
+  }
+
+  #info {
+    background: rgba(0, 50, 100, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    width: 80%;
+    margin: 10px auto;
+    font-size: 0.9rem;
+    color: #a9bcd0;
+  }
+
+  button {
+    background: linear-gradient(to right, #00aaff, #0077ff);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to right, #00ccff, #0088ff);
+  }
+
+  #css-output {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(0,150,255,0.3);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px auto;
+    width: 85%;
+    color: #00ccff;
+    font-family: monospace;
+    text-align: left;
+    word-wrap: break-word;
+  }
+</style>
+</head>
+
+<body>
+  <h1>⚙️ SRJ Logo Positioner Tool</h1>
+
+  <div>
+    <div class="upload-box">
+      <label>Upload Cloud:</label><br>
+      <input type="file" id="cloudInput" accept="image/*">
+    </div>
+    <div class="upload-box">
+      <label>Upload Gear:</label><br>
+      <input type="file" id="gearInput" accept="image/*">
+    </div>
+    <div class="upload-box">
+      <label>Upload Center:</label><br>
+      <input type="file" id="centerInput" accept="image/*">
+    </div>
+  </div>
+
+  <div id="canvas-area"></div>
+
+  <div id="info">Drag, resize, and align layers. Coordinates auto-update below 👇</div>
+
+  <button onclick="copyCSS()">📋 Copy CSS</button>
+  <pre id="css-output">Upload and move images to see CSS here...</pre>
+
+<script>
+const area = document.getElementById('canvas-area');
+const output = document.getElementById('css-output');
+let layers = {};
+
+function handleUpload(input, type) {
+  const file = input.files[0];
+  if (!file) return;
+  const img = document.createElement('img');
+  img.className = 'layer';
+  img.dataset.type = type;
+  img.draggable = false;
+  img.style.width = '100px';
+  img.style.left = '50%';
+  img.style.top = '50%';
+  img.style.transform = 'translate(-50%, -50%)';
+  img.style.zIndex = type === 'cloud' ? 1 : type === 'gear' ? 2 : 3;
+  img.onload = () => updateCSS();
+  img.src = URL.createObjectURL(file);
+  layers[type] = img;
+  area.appendChild(img);
+
+  enableDrag(img);
+}
+
+function enableDrag(el) {
+  let offsetX, offsetY, isDragging = false;
+
+  el.addEventListener('mousedown', startDrag);
+  el.addEventListener('touchstart', startDrag);
+
+  function startDrag(e) {
+    isDragging = true;
+    const rect = el.getBoundingClientRect();
+    offsetX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    offsetY = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('touchmove', drag);
+    document.addEventListener('mouseup', stopDrag);
+    document.addEventListener('touchend', stopDrag);
+  }
+
+  function drag(e) {
+    if (!isDragging) return;
+    const areaRect = area.getBoundingClientRect();
+    const x = (e.touches ? e.touches[0].clientX : e.clientX) - areaRect.left - offsetX;
+    const y = (e.touches ? e.touches[0].clientY : e.clientY) - areaRect.top - offsetY;
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    updateCSS();
+  }
+
+  function stopDrag() {
+    isDragging = false;
+    document.removeEventListener('mousemove', drag);
+    document.removeEventListener('touchmove', drag);
+    document.removeEventListener('mouseup', stopDrag);
+    document.removeEventListener('touchend', stopDrag);
+  }
+}
+
+function updateCSS() {
+  const rect = area.getBoundingClientRect();
+  let cssText = '';
+
+  for (const key in layers) {
+    const el = layers[key];
+    const box = el.getBoundingClientRect();
+    const topPct = (((box.top - rect.top) / rect.height) * 100).toFixed(2);
+    const leftPct = (((box.left - rect.left) / rect.width) * 100).toFixed(2);
+    const widthPct = ((box.width / rect.width) * 100).toFixed(2);
+
+    cssText += `
+.${key} {
+  top: ${topPct}%;
+  left: ${leftPct}%;
+  width: ${widthPct}%;
+  z-index: ${el.style.zIndex};
+}\n`;
+  }
+  output.textContent = cssText.trim();
+}
+
+function copyCSS() {
+  navigator.clipboard.writeText(output.textContent);
+  alert("✅ CSS copied! Paste it in style.css");
+}
+
+document.getElementById('cloudInput').addEventListener('change', e => handleUpload(e.target, 'cloud'));
+document.getElementById('gearInput').addEventListener('change', e => handleUpload(e.target, 'gear'));
+document.getElementById('centerInput').addEventListener('change', e => handleUpload(e.target, 'center'));
+</script>
+</body>
+</html>

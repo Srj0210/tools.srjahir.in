@@ -42,30 +42,26 @@ body {
 }
 
 /* ============================================================
-   🔰 ANIMATED LOGO (PIXEL PERFECT)
+   🔰 ANIMATED LOGO (FIXED ALIGNMENT – EXACT MATCH)
    ============================================================ */
 .logo-container {
   position: relative;
-  width: 175px;
-  height: 155px;
-  margin: 0 auto 10px;
+  width: 100%;
+  height: 180px;
+  margin: 0 auto 20px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .logo-part {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: auto;
+  position: fixed;
   pointer-events: none;
   user-select: none;
+  height: auto;
 }
 
-/* ✅ Final Alignment (from positioner v3 output) */
+/* ✅ Exact Coordinates from Positioner Output */
 .cloud {
   top: 18.27%;
   left: 14.47%;
@@ -92,25 +88,28 @@ body {
   filter: none;
 }
 
-/* Rotation Animation */
+/* Rotation animation */
 @keyframes rotateGear {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Mobile Responsiveness */
+/* Responsive Scaling */
 @media (max-width: 600px) {
-  .logo-container {
-    width: 150px;
-    height: 135px;
+  .cloud {
+    top: 19%;
+    left: 15%;
+    width: 70%;
   }
   .gear {
-    width: 53.9%;
-    top: 27%;
+    top: 27.3%;
+    left: 23%;
+    width: 54%;
   }
   .center {
+    top: 40%;
+    left: 36%;
     width: 29%;
-    top: 39.8%;
   }
 }
 

@@ -42,7 +42,7 @@ body {
 }
 
 /* ============================================================
-   🔰 ANIMATED LOGO (Using Exact Coordinates from Analyzer)
+   🔰 ANIMATED LOGO (Aligned Perfectly to tools.png)
    ============================================================ */
 .logo-container {
   position: relative;
@@ -71,9 +71,9 @@ body {
   z-index: 1;
 }
 
-/* Gear */
+/* Gear (lowered 3% down from old position) */
 .gear {
-  top: 26.92%;
+  top: 29.9%;
   left: 22.99%;
   width: 53.78%;
   z-index: 2;
@@ -81,9 +81,9 @@ body {
   transform-origin: center center;
 }
 
-/* Center "<>" */
+/* Center "<>" adjusted with gear center */
 .center {
-  top: 39.58%;
+  top: 42.3%;
   left: 35.74%;
   width: 28.88%;
   z-index: 3;
@@ -100,6 +100,14 @@ body {
   .logo-container {
     width: 160px;
     height: 140px;
+  }
+
+  .gear {
+    top: 30.3%;
+  }
+
+  .center {
+    top: 42.4%;
   }
 }
 

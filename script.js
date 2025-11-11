@@ -1,4 +1,7 @@
 // SRJ Tools — Main Script
+const API_BASE = "https://api.srjahir.in";
+
+// 🧩 Homepage Tools Loader
 const tools = [
   { icon: "📝", name: "Word to PDF", sub: "Convert Word files to PDF", link: "wordtopdf.html" },
   { icon: "📄", name: "PDF to Word", sub: "Make your PDF editable", link: "pdftoword.html" },
@@ -24,4 +27,71 @@ if (grid) {
     };
     grid.appendChild(card);
   });
+}
+
+// 🧠 Converter Page Logic (Manual Download)
+async function handleConversion(fileInputId, buttonId, endpoint, downloadName) {
+  const fileInput = document.getElementById(fileInputId);
+  const convertBtn = document.getElementById(buttonId);
+  const progressBar = document.getElementById("progressBar");
+  const downloadLink = document.getElementById("downloadLink");
+
+  if (!fileInput || !convertBtn) return;
+
+  let fileBlob = null; // store blob temporarily
+
+  convertBtn.addEventListener("click", async () => {
+    const file = fileInput.files[0];
+    if (!file) return alert("Please select a file first!");
+
+    progressBar.style.width = "0%";
+    downloadLink.style.display = "none";
+    fileBlob = null;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const progressSim = setInterval(() => {
+        const width = parseInt(progressBar.style.width) || 0;
+        if (width < 90) progressBar.style.width = width + 10 + "%";
+      }, 300);
+
+      const res = await fetch(`${API_BASE}/${endpoint}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      clearInterval(progressSim);
+      progressBar.style.width = "100%";
+
+      if (!res.ok) throw new Error("Conversion failed");
+
+      fileBlob = await res.blob();
+      downloadLink.style.display = "block";
+      downloadLink.textContent = "⬇ Download Converted File";
+      downloadLink.onclick = () => {
+        if (!fileBlob) return alert("No file ready yet!");
+        const url = URL.createObjectURL(fileBlob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = downloadName;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+    } catch (err) {
+      alert("❌ Conversion failed! Please try again.");
+      console.error(err);
+    }
+  });
+}
+
+// Word → PDF
+if (document.getElementById("convertWordToPdf")) {
+  handleConversion("wordFile", "convertWordToPdf", "word-to-pdf", "converted.pdf");
+}
+
+// PDF → Word
+if (document.getElementById("convertPdfToWord")) {
+  handleConversion("pdfFile", "convertPdfToWord", "pdf-to-word", "converted.docx");
 }

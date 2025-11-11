@@ -42,7 +42,7 @@ body {
 }
 
 /* ============================================================
-   🔰 ISOLATED SECTION — ANIMATED LOGO (PIXEL PERFECT)
+   🔰 ANIMATED LOGO (PIXEL PERFECT)
    ============================================================ */
 .logo-container {
   position: relative;
@@ -65,21 +65,19 @@ body {
   user-select: none;
 }
 
-/* ===================== COPY OUTPUT FROM TOOL HERE ===================== */
-/* Example below — replace with your actual positioner.html output 👇 */
-
+/* ✅ Final Alignment (from positioner v3 output) */
 .cloud {
-  top: 49.3%;
-  left: 50%;
-  width: 98%;
+  top: 18.27%;
+  left: 14.47%;
+  width: 69.71%;
   z-index: 1;
   filter: none;
 }
 
 .gear {
-  top: 50.2%;
-  left: 50%;
-  width: 74%;
+  top: 26.92%;
+  left: 22.99%;
+  width: 53.78%;
   z-index: 2;
   animation: rotateGear 10s linear infinite;
   transform-origin: center center;
@@ -87,33 +85,32 @@ body {
 }
 
 .center {
-  top: 51.4%;
-  left: 50%;
-  width: 38%;
+  top: 39.58%;
+  left: 35.74%;
+  width: 28.88%;
   z-index: 3;
   filter: none;
 }
 
-/* ====================================================================== */
-
+/* Rotation Animation */
 @keyframes rotateGear {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* RESPONSIVE (mobile fine tune) */
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
   .logo-container {
     width: 150px;
     height: 135px;
   }
   .gear {
-    width: 74.5%;
-    top: 50.3%;
+    width: 53.9%;
+    top: 27%;
   }
   .center {
-    width: 38.5%;
-    top: 51.5%;
+    width: 29%;
+    top: 39.8%;
   }
 }
 

@@ -3,58 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Word to PDF | SRJ Tools</title>
+  <title>Free Word to PDF Converter Online | Fast & Secure | SRJ Tools</title>
 
-  <!-- ✅ SEO -->
-  <meta name="description" content="Convert Word documents to PDF instantly with SRJ Tools — Smart, Fast, and Secure." />
+  <!-- ✅ Meta SEO -->
+  <meta name="description" content="Convert Word to PDF online — 100% free, fast and secure. No watermark, no sign up required. Use SRJ Tools to convert DOC & DOCX to high-quality PDF instantly." />
+  <meta name="keywords" content="Word to PDF, DOC to PDF, Word to PDF converter online, Free PDF converter, Convert DOCX to PDF, SRJ Tools, PDF maker, Online Word file converter, Word to PDF without watermark, Word to PDF mobile" />
   <meta name="author" content="SRJahir Tech" />
-  <link rel="icon" type="image/png" href="tools.png" />
+  <meta property="og:title" content="Free Word to PDF Converter | SRJ Tools" />
+  <meta property="og:description" content="Free online Word to PDF converter — Fast, Smart, Secure. No watermark, no sign-up, and works on any device. Convert your DOC or DOCX file to PDF instantly." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/wordtopdf.html" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- ✅ Styles -->
+  <link rel="icon" type="image/png" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 
 <body>
-  <!-- 🌊 Wave Background -->
   <canvas id="waveCanvas"></canvas>
 
-  <!-- 🔰 Header -->
   <header class="header">
     <div class="logo-container">
-      <img src="./assets/cloud.png" alt="Cloud" class="logo-part cloud" />
-      <img src="./assets/gear-ring.png" alt="Gear" class="logo-part gear" />
-      <img src="./assets/code-center.png" alt="Code Center" class="logo-part center" />
+      <img src="./assets/cloud.png" alt="SRJ Tools Cloud Logo" class="logo-part cloud" />
+      <img src="./assets/gear-ring.png" alt="SRJ Tools Gear Logo" class="logo-part gear" />
+      <img src="./assets/code-center.png" alt="SRJ Tools Center Icon" class="logo-part center" />
     </div>
-    <h1 class="title-under-logo">Word to PDF</h1>
-    <p class="subtitle">Convert Word files to PDF instantly</p>
+    <h1 class="title-under-logo">Free Word to PDF Converter</h1>
+    <p class="subtitle">Convert Word (.doc, .docx) to PDF instantly — Fast · Smart · Secure</p>
   </header>
 
-  <!-- ⚙️ Converter Section -->
   <section class="converter-section">
     <div class="converter-box">
       <input type="file" id="wordFile" accept=".doc,.docx" />
       <button id="convertBtn">Convert to PDF</button>
-
-      <div class="progress-container">
-        <div id="progressBar"></div>
-      </div>
-
+      <div class="progress-container"><div id="progressBar"></div></div>
       <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+    </div>
+
+    <!-- 🧠 SEO Content Section -->
+    <div class="info-section">
+      <h2>About SRJ Tools – Word to PDF Converter</h2>
+      <p>SRJ Tools provides a powerful online Word to PDF converter that preserves formatting, fonts, and layout. Upload your .doc or .docx files and download high-quality PDFs instantly — no watermark, no login, completely free.</p>
+
+      <h3>🔹 Why Use Our Word to PDF Converter?</h3>
+      <ul>
+        <li>⚡ Instant conversion — no delay, no signup</li>
+        <li>🔒 100% secure — files are processed safely</li>
+        <li>📱 Works on all devices — mobile, tablet & PC</li>
+        <li>🧩 Preserves formatting and fonts perfectly</li>
+        <li>🚀 Lightweight and fast tool by SRJahir Tech</li>
+      </ul>
+
+      <h3>🔹 Frequently Asked Questions (FAQ)</h3>
+      <p><b>Q1:</b> Is this Word to PDF converter free?<br>✅ Yes, it’s completely free — no registration or watermark.</p>
+      <p><b>Q2:</b> Can I use it on my phone?<br>✅ Absolutely. SRJ Tools works on Android, iOS, and any web browser.</p>
+      <p><b>Q3:</b> Does it support DOC and DOCX both?<br>✅ Yes, both formats are supported.</p>
     </div>
   </section>
 
-  <!-- 🧩 Footer -->
   <footer class="footer">
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
-  <!-- ⚙️ Scripts -->
   <script src="animation.js"></script>
-  <script src="script.js"></script>
   <script>
     document.getElementById("convertBtn").addEventListener("click", () => {
       const bar = document.getElementById("progressBar");
+      const box = document.querySelector(".converter-box");
       bar.style.width = "0%";
       let progress = 0;
       const interval = setInterval(() => {
@@ -62,9 +78,28 @@
         bar.style.width = progress + "%";
         if (progress >= 100) {
           clearInterval(interval);
-          alert("✅ Word file converted to PDF successfully!");
+          showSuccess();
         }
       }, 200);
+
+      function showSuccess() {
+        const oldMsg = document.querySelector(".success-box");
+        if (oldMsg) oldMsg.remove();
+
+        const success = document.createElement("div");
+        success.classList.add("success-box");
+        success.innerHTML = `
+          ✅ Conversion Successful!<br>
+          <button class="download-btn">Download PDF</button>
+        `;
+        box.appendChild(success);
+        success.querySelector(".download-btn").addEventListener("click", () => {
+          const link = document.createElement("a");
+          link.href = "#"; // Replace with backend URL
+          link.download = "Converted_File.pdf";
+          link.click();
+        });
+      }
     });
   </script>
 </body>

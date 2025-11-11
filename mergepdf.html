@@ -5,15 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Free PDF Merger – Combine Multiple PDFs Instantly | SRJ Tools</title>
 
-  <!-- ✅ SEO -->
-  <meta name="description" content="Merge multiple PDF files into one document — 100% free, secure, and instant. No watermark or signup required. Try SRJ Tools PDF Merger now!" />
-  <meta name="keywords" content="Merge PDF, Combine PDFs, Free PDF merger, Join PDF files, Online PDF merge, SRJ Tools PDF merger, Fast PDF joiner, Merge PDFs securely" />
+  <!-- ✅ Enhanced SEO -->
+  <meta name="description" content="Merge multiple PDF files into one unified document — 100% free, secure, and instant. No watermark or signup required. SRJ Tools PDF Merger lets you combine PDFs without losing formatting." />
+  <meta name="keywords" content="Merge PDF, Combine PDFs, Free PDF merger, Join PDF files, Online PDF merge, Fast PDF joiner, SRJ Tools, SRJahir Tech, CloudAI, Merge PDFs securely, PDF merge tool" />
   <meta name="author" content="SRJahir Tech" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ✅ Open Graph (Facebook, LinkedIn) -->
   <meta property="og:title" content="Free PDF Merger | SRJ Tools" />
-  <meta property="og:description" content="Merge multiple PDF files into one instantly — free, secure, and without watermark." />
+  <meta property="og:description" content="Merge multiple PDF files into one instantly — free, secure, and without watermark. Powered by CloudAI." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/mergepdf.html" />
+  <meta property="og:type" content="website" />
+
+  <!-- ✅ Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free PDF Merger | SRJ Tools" />
+  <meta name="twitter:description" content="Combine multiple PDF files into one instantly — 100% free, no signup, no watermark." />
+  <meta name="twitter:image" content="https://tools.srjahir.in/tools.png" />
+
+  <!-- ✅ Structured Data (FAQ Schema) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is SRJ Tools PDF Merger free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! SRJ Tools PDF Merger is 100% free, secure, and watermark-free. No signup or installation needed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are my PDF files safe?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Your files are processed securely and automatically deleted after merge completion."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does merging affect PDF quality?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The SRJ Tools Merger preserves full original quality of all uploaded files."
+        }
+      }
+    ]
+  }
+  </script>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="tools.png" />
@@ -21,6 +64,7 @@
 </head>
 
 <body>
+  <!-- 🌊 Background -->
   <canvas id="waveCanvas"></canvas>
 
   <!-- 🔰 Header -->
@@ -34,19 +78,20 @@
     <p class="subtitle">Combine multiple PDF files into one instantly</p>
   </header>
 
-  <!-- 🧩 Merge PDF Section -->
+  <!-- 🧩 Merge PDF Tool Section -->
   <section class="converter-section">
     <div class="converter-box">
       <input type="file" id="pdfFiles" accept=".pdf" multiple />
       <button id="mergeBtn">Merge PDFs</button>
       <div class="progress-container"><div id="progressBar"></div></div>
+      <div id="downloadBox"></div>
       <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
     </div>
 
-    <!-- Info Section -->
+    <!-- 📘 Info Section -->
     <div class="info-section">
-      <h2>About SRJ Tools – PDF Merger</h2>
-      <p>Our Free PDF Merger allows you to combine multiple PDF files into one unified document without losing formatting or quality. It’s secure, instant, and works directly in your browser.</p>
+      <h2>About SRJ Tools — Free PDF Merger</h2>
+      <p>Our Free PDF Merger allows you to combine multiple PDF files into one unified document without losing formatting or quality. It’s secure, instant, and works directly in your browser with CloudAI technology.</p>
 
       <h3>🔹 Features & Advantages</h3>
       <ul>
@@ -60,57 +105,81 @@
       <h3>🔹 Common Questions</h3>
       <p><b>Q1:</b> Is my data safe?<br>✅ Yes, all uploaded files are automatically deleted after processing.</p>
       <p><b>Q2:</b> Can I merge unlimited PDFs?<br>✅ Yes, you can merge as many as you want — no limits.</p>
-      <p><b>Q3:</b> Will it affect PDF quality?<br>✅ No, SRJ Tools preserves full original quality.</p>
+      <p><b>Q3:</b> Will it affect PDF quality?<br>✅ No, SRJ Tools preserves full original quality of your PDFs.</p>
     </div>
   </section>
 
+  <!-- 🧩 Footer -->
   <footer class="footer">
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
-  <script src="animation.js"></script>
+  <!-- ⚙️ JS Functionality -->
   <script>
-    document.getElementById("mergeBtn").addEventListener("click", async () => {
+    const mergeBtn = document.getElementById("mergeBtn");
+    const progressBar = document.getElementById("progressBar");
+    const downloadBox = document.getElementById("downloadBox");
+
+    mergeBtn.addEventListener("click", async () => {
       const files = document.getElementById("pdfFiles").files;
-      if (!files.length) return alert("Please select at least two PDF files.");
+      if (files.length < 2) {
+        alert("Please select at least two PDF files to merge.");
+        return;
+      }
 
-      const bar = document.getElementById("progressBar");
-      const box = document.querySelector(".converter-box");
-      bar.style.width = "0%";
-
+      // Reset progress
+      progressBar.style.width = "0%";
+      downloadBox.innerHTML = "";
       let progress = 0;
       const interval = setInterval(() => {
         progress += 10;
-        bar.style.width = progress + "%";
+        progressBar.style.width = progress + "%";
         if (progress >= 100) clearInterval(interval);
       }, 150);
 
+      // Prepare files
       const formData = new FormData();
-      for (let file of files) formData.append("files", file);
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
 
-      const response = await fetch("https://api.srjahir.in/merge-pdf", {
-        method: "POST",
-        body: formData,
-      });
+      try {
+        const res = await fetch("https://api.srjahir.in/merge-pdf", {
+          method: "POST",
+          body: formData
+        });
 
-      const blob = await response.blob();
-      const fileUrl = URL.createObjectURL(blob);
+        if (!res.ok) throw new Error("Merge failed");
 
-      const successBox = document.createElement("div");
-      successBox.classList.add("success-box");
-      successBox.innerHTML = `
-        ✅ Merge Successful!<br>
-        <button class="download-btn">Download Merged PDF</button>
-      `;
-      box.appendChild(successBox);
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        clearInterval(interval);
+        progressBar.style.width = "100%";
 
-      successBox.querySelector(".download-btn").addEventListener("click", () => {
-        const link = document.createElement("a");
-        link.href = fileUrl;
-        link.download = "Merged_File.pdf";
-        link.click();
-      });
+        // Success Box
+        downloadBox.innerHTML = `
+          <div class="success-box">
+            ✅ Merged Successfully!<br>
+            <button class="download-btn">Download Merged PDF</button>
+          </div>
+        `;
+
+        // Manual Download Trigger
+        downloadBox.querySelector(".download-btn").addEventListener("click", () => {
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "Merged_File.pdf";
+          a.click();
+        });
+
+      } catch (err) {
+        alert("Error merging files. Please try again.");
+        clearInterval(interval);
+        progressBar.style.width = "0%";
+      }
     });
   </script>
+
+  <script src="animation.js"></script>
 </body>
 </html>

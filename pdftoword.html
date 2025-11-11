@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free PDF to Word Converter Online | Fast & Secure | SRJ Tools</title>
+  <title>Free PDF to Word Converter Online | Editable & Secure | SRJ Tools</title>
 
   <!-- ✅ Meta SEO -->
-  <meta name="description" content="Convert PDF to editable Word (.docx) files online — 100% free, secure, and lightning-fast. No watermark or signup required. Try SRJ Tools today!" />
-  <meta name="keywords" content="PDF to Word, Convert PDF to DOCX, Free PDF converter, PDF to Word online, Edit PDF file, SRJ Tools converter, Fast PDF to Word tool, Secure PDF converter, Convert PDF without losing formatting" />
+  <meta name="description" content="Convert PDF to editable Word (.docx) files instantly — free, secure, and watermark-free. Try SRJ Tools for the best PDF to Word converter online." />
+  <meta name="keywords" content="PDF to Word, Convert PDF to DOCX, Free PDF Converter, Edit PDF file, PDF to Word Online, SRJ Tools, SRJahir Tech, Secure PDF Converter" />
   <meta name="author" content="SRJahir Tech" />
-  <meta property="og:title" content="Free PDF to Word Converter | SRJ Tools" />
-  <meta property="og:description" content="Free and instant PDF to Word converter — Convert your PDF documents into editable Word files without any software installation." />
+  <meta property="og:title" content="Free PDF to Word Converter Online | SRJ Tools" />
+  <meta property="og:description" content="Fast and accurate PDF to Word conversion — no signup or watermark. Use SRJ Tools to make your PDF files editable now!" />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/pdftoword.html" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -34,11 +34,11 @@
     <p class="subtitle">Convert your PDF files to editable Word documents instantly</p>
   </header>
 
-  <!-- ⚙️ CONVERTER SECTION -->
+  <!-- ⚙️ Converter Section -->
   <section class="converter-section">
     <div class="converter-box">
       <input type="file" id="pdfFile" accept=".pdf" />
-      <button id="convertPdfToWord">Convert to Word</button>
+      <button id="convertBtn">Convert to Word</button>
       <div class="progress-container"><div id="progressBar"></div></div>
 
       <div id="successBox" class="success-box" style="display:none;">
@@ -53,23 +53,23 @@
     <div class="info-section">
       <h2>About SRJ Tools – PDF to Word Converter</h2>
       <p>
-        SRJ Tools helps you convert any PDF file into an editable Word document online. Whether it’s an invoice, resume, or scanned document, our smart
-        converter maintains layout and formatting perfectly — with <b>zero watermarks</b>.
+        SRJ Tools lets you convert any <b>PDF document</b> into an <b>editable Word file</b> in seconds.
+        Whether it’s a scanned report, invoice, or book — our converter keeps layout, tables, and fonts intact.
       </p>
 
       <h3>🔹 Features & Advantages</h3>
       <ul>
-        <li>⚡ Lightning-fast PDF to Word conversion using advanced SRJ Cloud Engine</li>
-        <li>📄 Keeps fonts, tables, and design intact</li>
-        <li>🔒 100% secure – your files auto-delete after conversion</li>
-        <li>📱 Works on all devices (mobile, tablet, and PC)</li>
-        <li>💯 Completely free, no signup needed</li>
+        <li>⚡ Fast PDF to Word conversion using SRJ Cloud API</li>
+        <li>📄 Keeps design, alignment & text formatting perfectly</li>
+        <li>🔒 100% safe & private — files deleted automatically after conversion</li>
+        <li>📱 Works seamlessly on mobile and desktop</li>
+        <li>💯 Free forever — no watermark, no signup</li>
       </ul>
 
-      <h3>🔹 Common Questions</h3>
-      <p><b>Q1:</b> Does SRJ Tools support scanned PDFs?<br>✅ Yes, our converter extracts text efficiently from clear scanned PDFs.</p>
-      <p><b>Q2:</b> Is the conversion safe?<br>✅ Absolutely. Your files are encrypted and deleted automatically after processing.</p>
-      <p><b>Q3:</b> Can I use it for multiple files?<br>✅ Yes, you can convert unlimited PDFs — no restrictions.</p>
+      <h3>🔹 Frequently Asked Questions</h3>
+      <p><b>Q1:</b> Does SRJ Tools support scanned PDFs?<br>✅ Yes! It extracts text efficiently from clear scanned PDFs.</p>
+      <p><b>Q2:</b> Is the conversion secure?<br>✅ Absolutely. Files are encrypted and deleted after processing.</p>
+      <p><b>Q3:</b> Can I use it for multiple files?<br>✅ Yes. Unlimited conversions anytime, no restrictions.</p>
     </div>
   </section>
 
@@ -83,17 +83,21 @@
   <script>
     const API_BASE = "https://api.srjahir.in";
 
-    const convertBtn = document.getElementById("convertPdfToWord");
+    const convertBtn = document.getElementById("convertBtn");
     const pdfFile = document.getElementById("pdfFile");
     const progressBar = document.getElementById("progressBar");
     const successBox = document.getElementById("successBox");
     const downloadBtn = document.getElementById("downloadBtn");
 
     let fileBlob = null;
+    let fileName = "Converted_File.docx";
 
     convertBtn.addEventListener("click", async () => {
       const file = pdfFile.files[0];
       if (!file) return alert("📄 Please select a PDF file first!");
+
+      // Replace .pdf with .docx for output filename
+      fileName = file.name.replace(/\.[^/.]+$/, "") + ".docx";
 
       successBox.style.display = "none";
       fileBlob = null;
@@ -103,11 +107,11 @@
       formData.append("file", file);
 
       try {
-        // Animate Progress
+        // Progress animation
         const progressSim = setInterval(() => {
           const width = parseInt(progressBar.style.width) || 0;
           if (width < 90) progressBar.style.width = width + 10 + "%";
-        }, 300);
+        }, 250);
 
         const res = await fetch(`${API_BASE}/pdf-to-word`, {
           method: "POST",
@@ -124,17 +128,17 @@
 
         // Manual download
         downloadBtn.onclick = () => {
-          if (!fileBlob) return alert("No file ready yet!");
+          if (!fileBlob) return alert("⚠️ File not ready yet!");
           const url = URL.createObjectURL(fileBlob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "Converted_File.docx";
+          a.download = fileName; // same as uploaded PDF
           a.click();
           URL.revokeObjectURL(url);
         };
-      } catch (error) {
-        alert("❌ Conversion failed. Please try again.");
-        console.error(error);
+      } catch (err) {
+        alert("❌ Conversion failed! Please try again.");
+        console.error(err);
       }
     });
   </script>

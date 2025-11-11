@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SRJ Tools Logo Positioner (Exact Environment)</title>
+<title>SRJ Tools Logo Positioner (Final)</title>
 <style>
 /* === Background same as tools.srjahir.in === */
 body {
@@ -69,6 +69,12 @@ textarea {
   margin-top: 15px;
   padding: 10px;
 }
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #a9bcd0;
+}
 </style>
 </head>
 <body>
@@ -79,13 +85,24 @@ textarea {
 <!-- Workspace same as .logo-container -->
 <div id="workspace">
   <img id="ref" alt="reference">
-  <img src="images/cloud.png" id="cloud">
-  <img src="images/gear.png" id="gear">
-  <img src="images/center.png" id="center">
+  <img id="cloud">
+  <img id="gear">
+  <img id="center">
 </div>
 
 <div id="controls">
-  <input type="file" accept="image/*" id="uploadRef"><br>
+  <label>Reference Image (tools.png):</label>
+  <input type="file" accept="image/*" id="uploadRef">
+  
+  <label>Cloud Layer:</label>
+  <input type="file" accept="image/*" id="uploadCloud">
+  
+  <label>Gear Layer:</label>
+  <input type="file" accept="image/*" id="uploadGear">
+  
+  <label>Center Layer:</label>
+  <input type="file" accept="image/*" id="uploadCenter">
+  
   <textarea id="output" readonly></textarea><br>
   <button onclick="copyCSS()">📋 Copy CSS</button>
 </div>
@@ -144,11 +161,25 @@ function copyCSS(){
   alert("Copied CSS!");
 }
 
+/* === File Upload Handlers === */
 document.getElementById("uploadRef").addEventListener("change",e=>{
   const file=e.target.files[0];
   if(file){
     document.getElementById("ref").src=URL.createObjectURL(file);
   }
+});
+
+document.getElementById("uploadCloud").addEventListener("change",e=>{
+  const f = e.target.files[0];
+  if (f) document.getElementById("cloud").src = URL.createObjectURL(f);
+});
+document.getElementById("uploadGear").addEventListener("change",e=>{
+  const f = e.target.files[0];
+  if (f) document.getElementById("gear").src = URL.createObjectURL(f);
+});
+document.getElementById("uploadCenter").addEventListener("change",e=>{
+  const f = e.target.files[0];
+  if (f) document.getElementById("center").src = URL.createObjectURL(f);
 });
 </script>
 

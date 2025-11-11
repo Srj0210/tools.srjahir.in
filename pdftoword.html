@@ -23,6 +23,7 @@
 <body>
   <canvas id="waveCanvas"></canvas>
 
+  <!-- 🔰 HEADER -->
   <header class="header">
     <div class="logo-container">
       <img src="./assets/cloud.png" alt="SRJ Tools Cloud Logo" class="logo-part cloud" />
@@ -33,72 +34,107 @@
     <p class="subtitle">Convert your PDF files to editable Word documents instantly</p>
   </header>
 
+  <!-- ⚙️ CONVERTER SECTION -->
   <section class="converter-section">
     <div class="converter-box">
       <input type="file" id="pdfFile" accept=".pdf" />
-      <button id="convertBtn">Convert to Word</button>
+      <button id="convertPdfToWord">Convert to Word</button>
       <div class="progress-container"><div id="progressBar"></div></div>
+
+      <div id="successBox" class="success-box" style="display:none;">
+        ✅ Conversion Successful!<br />
+        <button id="downloadBtn" class="download-btn">⬇ Download Word File</button>
+      </div>
+
       <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
     </div>
 
-    <!-- 🧠 SEO Content Section -->
+    <!-- 🧠 INFO SECTION -->
     <div class="info-section">
       <h2>About SRJ Tools – PDF to Word Converter</h2>
-      <p>SRJ Tools lets you convert any PDF file into an editable Word document online. Whether it's an invoice, resume, or scanned document, our smart converter maintains layout and accuracy with zero watermarks.</p>
+      <p>
+        SRJ Tools helps you convert any PDF file into an editable Word document online. Whether it’s an invoice, resume, or scanned document, our smart
+        converter maintains layout and formatting perfectly — with <b>zero watermarks</b>.
+      </p>
 
       <h3>🔹 Features & Advantages</h3>
       <ul>
-        <li>⚡ Lightning-fast PDF to Word conversion</li>
-        <li>📄 Keeps formatting & design perfectly</li>
-        <li>🔒 100% privacy — files deleted automatically</li>
-        <li>📱 Use on any device — phone, tablet, or PC</li>
-        <li>🚀 Free, simple, and clean interface</li>
+        <li>⚡ Lightning-fast PDF to Word conversion using advanced SRJ Cloud Engine</li>
+        <li>📄 Keeps fonts, tables, and design intact</li>
+        <li>🔒 100% secure – your files auto-delete after conversion</li>
+        <li>📱 Works on all devices (mobile, tablet, and PC)</li>
+        <li>💯 Completely free, no signup needed</li>
       </ul>
 
       <h3>🔹 Common Questions</h3>
       <p><b>Q1:</b> Does SRJ Tools support scanned PDFs?<br>✅ Yes, our converter extracts text efficiently from clear scanned PDFs.</p>
-      <p><b>Q2:</b> Is the conversion safe?<br>✅ Completely. Your files are encrypted and deleted after processing.</p>
-      <p><b>Q3:</b> Can I use it for multiple files?<br>✅ Yes, convert unlimited PDFs anytime, no restrictions.</p>
+      <p><b>Q2:</b> Is the conversion safe?<br>✅ Absolutely. Your files are encrypted and deleted automatically after processing.</p>
+      <p><b>Q3:</b> Can I use it for multiple files?<br>✅ Yes, you can convert unlimited PDFs — no restrictions.</p>
     </div>
   </section>
 
+  <!-- 🧩 FOOTER -->
   <footer class="footer">
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
+  <!-- 🌊 Scripts -->
   <script src="animation.js"></script>
   <script>
-    document.getElementById("convertBtn").addEventListener("click", () => {
-      const bar = document.getElementById("progressBar");
-      const box = document.querySelector(".converter-box");
-      bar.style.width = "0%";
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        bar.style.width = progress + "%";
-        if (progress >= 100) {
-          clearInterval(interval);
-          showSuccess();
-        }
-      }, 200);
+    const API_BASE = "https://api.srjahir.in";
 
-      function showSuccess() {
-        const oldMsg = document.querySelector(".success-box");
-        if (oldMsg) oldMsg.remove();
+    const convertBtn = document.getElementById("convertPdfToWord");
+    const pdfFile = document.getElementById("pdfFile");
+    const progressBar = document.getElementById("progressBar");
+    const successBox = document.getElementById("successBox");
+    const downloadBtn = document.getElementById("downloadBtn");
 
-        const success = document.createElement("div");
-        success.classList.add("success-box");
-        success.innerHTML = `
-          ✅ Conversion Successful!<br>
-          <button class="download-btn">Download Word File</button>
-        `;
-        box.appendChild(success);
-        success.querySelector(".download-btn").addEventListener("click", () => {
-          const link = document.createElement("a");
-          link.href = "#"; // Replace with backend URL
-          link.download = "Converted_File.docx";
-          link.click();
+    let fileBlob = null;
+
+    convertBtn.addEventListener("click", async () => {
+      const file = pdfFile.files[0];
+      if (!file) return alert("📄 Please select a PDF file first!");
+
+      successBox.style.display = "none";
+      fileBlob = null;
+      progressBar.style.width = "0%";
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        // Animate Progress
+        const progressSim = setInterval(() => {
+          const width = parseInt(progressBar.style.width) || 0;
+          if (width < 90) progressBar.style.width = width + 10 + "%";
+        }, 300);
+
+        const res = await fetch(`${API_BASE}/pdf-to-word`, {
+          method: "POST",
+          body: formData,
         });
+
+        clearInterval(progressSim);
+        progressBar.style.width = "100%";
+
+        if (!res.ok) throw new Error("Conversion failed");
+
+        fileBlob = await res.blob();
+        successBox.style.display = "block";
+
+        // Manual download
+        downloadBtn.onclick = () => {
+          if (!fileBlob) return alert("No file ready yet!");
+          const url = URL.createObjectURL(fileBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "Converted_File.docx";
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+      } catch (error) {
+        alert("❌ Conversion failed. Please try again.");
+        console.error(error);
       }
     });
   </script>

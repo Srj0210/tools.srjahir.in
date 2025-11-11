@@ -44,7 +44,6 @@ body {
 /* ============================================================
    🔰 ISOLATED SECTION — ANIMATED LOGO (PIXEL PERFECT)
    ============================================================ */
-
 .logo-container {
   position: relative;
   width: 175px;
@@ -66,33 +65,37 @@ body {
   user-select: none;
 }
 
-/* CLOUD (base layer) */
-.cloud {
-  width: 98%;
-  top: 49%;
-  z-index: 1;
-  filter: none; /* no glow */
-}
+/* ===================== COPY OUTPUT FROM TOOL HERE ===================== */
+/* Example below — replace with your actual positioner.html output 👇 */
 
-/* GEAR (rotating, smaller than before) */
-.gear {
-  width: 74%;
-  top: 55.2%;
-  z-index: 2;
-  transform-origin: center center;
-  animation: rotateGear 10s linear infinite;
+.cloud {
+  top: 49.3%;
+  left: 50%;
+  width: 98%;
+  z-index: 1;
   filter: none;
 }
 
-/* CENTER < > symbol */
+.gear {
+  top: 50.2%;
+  left: 50%;
+  width: 74%;
+  z-index: 2;
+  animation: rotateGear 10s linear infinite;
+  transform-origin: center center;
+  filter: none;
+}
+
 .center {
+  top: 51.4%;
+  left: 50%;
   width: 38%;
-  top: 53.4%;
   z-index: 3;
   filter: none;
 }
 
-/* ROTATION ANIMATION */
+/* ====================================================================== */
+
 @keyframes rotateGear {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRJ Tools Logo Positioner (Exact Environment)</title>
+<style>
+/* === Background same as tools.srjahir.in === */
+body {
+  background: radial-gradient(circle at top center, #001530 0%, #000814 70%);
+  color: #00aaff;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 30px 0;
+}
+
+/* === Exact same logo container size === */
+#workspace {
+  position: relative;
+  width: 180px;
+  height: 160px;
+  margin: 0 auto;
+  border: 1px solid rgba(0,150,255,0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0, 25, 55, 0.4);
+}
+
+#workspace img {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: move;
+  user-select: none;
+}
+
+/* Reference image layer */
+#ref {
+  opacity: 0.35;
+  width: 100%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Controls */
+#controls {
+  margin-top: 25px;
+}
+button {
+  background: linear-gradient(135deg, #0077ff, #00aaff);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+}
+textarea {
+  width: 90%;
+  height: 150px;
+  background: rgba(0, 25, 55, 0.7);
+  color: #00aaff;
+  border: 1px solid rgba(0,150,255,0.25);
+  border-radius: 10px;
+  margin-top: 15px;
+  padding: 10px;
+}
+</style>
+</head>
+<body>
+
+<h2>⚙️ SRJ Tools Logo Positioner</h2>
+<p>Exact SRJahir Tools environment (180×160px)</p>
+
+<!-- Workspace same as .logo-container -->
+<div id="workspace">
+  <img id="ref" alt="reference">
+  <img src="images/cloud.png" id="cloud">
+  <img src="images/gear.png" id="gear">
+  <img src="images/center.png" id="center">
+</div>
+
+<div id="controls">
+  <input type="file" accept="image/*" id="uploadRef"><br>
+  <textarea id="output" readonly></textarea><br>
+  <button onclick="copyCSS()">📋 Copy CSS</button>
+</div>
+
+<script>
+const parts = ["cloud","gear","center"];
+parts.forEach(id => makeDraggable(document.getElementById(id)));
+
+function makeDraggable(el) {
+  let dragging=false, offsetX=0, offsetY=0;
+  el.addEventListener("mousedown",start);
+  el.addEventListener("touchstart",start);
+  function start(e){
+    e.preventDefault();
+    dragging=true;
+    const rect=el.getBoundingClientRect();
+    offsetX=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;
+    offsetY=(e.touches?e.touches[0].clientY:e.clientY)-rect.top;
+    document.addEventListener("mousemove",move);
+    document.addEventListener("touchmove",move);
+    document.addEventListener("mouseup",stop);
+    document.addEventListener("touchend",stop);
+  }
+  function move(e){
+    if(!dragging) return;
+    const ws=document.getElementById("workspace").getBoundingClientRect();
+    const x=(e.touches?e.touches[0].clientX:e.clientX)-ws.left-offsetX;
+    const y=(e.touches?e.touches[0].clientY:e.clientY)-ws.top-offsetY;
+    el.style.left=`${x}px`;
+    el.style.top=`${y}px`;
+    updateCSS();
+  }
+  function stop(){
+    dragging=false;
+    document.removeEventListener("mousemove",move);
+    document.removeEventListener("touchmove",move);
+  }
+}
+
+function updateCSS(){
+  const ws=document.getElementById("workspace").getBoundingClientRect();
+  let css="";
+  parts.forEach(id=>{
+    const el=document.getElementById(id);
+    const rect=el.getBoundingClientRect();
+    const top=((rect.top-ws.top+rect.height/2)/ws.height*100).toFixed(2);
+    const left=((rect.left-ws.left+rect.width/2)/ws.width*100).toFixed(2);
+    const width=(rect.width/ws.width*100).toFixed(2);
+    css+=`.${id} {\n  top: ${top}%;\n  left: ${left}%;\n  width: ${width}%;\n  z-index: ${parts.indexOf(id)+1};\n}\n\n`;
+  });
+  document.getElementById("output").value=css;
+}
+
+function copyCSS(){
+  navigator.clipboard.writeText(document.getElementById("output").value);
+  alert("Copied CSS!");
+}
+
+document.getElementById("uploadRef").addEventListener("change",e=>{
+  const file=e.target.files[0];
+  if(file){
+    document.getElementById("ref").src=URL.createObjectURL(file);
+  }
+});
+</script>
+
+</body>
+</html>

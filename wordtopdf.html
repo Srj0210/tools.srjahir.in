@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free Word to PDF Converter Online | Fast & Secure | SRJ Tools</title>
+  <title>Free Word to PDF Converter Online | No Signup & High Quality | SRJ Tools</title>
 
   <!-- ✅ Meta SEO -->
-  <meta name="description" content="Convert Word to PDF online — 100% free, fast and secure. No watermark, no sign up required. Use SRJ Tools to convert DOC & DOCX to high-quality PDF instantly." />
-  <meta name="keywords" content="Word to PDF, DOC to PDF, Word to PDF converter online, Free PDF converter, Convert DOCX to PDF, SRJ Tools, PDF maker, Online Word file converter, Word to PDF without watermark, Word to PDF mobile" />
+  <meta name="description" content="Convert Word (DOC/DOCX) files to PDF online instantly. Free, secure, and high-quality Word to PDF converter by SRJ Tools — No signup or watermark." />
+  <meta name="keywords" content="Word to PDF, DOC to PDF, DOCX to PDF, Convert Word to PDF Online, Free PDF Converter, High Quality Word PDF, SRJ Tools, SRJahir Tech" />
   <meta name="author" content="SRJahir Tech" />
-  <meta property="og:title" content="Free Word to PDF Converter | SRJ Tools" />
-  <meta property="og:description" content="Free online Word to PDF converter — Fast, Smart, Secure. No watermark, no sign-up, and works on any device. Convert your DOC or DOCX file to PDF instantly." />
+  <meta property="og:title" content="Free Word to PDF Converter Online | SRJ Tools" />
+  <meta property="og:description" content="Free online Word to PDF converter — Smart, Fast & Secure. Convert DOC or DOCX files to PDF without losing formatting." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/wordtopdf.html" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -23,6 +23,7 @@
 <body>
   <canvas id="waveCanvas"></canvas>
 
+  <!-- 🔰 HEADER -->
   <header class="header">
     <div class="logo-container">
       <img src="./assets/cloud.png" alt="SRJ Tools Cloud Logo" class="logo-part cloud" />
@@ -30,75 +31,110 @@
       <img src="./assets/code-center.png" alt="SRJ Tools Center Icon" class="logo-part center" />
     </div>
     <h1 class="title-under-logo">Free Word to PDF Converter</h1>
-    <p class="subtitle">Convert Word (.doc, .docx) to PDF instantly — Fast · Smart · Secure</p>
+    <p class="subtitle">Convert Word (.doc, .docx) files into high-quality PDFs instantly</p>
   </header>
 
+  <!-- ⚙️ CONVERTER SECTION -->
   <section class="converter-section">
     <div class="converter-box">
       <input type="file" id="wordFile" accept=".doc,.docx" />
-      <button id="convertBtn">Convert to PDF</button>
+      <button id="convertWordToPdf">Convert to PDF</button>
       <div class="progress-container"><div id="progressBar"></div></div>
+
+      <div id="successBox" class="success-box" style="display:none;">
+        ✅ Conversion Successful!<br />
+        <button id="downloadBtn" class="download-btn">⬇ Download PDF File</button>
+      </div>
+
       <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
     </div>
 
-    <!-- 🧠 SEO Content Section -->
+    <!-- 🧠 INFO SECTION -->
     <div class="info-section">
       <h2>About SRJ Tools – Word to PDF Converter</h2>
-      <p>SRJ Tools provides a powerful online Word to PDF converter that preserves formatting, fonts, and layout. Upload your .doc or .docx files and download high-quality PDFs instantly — no watermark, no login, completely free.</p>
+      <p>
+        SRJ Tools lets you convert any <b>Microsoft Word</b> file to <b>PDF</b> format with a single click. Whether it’s an assignment, official letter, or contract,
+        our tool ensures <b>crystal-clear text quality</b> and <b>perfect page layout</b> — no formatting loss.
+      </p>
 
-      <h3>🔹 Why Use Our Word to PDF Converter?</h3>
+      <h3>🔹 Features & Advantages</h3>
       <ul>
-        <li>⚡ Instant conversion — no delay, no signup</li>
-        <li>🔒 100% secure — files are processed safely</li>
-        <li>📱 Works on all devices — mobile, tablet & PC</li>
-        <li>🧩 Preserves formatting and fonts perfectly</li>
-        <li>🚀 Lightweight and fast tool by SRJahir Tech</li>
+        <li>🚀 One-click Word to PDF conversion in seconds</li>
+        <li>📄 Keeps original fonts, layout, and images intact</li>
+        <li>🔒 Secure cloud conversion — your files are private</li>
+        <li>📱 Works on all devices (Android, iPhone, Windows, Mac)</li>
+        <li>💯 Free forever, no sign-up or watermark</li>
       </ul>
 
-      <h3>🔹 Frequently Asked Questions (FAQ)</h3>
-      <p><b>Q1:</b> Is this Word to PDF converter free?<br>✅ Yes, it’s completely free — no registration or watermark.</p>
-      <p><b>Q2:</b> Can I use it on my phone?<br>✅ Absolutely. SRJ Tools works on Android, iOS, and any web browser.</p>
-      <p><b>Q3:</b> Does it support DOC and DOCX both?<br>✅ Yes, both formats are supported.</p>
+      <h3>🔹 Frequently Asked Questions</h3>
+      <p><b>Q1:</b> Does SRJ Tools support both DOC and DOCX?<br>✅ Yes, both formats are supported — .doc & .docx.</p>
+      <p><b>Q2:</b> Will my document’s formatting be preserved?<br>✅ Absolutely. Fonts, tables, and alignments remain exactly as in the original.</p>
+      <p><b>Q3:</b> Is this converter really free?<br>✅ 100% free with no hidden fees or registration required.</p>
     </div>
   </section>
 
+  <!-- 🧩 FOOTER -->
   <footer class="footer">
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
+  <!-- 🌊 Scripts -->
   <script src="animation.js"></script>
   <script>
-    document.getElementById("convertBtn").addEventListener("click", () => {
-      const bar = document.getElementById("progressBar");
-      const box = document.querySelector(".converter-box");
-      bar.style.width = "0%";
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        bar.style.width = progress + "%";
-        if (progress >= 100) {
-          clearInterval(interval);
-          showSuccess();
-        }
-      }, 200);
+    const API_BASE = "https://api.srjahir.in";
 
-      function showSuccess() {
-        const oldMsg = document.querySelector(".success-box");
-        if (oldMsg) oldMsg.remove();
+    const convertBtn = document.getElementById("convertWordToPdf");
+    const wordFile = document.getElementById("wordFile");
+    const progressBar = document.getElementById("progressBar");
+    const successBox = document.getElementById("successBox");
+    const downloadBtn = document.getElementById("downloadBtn");
 
-        const success = document.createElement("div");
-        success.classList.add("success-box");
-        success.innerHTML = `
-          ✅ Conversion Successful!<br>
-          <button class="download-btn">Download PDF</button>
-        `;
-        box.appendChild(success);
-        success.querySelector(".download-btn").addEventListener("click", () => {
-          const link = document.createElement("a");
-          link.href = "#"; // Replace with backend URL
-          link.download = "Converted_File.pdf";
-          link.click();
+    let fileBlob = null;
+
+    convertBtn.addEventListener("click", async () => {
+      const file = wordFile.files[0];
+      if (!file) return alert("📄 Please select a Word file first!");
+
+      successBox.style.display = "none";
+      fileBlob = null;
+      progressBar.style.width = "0%";
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        // Progress simulation
+        const progressSim = setInterval(() => {
+          const width = parseInt(progressBar.style.width) || 0;
+          if (width < 90) progressBar.style.width = width + 10 + "%";
+        }, 300);
+
+        const res = await fetch(`${API_BASE}/word-to-pdf`, {
+          method: "POST",
+          body: formData,
         });
+
+        clearInterval(progressSim);
+        progressBar.style.width = "100%";
+
+        if (!res.ok) throw new Error("Conversion failed");
+
+        fileBlob = await res.blob();
+        successBox.style.display = "block";
+
+        // Manual Download button
+        downloadBtn.onclick = () => {
+          if (!fileBlob) return alert("No file ready yet!");
+          const url = URL.createObjectURL(fileBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "Converted_File.pdf";
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+      } catch (error) {
+        alert("❌ Conversion failed. Please try again.");
+        console.error(error);
       }
     });
   </script>

@@ -1,5 +1,6 @@
 /* ===============================
-   SRJahir Tech — Tools Styling
+   SRJahir Tech — Universal Tools Styling
+   Theme: CloudAI Blue Gradient v3.4
    =============================== */
 
 * {
@@ -16,19 +17,21 @@ html, body {
   overflow-x: hidden;
 }
 
-/* ======= Wave Background (Behind Logo & Header) ======= */
+/* 🌊 Wave Canvas */
 #waveCanvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 260px;
-  z-index: 0; /* 👈 wave stays behind everything */
+  z-index: 0;
   opacity: 0.4;
   pointer-events: none;
 }
 
-/* ======= Header Section ======= */
+/* ===============================
+   HEADER & LOGO
+   =============================== */
 header {
   text-align: center;
   padding: 80px 0 40px;
@@ -49,13 +52,11 @@ header p {
   margin-top: 5px;
 }
 
-/* ======= Animated Logo ======= */
 .logo-container {
   position: relative;
   width: 180px;
   height: 160px;
   margin: 0 auto 30px;
-  overflow: visible;
   z-index: 3;
 }
 
@@ -66,7 +67,7 @@ header p {
   pointer-events: none;
 }
 
-/* === Final Accurate Positions (gear slightly lowered) === */
+/* ⚙️ Logo Layers */
 .cloud {
   top: 40.46%;
   left: 48.55%;
@@ -75,7 +76,7 @@ header p {
 }
 
 .gear {
-  top: 55.8%; /* 👈 slightly lowered from 53.81% to center align */
+  top: 55.8%;
   left: 49.80%;
   width: 50.60%;
   z-index: 2;
@@ -83,19 +84,20 @@ header p {
 }
 
 .center {
-  top: 57.22%; /* 👈 matched to new gear center */
+  top: 57.22%;
   left: 50.43%;
   width: 27.78%;
   z-index: 3;
 }
 
-/* === Gear Rotation === */
 @keyframes rotateGear {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* ======= Tools Section ======= */
+/* ===============================
+   TOOL CARDS (Index Page)
+   =============================== */
 .tools-section {
   max-width: 500px;
   margin: 0 auto;
@@ -111,6 +113,7 @@ header p {
   padding: 18px 20px;
   transition: all 0.25s ease-in-out;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 }
 
 .tool-card:hover {
@@ -118,46 +121,21 @@ header p {
   transform: scale(1.03);
 }
 
-.tool-card h3 {
+.tool-card .tool-name {
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
 }
 
-.tool-card p {
+.tool-card .tool-sub {
   font-size: 0.85rem;
   color: #a9bcd0;
   margin-top: 3px;
 }
 
-/* ======= Footer ======= */
-footer {
-  text-align: center;
-  font-size: 0.8rem;
-  color: #5f7b9b;
-  padding: 15px 0 25px;
-}
-
-/* ======= Responsive ======= */
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 1.8rem;
-  }
-  .logo-container {
-    width: 150px;
-    height: 130px;
-  }
-  .tool-card {
-    margin: 15px 10px;
-  }
-}
-
-
-
-
-
-/* ===== Converter Page Styling (Word↔PDF) ===== */
-
+/* ===============================
+   CONVERTER TOOL PAGES (Word↔PDF, Merge, Split etc.)
+   =============================== */
 .converter-section {
   text-align: center;
   margin-top: 40px;
@@ -176,6 +154,7 @@ footer {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
 }
 
+/* 🔹 File Input */
 .converter-box input[type="file"] {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(0, 140, 255, 0.3);
@@ -204,8 +183,10 @@ footer {
   background: rgba(0, 140, 255, 0.3);
 }
 
-/* === Convert Button === */
-#convertBtn {
+/* 🔘 Primary Action Buttons (Merge, Convert, Compress etc.) */
+#mergeBtn,
+#convertBtn,
+.download-btn {
   margin-top: 15px;
   background: linear-gradient(90deg, #007bff, #00bfff);
   color: #fff;
@@ -217,14 +198,18 @@ footer {
   cursor: pointer;
   transition: all 0.25s ease-in-out;
   width: 100%;
+  box-shadow: 0 0 12px rgba(0, 170, 255, 0.4);
 }
 
-#convertBtn:hover {
+#mergeBtn:hover,
+#convertBtn:hover,
+.download-btn:hover {
   background: linear-gradient(90deg, #00bfff, #007bff);
   transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
 }
 
-/* === Progress Bar === */
+/* 📊 Progress Bar */
 .progress-container {
   margin-top: 18px;
   width: 100%;
@@ -242,7 +227,7 @@ footer {
   transition: width 0.3s ease;
 }
 
-/* === Back Button === */
+/* 🔙 Back Button */
 .back-btn {
   background: transparent;
   border: 1px solid rgba(0, 140, 255, 0.3);
@@ -261,15 +246,7 @@ footer {
   border-color: rgba(0, 140, 255, 0.5);
 }
 
-
-
-
-
-
-
-
-
-/* ===== Success + Download Section ===== */
+/* ✅ Success Message */
 .success-box {
   background: rgba(0, 140, 255, 0.15);
   border: 1px solid rgba(0, 140, 255, 0.4);
@@ -281,6 +258,7 @@ footer {
   animation: fadeIn 0.4s ease-in-out;
 }
 
+/* 📥 Download Button */
 .download-btn {
   display: inline-block;
   margin-top: 10px;
@@ -302,4 +280,30 @@ footer {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
+footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #5f7b9b;
+  padding: 15px 0 25px;
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.8rem;
+  }
+  .logo-container {
+    width: 150px;
+    height: 130px;
+  }
+  .tool-card {
+    margin: 15px 10px;
+  }
 }

@@ -3,18 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Remove Pages from PDF – Delete Unwanted PDF Pages Online | SRJ Tools</title>
+  <title>Remove PDF Pages – Delete Selected Pages Instantly | SRJ Tools</title>
 
-  <!-- SEO -->
-  <meta name="description" content="Remove pages from PDF instantly. Select and delete unwanted pages online for free. Fast, secure, and no watermark — SRJ Tools." />
-  <meta name="keywords" content="Remove PDF pages, delete PDF page, delete pages from pdf, pdf page remover, SRJ Tools, free pdf editor" />
-  <meta property="og:title" content="Remove Pages from PDF | SRJ Tools" />
-  <meta property="og:description" content="Delete unwanted pages from PDF instantly — 100% free and secure." />
-  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <!-- ✅ SEO -->
+  <meta name="description" content="Remove unwanted pages from any PDF instantly. 100% free, secure, and fast. SRJ Tools lets you delete selected PDF pages with preview support." />
+  <meta name="keywords" content="Remove PDF pages, delete PDF pages, PDF editor, SRJ Tools, SRJahir Tech, CloudAI tools" />
   <meta name="author" content="SRJahir Tech" />
 
-  <link rel="icon" type="image/png" href="tools.png" />
+  <!-- OG -->
+  <meta property="og:title" content="Remove PDF Pages – SRJ Tools" />
+  <meta property="og:description" content="Delete unwanted PDF pages instantly with live preview. Free & secure PDF page remover." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/removepages.html" />
+  
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
+
+  <!-- PDF.js for page previews -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 
 <body>
@@ -27,25 +35,34 @@
       <img src="./assets/gear-ring.png" class="logo-part gear" />
       <img src="./assets/code-center.png" class="logo-part center" />
     </div>
-    <h1 class="title-under-logo">Remove Pages from PDF</h1>
-    <p class="subtitle">Select & delete unwanted PDF pages instantly</p>
+    <h1 class="title-under-logo">Remove PDF Pages</h1>
+    <p class="subtitle">Delete unwanted pages instantly</p>
   </header>
 
-  <!-- Main Tool -->
+  <!-- Tool Section -->
   <section class="converter-section">
     <div class="converter-box">
-      <input type="file" id="pdfFile" accept=".pdf" />
-      <p id="fileName"></p>
 
-      <div id="previewContainer" class="page-preview-grid"></div>
+      <!-- Upload -->
+      <input type="file" id="pdfFile" accept="application/pdf" />
 
-      <button id="removeBtn" style="display:none;">Remove Selected Pages</button>
+      <!-- Auto Preview -->
+      <div id="pagePreviewContainer" class="page-preview-grid"></div>
 
-      <div class="progress-container"><div id="progressBar"></div></div>
+      <!-- Remove Button -->
+      <button id="removeBtn" class="action-btn">Remove Selected Pages</button>
 
-      <div id="downloadBox"></div>
+      <!-- Progress -->
+      <div class="progress-container">
+        <div id="progressBar"></div>
+      </div>
 
-      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+      <!-- Success Box -->
+      <div id="successBox"></div>
+
+      <button onclick="window.location.href='index.html'" class="back-btn">
+        ← Back to Home
+      </button>
     </div>
   </section>
 
@@ -53,100 +70,156 @@
     <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
   <script src="animation.js"></script>
 
-<script>
-const pdfInput = document.getElementById("pdfFile");
-const previewBox = document.getElementById("previewContainer");
-const removeBtn = document.getElementById("removeBtn");
-const progressBar = document.getElementById("progressBar");
-const downloadBox = document.getElementById("downloadBox");
+  <script>
+    const pdfFile = document.getElementById("pdfFile");
+    const previewContainer = document.getElementById("pagePreviewContainer");
+    const removeBtn = document.getElementById("removeBtn");
+    const progressBar = document.getElementById("progressBar");
+    const successBox = document.getElementById("successBox");
 
-let globalPDF = null;
+    let selectedPages = [];
+    let pdfData = null;
 
-pdfInput.addEventListener("change", async () => {
-  const file = pdfInput.files[0];
-  if (!file) return;
+    // === Auto Preview After Upload ===
+    pdfFile.addEventListener("change", async () => {
+      const file = pdfFile.files[0];
+      if (!file) return;
 
-  document.getElementById("fileName").innerText = file.name;
-  previewBox.innerHTML = "<p style='margin-top:10px;'>Loading pages...</p>";
+      previewContainer.innerHTML = "";
+      successBox.innerHTML = "";
+      progressBar.style.width = "0%";
+      selectedPages = [];
 
-  const url = URL.createObjectURL(file);
-  const pdf = await pdfjsLib.getDocument(url).promise;
-  globalPDF = pdf;
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        pdfData = new Uint8Array(e.target.result);
+        const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
 
-  previewBox.innerHTML = "";
-  removeBtn.style.display = "inline-block";
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 0.4 });
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
 
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const viewport = page.getViewport({ scale: 0.25 });
+          await page.render({ canvasContext: ctx, viewport }).promise;
 
-    const canvas = document.createElement("canvas");
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
-    const context = canvas.getContext("2d");
+          const wrapper = document.createElement("div");
+          wrapper.classList.add("page-preview");
 
-    await page.render({ canvasContext: context, viewport }).promise;
+          wrapper.innerHTML = `
+            <img src="${canvas.toDataURL()}" />
+            <label class="page-label">
+              <input type="checkbox" class="pageCheck" value="${i}">
+              Page ${i}
+            </label>
+          `;
 
-    const pageBox = document.createElement("div");
-    pageBox.className = "page-box";
-    pageBox.innerHTML = `
-      <img src="${canvas.toDataURL()}" class="thumb" />
-      <label class="page-label">
-        <input type="checkbox" value="${i}" /> Page ${i}
-      </label>
-    `;
+          previewContainer.appendChild(wrapper);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    });
 
-    previewBox.appendChild(pageBox);
-  }
-});
+    // === Remove Pages ===
+    removeBtn.addEventListener("click", async () => {
+      const file = pdfFile.files[0];
+      if (!file) return alert("Please upload a PDF file first.");
 
-removeBtn.addEventListener("click", async () => {
-  const file = pdfInput.files[0];
-  if (!file) return alert("Upload a PDF first.");
+      const checks = document.querySelectorAll(".pageCheck:checked");
+      if (checks.length === 0) return alert("Select pages to remove.");
 
-  let pagesToDelete = [];
-  document.querySelectorAll("input[type='checkbox']:checked").forEach(c => {
-    pagesToDelete.push(c.value);
-  });
+      const pagesToRemove = Array.from(checks).map(c => parseInt(c.value));
 
-  if (pagesToDelete.length === 0) return alert("Select pages to delete.");
+      progressBar.style.width = "40%";
 
-  progressBar.style.width = "50%";
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("pages", pagesToRemove.join(","));
 
-  const form = new FormData();
-  form.append("file", file);
-  form.append("pages", pagesToDelete.join(","));
+      const res = await fetch("https://api.srjahir.in/remove-pages", {
+        method: "POST",
+        body: formData
+      });
 
-  const res = await fetch("https://api.srjahir.in/remove-pages", {
-    method: "POST",
-    body: form
-  });
+      progressBar.style.width = "80%";
 
-  progressBar.style.width = "100%";
+      if (!res.ok) {
+        alert("Error removing pages. Try again.");
+        progressBar.style.width = "0%";
+        return;
+      }
 
-  if (!res.ok) return alert("Error removing pages.");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
 
-  const blob = await res.blob();
-  const url = URL.createObjectURL(blob);
+      progressBar.style.width = "100%";
 
-  downloadBox.innerHTML = `
-    <div class="success-box">
-      ✅ Pages Removed Successfully!
-      <button class="download-btn">Download Clean PDF</button>
-    </div>
-  `;
+      successBox.innerHTML = `
+        <div class="success-box">
+          ✅ Pages Removed Successfully!<br>
+          <button class="download-btn" id="downloadClean">Download Clean PDF</button>
+        </div>
+      `;
 
-  document.querySelector(".download-btn").addEventListener("click", () => {
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Cleaned_File.pdf";
-    a.click();
-  });
-});
-</script>
+      document.getElementById("downloadClean").addEventListener("click", () => {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Cleaned_File.pdf";
+        a.click();
+      });
+    });
+  </script>
 
+  <style>
+    .page-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .page-preview {
+      background: rgba(10,25,60,0.6);
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,140,255,0.25);
+      text-align: center;
+    }
+
+    .page-preview img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .page-label {
+      display: block;
+      margin-top: 5px;
+      color: #bcd8ff;
+      font-size: 0.9rem;
+    }
+
+    .action-btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg, #007bff, #00bfff);
+      color: #fff;
+      transition: 0.25s;
+    }
+
+    .action-btn:hover {
+      transform: scale(1.03);
+      background: linear-gradient(90deg, #00bfff, #007bff);
+    }
+  </style>
 </body>
 </html>

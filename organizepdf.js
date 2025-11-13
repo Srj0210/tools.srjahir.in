@@ -1,5 +1,5 @@
 // ===============================
-// SRJ Tools — Organize PDF
+// SRJ Tools — Organize PDF (FINAL STABLE VERSION)
 // ===============================
 
 const fileInput = document.getElementById("fileInput");
@@ -11,7 +11,7 @@ const progressFill = document.querySelector("#progressBar .fill");
 let pdfPages = [];
 let sortedPages = [];
 
-// Auto preview after selecting file
+// Auto preview when file selected
 fileInput.addEventListener("change", () => {
     const file = fileInput.files[0];
     if (file) loadPDF(file);
@@ -30,24 +30,18 @@ async function loadPDF(file) {
 
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
-
         canvas.width = viewport.width;
         canvas.height = viewport.height;
-
         await page.render({ canvasContext: context, viewport }).promise;
 
-        // Prevent long-press Google behaviour
         canvas.style.pointerEvents = "none";
         canvas.style.userSelect = "none";
         canvas.style.touchAction = "none";
 
-        // Wrapper
         const wrapper = document.createElement("div");
         wrapper.className = "page-item";
         wrapper.draggable = true;
-
-        // Save canvas
-        pdfPages.push({ pageNumber: i, canvas });
+        wrapper.dataset.page = i;          // ✔ page number stored safely
 
         wrapper.appendChild(canvas);
 
@@ -56,6 +50,7 @@ async function loadPDF(file) {
         wrapper.appendChild(label);
 
         pagesContainer.appendChild(wrapper);
+        pdfPages.push({ pageNumber: i, canvas });
     }
 
     enableDragAndDrop();
@@ -63,41 +58,35 @@ async function loadPDF(file) {
 }
 
 // ===============================
-// Drag & Drop Sort
+// Drag & Drop Sorting (Perfect Stable)
 // ===============================
 function enableDragAndDrop() {
-    let draggedItem = null;
+    let dragging = null;
 
     pagesContainer.addEventListener("dragstart", (e) => {
         if (e.target.classList.contains("page-item")) {
-            draggedItem = e.target;
-            e.target.classList.add("dragging");
+            dragging = e.target;
+            dragging.classList.add("dragging");
         }
     });
 
     pagesContainer.addEventListener("dragend", (e) => {
         if (e.target.classList.contains("page-item")) {
-            e.target.classList.remove("dragging");
+            dragging.classList.remove("dragging");
+            dragging = null;
         }
     });
 
     pagesContainer.addEventListener("dragover", (e) => {
         e.preventDefault();
-        const dragging = document.querySelector(".dragging");
-        const after = getDragAfterElement(pagesContainer, e.clientY);
-
-        if (after == null) {
-            pagesContainer.appendChild(dragging);
-        } else {
-            pagesContainer.insertBefore(dragging, after);
-        }
+        const after = getAfterElement(e.clientY);
+        if (after == null) pagesContainer.appendChild(dragging);
+        else pagesContainer.insertBefore(dragging, after);
     });
 }
 
-// Helper to place drag item correctly
-function getDragAfterElement(container, y) {
-    const items = [...container.querySelectorAll(".page-item:not(.dragging)")];
-
+function getAfterElement(y) {
+    const items = [...pagesContainer.querySelectorAll(".page-item:not(.dragging)")];
     return items.reduce(
         (closest, child) => {
             const box = child.getBoundingClientRect();
@@ -118,22 +107,19 @@ function getDragAfterElement(container, y) {
 // ===============================
 confirmBtn.addEventListener("click", () => {
     sortedPages = Array.from(document.querySelectorAll(".page-item"))
-        .map((item) => {
-            const label = item.querySelector("p").innerText;
-            const pageNum = parseInt(label.replace("Page ", ""));
-            return pageNum - 1;
-        });
+        .map((div) => parseInt(div.dataset.page) - 1);  // ✔ Now real page order
 
     startProgress(() => {
         downloadBtn.style.display = "block";
     });
 });
 
+// ===============================
 // Progress Bar
+// ===============================
 function startProgress(callback) {
     progressFill.parentElement.style.display = "block";
     let width = 0;
-
     const interval = setInterval(() => {
         width += 25;
         progressFill.style.width = width + "%";
@@ -146,7 +132,7 @@ function startProgress(callback) {
 }
 
 // ===============================
-// Generate Final PDF
+// Generate Final PDF (WORKING)
 // ===============================
 downloadBtn.addEventListener("click", generateFinalPDF);
 
@@ -156,14 +142,11 @@ async function generateFinalPDF() {
 
     sortedPages.forEach((index, i) => {
         const canvas = pdfPages[index].canvas;
-        const imgData = canvas.toDataURL("image/jpeg", 1.0);
+        const img = canvas.toDataURL("image/jpeg", 1.0);
 
         if (i !== 0) pdf.addPage();
 
-        const pageW = pdf.internal.pageSize.getWidth();
-        const pageH = pdf.internal.pageSize.getHeight();
-
-        pdf.addImage(imgData, "JPEG", 0, 0, pageW, pageH);
+        pdf.addImage(img, "JPEG", 0, 0, pdf.internal.pageSize.width, pdf.internal.pageSize.height);
     });
 
     pdf.save("Organized.pdf");

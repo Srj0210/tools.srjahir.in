@@ -3,163 +3,253 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Organize PDF | Reorder Pages Instantly | SRJ Tools</title>
+  <title>Organize PDF Pages Online | Drag & Reorder Easily | SRJ Tools</title>
 
+  <!-- ✅ SEO Meta -->
+  <meta name="description" content="Reorder PDF pages easily using SRJ Tools. Drag and drop pages, rearrange PDF documents, and download a clean organized PDF online — 100% free and secure." />
+  <meta name="keywords" content="Organize PDF, Reorder PDF Pages, Rearrange PDF, Online PDF Tools, SRJ Tools, Manage PDF Pages, Free PDF Organizer" />
+  <meta name="author" content="SRJahir Tech" />
+  <meta property="og:title" content="Organize PDF Pages Online | SRJ Tools" />
+  <meta property="og:description" content="Rearrange and reorder PDF pages with a simple drag-and-drop editor. Fully free, secure, and high-quality PDF output." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/organizepdf.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/png" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
 
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+
+  <!-- jsPDF for final blob fetch -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
-<canvas id="waveCanvas"></canvas>
+  <canvas id="waveCanvas"></canvas>
 
-<header class="header">
-  <h1 class="title-under-logo">Organize PDF</h1>
-  <p class="subtitle">Reorder PDF pages by dragging thumbnails</p>
-</header>
-
-<section class="converter-section">
-  <div class="converter-box">
-    <input type="file" id="fileInput" accept="application/pdf" />
-    <button id="loadBtn">Load PDF</button>
-
-    <div class="progress-container" id="progressContainer" style="display:none;">
-      <div id="progressBar"></div>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="./assets/cloud.png" class="logo-part cloud" />
+      <img src="./assets/gear-ring.png" class="logo-part gear" />
+      <img src="./assets/code-center.png" class="logo-part center" />
     </div>
+    <h1 class="title-under-logo">Organize PDF</h1>
+    <p class="subtitle">Reorder PDF pages easily using drag & drop</p>
+  </header>
 
-    <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
-  </div>
+  <!-- MAIN TOOL -->
+  <section class="converter-section">
+    <div class="converter-box">
 
-  <div id="pagesContainer" class="pages-grid"></div>
+      <!-- File Input -->
+      <input type="file" id="fileInput" accept="application/pdf" />
 
-  <button id="confirmBtn" class="download-btn" style="display:none;">Confirm Organization</button>
+      <div id="previewSection" style="display:none;">
+        <h3>PDF Pages</h3>
+        <div id="pagesContainer" class="pages-grid"></div>
 
-  <button id="downloadBtn" class="download-btn" style="display:none;">
-    Download Organized PDF
-  </button>
-</section>
+        <button id="confirmBtn" class="convert-btn" style="display:none;">Confirm Organization</button>
 
-<footer class="footer">
-  <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-</footer>
+        <!-- Progress -->
+        <div class="progress-container" id="progressBox" style="display:none;">
+          <div id="progressFill" class="fill"></div>
+        </div>
 
-<script>
-  const fileInput = document.getElementById("fileInput");
-  const loadBtn = document.getElementById("loadBtn");
-  const pagesContainer = document.getElementById("pagesContainer");
-  const confirmBtn = document.getElementById("confirmBtn");
-  const downloadBtn = document.getElementById("downloadBtn");
-  const progressBar = document.getElementById("progressBar");
-  const progressContainer = document.getElementById("progressContainer");
+        <!-- Success -->
+        <div id="successBox" class="success-box" style="display:none;">
+          ✅ PDF Organized Successfully!<br>
+          <button id="downloadBtn" class="download-btn">⬇ Download Organized PDF</button>
+        </div>
+      </div>
 
-  let pdfPages = [];
-  let sortedPages = [];
+      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
 
-  loadBtn.addEventListener("click", () => {
-    const file = fileInput.files[0];
-    if (!file) return alert("Please select a PDF file!");
-    loadPDF(file);
-  });
+    </div>
+  </section>
 
-  async function loadPDF(file) {
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+  </footer>
 
-    pagesContainer.innerHTML = "";
-    pdfPages = [];
+  <script src="animation.js"></script>
 
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const viewport = page.getViewport({ scale: 0.25 });
+  <!-- MAIN LOGIC SCRIPT -->
+  <script>
+    const API_BASE = "https://api.srjahir.in";
+    const fileInput = document.getElementById("fileInput");
+    const pagesContainer = document.getElementById("pagesContainer");
+    const previewSection = document.getElementById("previewSection");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const progressBox = document.getElementById("progressBox");
+    const progressFill = document.getElementById("progressFill");
+    const successBox = document.getElementById("successBox");
+    const downloadBtn = document.getElementById("downloadBtn");
 
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+    let pdfPages = [];
+    let sortedOrder = [];
+    let originalFile = null;
+    let organizedBlob = null;
+    let finalFileName = "organized.pdf";
 
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js";
 
-      await page.render({ canvasContext: ctx, viewport }).promise;
+    // Auto load on file select
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      originalFile = file;
+      finalFileName = file.name.replace(".pdf", "_organized.pdf");
+      loadPDF(file);
+    });
 
-      const wrapper = document.createElement("div");
-      wrapper.className = "page-item";
-      wrapper.draggable = true;
-      wrapper.dataset.page = i;
+    // Load thumbnails
+    async function loadPDF(file) {
+      previewSection.style.display = "block";
+      pagesContainer.innerHTML = "";
+      pdfPages = [];
 
-      wrapper.appendChild(canvas);
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-      const label = document.createElement("p");
-      label.innerText = `Page ${i}`;
-      wrapper.appendChild(label);
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 0.25 });
 
-      pagesContainer.appendChild(wrapper);
-      pdfPages.push({ num: i, canvas });
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({ canvasContext: ctx, viewport }).promise;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "page-item";
+        wrapper.draggable = true;
+        wrapper.dataset.index = i - 1;
+
+        wrapper.appendChild(canvas);
+
+        const lbl = document.createElement("p");
+        lbl.innerText = `Page ${i}`;
+        wrapper.appendChild(lbl);
+
+        pagesContainer.appendChild(wrapper);
+        pdfPages.push(i - 1);
+      }
+
+      enableDrag();
+      confirmBtn.style.display = "block";
     }
 
-    enableDrag();
-    confirmBtn.style.display = "block";
-  }
+    function enableDrag() {
+      let dragged = null;
 
-  function enableDrag() {
-    let dragged = null;
+      document.querySelectorAll(".page-item").forEach(item => {
+        item.addEventListener("dragstart", () => {
+          dragged = item;
+          item.classList.add("dragging");
+        });
 
-    document.querySelectorAll(".page-item").forEach((item) => {
-      item.addEventListener("dragstart", () => {
-        dragged = item;
-        item.classList.add("dragging");
+        item.addEventListener("dragend", () => {
+          item.classList.remove("dragging");
+        });
+
+        item.addEventListener("dragover", e => e.preventDefault());
+
+        item.addEventListener("drop", e => {
+          if (dragged !== item) {
+            pagesContainer.insertBefore(dragged, item);
+          }
+        });
       });
+    }
 
-      item.addEventListener("dragend", () => {
-        item.classList.remove("dragging");
-      });
+    // Confirm organization
+    confirmBtn.addEventListener("click", () => {
+      sortedOrder = Array.from(document.querySelectorAll(".page-item"))
+        .map(div => parseInt(div.dataset.index));
 
-      item.addEventListener("dragover", (e) => e.preventDefault());
-
-      item.addEventListener("drop", (e) => {
-        e.preventDefault();
-        if (dragged !== item) {
-          pagesContainer.insertBefore(dragged, item);
-        }
-      });
+      uploadForOrganization();
     });
-  }
 
-  confirmBtn.addEventListener("click", () => {
-    progressContainer.style.display = "block";
-    progressBar.style.width = "0%";
+    // Upload to backend
+    async function uploadForOrganization() {
+      progressBox.style.display = "block";
+      progressFill.style.width = "20%";
 
-    let p = 0;
-    const interval = setInterval(() => {
-      p += 25;
-      progressBar.style.width = p + "%";
+      const form = new FormData();
+      form.append("file", originalFile);
+      form.append("order", sortedOrder.join(","));
 
-      if (p >= 100) {
-        clearInterval(interval);
-        sortedPages = Array.from(document.querySelectorAll(".page-item"))
-          .map((div) => parseInt(div.dataset.page) - 1);
+      const res = await fetch(`${API_BASE}/organize-pdf`, {
+        method: "POST",
+        body: form,
+      });
 
-        downloadBtn.style.display = "block";
+      if (!res.ok) {
+        alert("❌ Failed to organize PDF!");
+        return;
       }
-    }, 300);
-  });
 
-  downloadBtn.addEventListener("click", generateFinalPDF);
+      progressFill.style.width = "90%";
 
-  async function generateFinalPDF() {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
+      organizedBlob = await res.blob();
+      progressFill.style.width = "100%";
 
-    sortedPages.forEach((index, i) => {
-      const canvas = pdfPages[index].canvas;
-      const img = canvas.toDataURL("image/jpeg", 1.0);
+      successBox.style.display = "block";
+    }
 
-      if (i !== 0) pdf.addPage();
-      pdf.addImage(img, "JPEG", 0, 0, 210, 297);
+    // Download final PDF
+    downloadBtn.addEventListener("click", () => {
+      if (!organizedBlob) return alert("File not ready!");
+
+      const url = URL.createObjectURL(organizedBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = finalFileName;
+      a.click();
+      URL.revokeObjectURL(url);
     });
+  </script>
 
-    pdf.save("Organized.pdf");
-  }
-</script>
+  <style>
+    .pages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .page-item {
+      background: rgba(255,255,255,0.05);
+      padding: 10px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid #0af;
+    }
+    .page-item.dragging { opacity: 0.5; }
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 5px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00aaff, #0077ff);
+      transition: width 0.3s;
+    }
+  </style>
 
 </body>
 </html>

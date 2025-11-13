@@ -1,30 +1,28 @@
 const fileInput = document.getElementById("fileInput");
 const pagesContainer = document.getElementById("pagesContainer");
 const confirmBtn = document.getElementById("confirmBtn");
-const progressBar = document.getElementById("progressBar");
 const downloadBtn = document.getElementById("downloadBtn");
+const progressBar = document.querySelector("#progressBar .fill");
 
 let pdfPages = [];
 let sortedPages = [];
 
-// Auto load on upload
 fileInput.addEventListener("change", () => {
     const file = fileInput.files[0];
     if (file) loadPDF(file);
 });
 
-// Load PDF pages
 async function loadPDF(file) {
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
     pagesContainer.innerHTML = "";
     pdfPages = [];
-    
+
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
-
         const viewport = page.getViewport({ scale: 0.5 });
+
         const canvas = document.createElement("canvas");
         canvas.width = viewport.width;
         canvas.height = viewport.height;
@@ -39,67 +37,68 @@ async function loadPDF(file) {
         wrapper.draggable = true;
         wrapper.dataset.index = i - 1;
 
-        // IMPORTANT – stop image context menu
         canvas.style.pointerEvents = "none";
-        canvas.style.userSelect = "none";
         canvas.style.touchAction = "none";
 
         wrapper.appendChild(canvas);
-        wrapper.appendChild(document.createElement("p")).innerText = `Page ${i}`;
+        wrapper.append(`Page ${i}`);
 
         pagesContainer.appendChild(wrapper);
         pdfPages.push({ pageNumber: i, canvas });
     }
 
     enableDragAndDrop();
+    confirmBtn.style.display = "block";
 }
 
 function enableDragAndDrop() {
-    let dragged;
+    let draggedItem;
 
     document.querySelectorAll(".page-item").forEach(item => {
-
         item.addEventListener("dragstart", () => {
-            dragged = item;
+            draggedItem = item;
+            item.classList.add("dragging");
         });
 
-        item.addEventListener("dragover", e => {
-            e.preventDefault();
+        item.addEventListener("dragend", () => {
+            item.classList.remove("dragging");
         });
 
-        item.addEventListener("drop", (e) => {
+        item.addEventListener("dragover", e => e.preventDefault());
+
+        item.addEventListener("drop", e => {
             e.preventDefault();
-            if (dragged !== item) {
-                pagesContainer.insertBefore(dragged, item);
+            if (draggedItem !== item) {
+                pagesContainer.insertBefore(draggedItem, item);
             }
         });
-
     });
 }
 
-// CONFIRM organization
 confirmBtn.addEventListener("click", () => {
     sortedPages = Array.from(document.querySelectorAll(".page-item"))
         .map(div => parseInt(div.dataset.index));
 
-    progressBar.style.display = "block";
-    progressBar.value = 10;
-
-    setTimeout(() => {
-        progressBar.value = 40;
-    }, 500);
-
-    setTimeout(() => {
-        progressBar.value = 70;
-    }, 1000);
-
-    setTimeout(() => {
-        progressBar.value = 100;
+    showProgress(() => {
         downloadBtn.style.display = "block";
-    }, 1500);
+    });
 });
 
-// DOWNLOAD button
+function showProgress(callback) {
+    progressBar.parentElement.style.display = "block";
+
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 20;
+        progressBar.style.width = progress + "%";
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            callback();
+        }
+    }, 300);
+}
+
 downloadBtn.addEventListener("click", () => {
     generateOrganizedPDF();
 });

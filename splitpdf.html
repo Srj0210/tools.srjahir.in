@@ -1,164 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Split PDF with Thumbnails | SRJ Tools</title>
-  <meta name="description" content="Preview and split your PDF by selecting pages visually. Free, secure, and instant — SRJ Tools." />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Split PDF pages instantly with SRJ Tools. Preview all PDF pages visually, select required pages, and extract them securely. Free • Fast • Cloud-based.">
+    <meta name="keywords" content="Split PDF, Extract PDF pages, SRJ Tools, Free PDF Tools, CloudAI, PDF page selector, PDF utilities">
+    <meta name="author" content="SRJahir Tech">
+
+    <title>Split PDF Pages – SRJ Tools</title>
+    <link rel="stylesheet" href="/style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 
 <body>
-  <canvas id="waveCanvas"></canvas>
+    <canvas id="waveCanvas"></canvas>
 
-  <header class="header">
-    <div class="logo-container">
-      <img src="./assets/cloud.png" class="logo-part cloud" />
-      <img src="./assets/gear-ring.png" class="logo-part gear" />
-      <img src="./assets/code-center.png" class="logo-part center" />
-    </div>
-    <h1 class="title-under-logo">Split PDF Pages</h1>
-    <p class="subtitle">Preview & extract selected pages instantly</p>
-  </header>
+    <header class="header">
+        <div class="logo-container">
+            <img src="/assets/cloud.png" class="cloud">
+            <img src="/assets/gear-ring.png" class="gear">
+            <img src="/assets/code-center.png" class="center">
+        </div>
 
-  <section class="converter-section">
-    <div class="converter-box">
-      <input type="file" id="pdfFile" accept=".pdf" />
-      <button id="previewBtn">Preview Pages</button>
-      <div id="thumbnailContainer"></div>
-      <button id="splitSelected" style="display:none;">Split Selected Pages</button>
-      <div class="progress-container"><div id="progressBar"></div></div>
-      <div id="downloadBox"></div>
-      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
-    </div>
-  </section>
+        <h1 class="title-under-logo">Split PDF Pages</h1>
+        <p class="subtitle">Preview & extract selected pages instantly</p>
+    </header>
 
-  <footer class="footer">
-    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-  </footer>
+    <section class="converter-section">
+        <div class="converter-box">
+            <input type="file" id="pdfFile" accept="application/pdf">
 
-  <script src="animation.js"></script>
+            <div id="thumbnailContainer" style="margin-top:15px;"></div>
 
-  <script>
-    const pdfjsLib = window['pdfjs-dist/build/pdf'];
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+            <button id="splitSelected" class="download-btn" style="display:none;margin-top:20px;">
+                Split Selected Pages
+            </button>
 
-    const previewBtn = document.getElementById("previewBtn");
-    const splitBtn = document.getElementById("splitSelected");
-    const container = document.getElementById("thumbnailContainer");
-    const progressBar = document.getElementById("progressBar");
-    const downloadBox = document.getElementById("downloadBox");
+            <div class="progress-container">
+                <div id="progressBar"></div>
+            </div>
 
-    let selectedPages = [];
+            <div id="downloadBox"></div>
 
-    previewBtn.addEventListener("click", async () => {
-      const file = document.getElementById("pdfFile").files[0];
-      if (!file) return alert("Please select a PDF file first.");
+            <button onclick="location.href='/index.html';" class="back-btn">
+                ← Back to Home
+            </button>
+        </div>
 
-      const reader = new FileReader();
-      reader.onload = async function() {
-        const typedarray = new Uint8Array(this.result);
-        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-        container.innerHTML = "";
+        <div style="text-align:center;margin-top:25px;color:#8fb8ff;">
+            <h3>How It Works</h3>
+            <p>Upload → Auto Preview → Select Pages → Split → Download final PDF</p>
+        </div>
+    </section>
 
-        for (let i = 1; i <= pdf.numPages; i++) {
-          const page = await pdf.getPage(i);
-          const viewport = page.getViewport({ scale: 0.3 });
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
+    <footer class="footer">
+        © 2025 SRJahir Tech | Powered by CloudAI
+    </footer>
 
-          await page.render({ canvasContext: ctx, viewport: viewport }).promise;
 
-          const thumbDiv = document.createElement("div");
-          thumbDiv.classList.add("thumb");
-          thumbDiv.innerHTML = `<img src="${canvas.toDataURL()}" data-page="${i}" />
-                                <label><input type="checkbox" value="${i}" /> Page ${i}</label>`;
-          container.appendChild(thumbDiv);
-        }
-        splitBtn.style.display = "inline-block";
-      };
-      reader.readAsArrayBuffer(file);
-    });
+    <script>
+        // ====== PDF.js Setup ======
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
-    splitBtn.addEventListener("click", async () => {
-      const file = document.getElementById("pdfFile").files[0];
-      if (!file) return alert("Please select a PDF first.");
-      const checked = container.querySelectorAll("input:checked");
-      if (!checked.length) return alert("Please select at least one page.");
+        const fileInput = document.getElementById("pdfFile");
+        const container = document.getElementById("thumbnailContainer");
+        const splitBtn = document.getElementById("splitSelected");
+        const downloadBox = document.getElementById("downloadBox");
+        const progressBar = document.getElementById("progressBar");
 
-      const pages = Array.from(checked).map(c => c.value).join(",");
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("pages", pages);
+        let currentFile = null;
 
-      progressBar.style.width = "0%";
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        progressBar.style.width = progress + "%";
-        if (progress >= 100) clearInterval(interval);
-      }, 150);
 
-      try {
-        const res = await fetch("https://api.srjahir.in/split-pdf", { method: "POST", body: formData });
-        if (!res.ok) throw new Error("Failed");
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-        clearInterval(interval);
-        progressBar.style.width = "100%";
+        // -------- Auto Preview Thumbnails --------
+        fileInput.addEventListener("change", async () => {
+            const file = fileInput.files[0];
+            if (!file) return;
 
-        downloadBox.innerHTML = `
-          <div class="success-box">
-            ✅ Split Successful!<br>
-            <button class="download-btn">Download PDF</button>
-          </div>
-        `;
+            currentFile = file;
+            container.innerHTML = "";
+            downloadBox.innerHTML = "";
+            splitBtn.style.display = "none";
+            progressBar.style.width = "0%";
 
-        downloadBox.querySelector(".download-btn").addEventListener("click", () => {
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "Extracted_Pages.pdf";
-          a.click();
+            const buffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+
+                const viewport = page.getViewport({ scale: 0.3 });
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
+
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                await page.render({ canvasContext: ctx, viewport }).promise;
+
+                const box = document.createElement("div");
+                box.className = "thumb";
+
+                box.innerHTML = `
+                    <img src="${canvas.toDataURL()}" alt="Page ${i}">
+                    <div style="text-align:center;margin-top:8px;">
+                        <input type="checkbox" class="pageCheck" value="${i}">
+                        <label style="color:#d7e3ff;font-size:0.9rem;">Page ${i}</label>
+                    </div>
+                `;
+
+                container.appendChild(box);
+            }
+
+            splitBtn.style.display = "inline-block";
         });
-      } catch (err) {
-        alert("Error splitting file. Try again.");
-        clearInterval(interval);
-        progressBar.style.width = "0%";
-      }
-    });
-  </script>
 
-  <style>
-    #thumbnailContainer {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
-      gap: 10px;
-    }
 
-    .thumb {
-      background: rgba(10, 25, 60, 0.4);
-      border: 1px solid rgba(0, 140, 255, 0.25);
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-    }
+        // -------- Split Request --------
+        splitBtn.addEventListener("click", async () => {
+            const checks = [...document.querySelectorAll(".pageCheck:checked")].map(x => x.value);
+            if (!checks.length) return alert("Select pages first!");
 
-    .thumb img {
-      width: 100px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: block;
-      margin-bottom: 5px;
-    }
+            const form = new FormData();
+            form.append("file", currentFile);
+            form.append("pages", checks.join(","));
 
-    .thumb input[type="checkbox"] {
-      transform: scale(1.2);
-    }
-  </style>
+            progressBar.style.width = "40%";
+
+            const res = await fetch("https://api.srjahir.in/split-pdf", {
+                method: "POST",
+                body: form
+            });
+
+            if (!res.ok) {
+                progressBar.style.width = "0%";
+                return alert("Error splitting PDF. Try again.");
+            }
+
+            const blob = await res.blob();
+            progressBar.style.width = "100%";
+
+            const url = URL.createObjectURL(blob);
+
+            downloadBox.innerHTML = `
+                <div class="success-box">
+                    ✔ Split Successful!<br>
+                    <button class="download-btn" onclick="downloadFile('${url}')">Download PDF</button>
+                </div>
+            `;
+        });
+
+
+        function downloadFile(url) {
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "Extracted_Pages.pdf";
+            a.click();
+        }
+    </script>
+
+
+    <style>
+        #thumbnailContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .thumb {
+            background: rgba(20, 40, 80, 0.5);
+            border: 1px solid rgba(0, 140, 255, 0.2);
+            padding: 10px;
+            border-radius: 12px;
+            width: 150px;
+            text-align: center;
+        }
+
+        .thumb img {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+
 </body>
 </html>

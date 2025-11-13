@@ -3,132 +3,163 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Organize PDF Online — Drag & Reorder Pages | SRJ Tools</title>
+  <title>Organize PDF | Reorder Pages Instantly | SRJ Tools</title>
 
-  <meta name="description" content="Reorder PDF pages online easily by dragging thumbnails. Organize PDF instantly, free, secure & fast — Powered by SRJ Tools." />
-  <meta name="keywords" content="organize pdf, reorder pdf pages, rearrange pdf, pdf tools, srj tools" />
-  <meta name="author" content="SRJahir Tech" />
-
-  <link rel="icon" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
 
-  <style>
-    /* Disable long press popup on thumbnails */
-    .page-item canvas {
-      pointer-events: none !important;
-      touch-action: none !important;
-      user-select: none !important;
-    }
-
-    /* Thumbnail grid */
-    #pagesContainer {
-      max-width: 900px;
-      margin: 30px auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 15px;
-      padding: 10px;
-    }
-
-    .page-item {
-      background: rgba(0, 25, 60, 0.6);
-      border: 1px solid rgba(0, 150, 255, 0.3);
-      border-radius: 12px;
-      padding: 10px;
-      cursor: grab;
-      text-align: center;
-      color: #b7d7ff;
-      transition: 0.2s;
-      user-select: none;
-    }
-
-    .page-item.dragging {
-      opacity: 0.5;
-      transform: scale(0.9);
-    }
-
-    #confirmBtn, #downloadBtn {
-      margin-top: 20px;
-      background: linear-gradient(90deg, #007bff, #00bfff);
-      padding: 12px 20px;
-      border-radius: 10px;
-      border: none;
-      color: white;
-      cursor: pointer;
-      width: 90%;
-      max-width: 350px;
-      font-size: 1rem;
-    }
-
-    #confirmBtn:hover, #downloadBtn:hover {
-      transform: scale(1.05);
-    }
-
-    #progressBar {
-      width: 90%;
-      max-width: 400px;
-      height: 10px;
-      background: #003b70;
-      border-radius: 10px;
-      margin-top: 20px;
-      display: none;
-      overflow: hidden;
-    }
-
-    #progressBar .fill {
-      height: 100%;
-      width: 0%;
-      background: #00bfff;
-      transition: width 0.3s;
-      border-radius: 10px;
-    }
-  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
+<canvas id="waveCanvas"></canvas>
 
-  <canvas id="waveCanvas"></canvas>
+<header class="header">
+  <h1 class="title-under-logo">Organize PDF</h1>
+  <p class="subtitle">Reorder PDF pages by dragging thumbnails</p>
+</header>
 
-  <header class="header">
-    <div class="logo-container">
-      <img src="./assets/cloud.png" class="logo-part cloud">
-      <img src="./assets/gear-ring.png" class="logo-part gear">
-      <img src="./assets/code-center.png" class="logo-part center">
+<section class="converter-section">
+  <div class="converter-box">
+    <input type="file" id="fileInput" accept="application/pdf" />
+    <button id="loadBtn">Load PDF</button>
+
+    <div class="progress-container" id="progressContainer" style="display:none;">
+      <div id="progressBar"></div>
     </div>
 
-    <h1 class="title-under-logo">Organize PDF</h1>
-    <p class="subtitle">Reorder PDF pages by dragging thumbnails</p>
-  </header>
+    <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+  </div>
 
-  <section class="converter-section">
-    <div class="converter-box">
+  <div id="pagesContainer" class="pages-grid"></div>
 
-      <!-- Auto load PDF when selected -->
-      <input type="file" id="fileInput" accept=".pdf" />
+  <button id="confirmBtn" class="download-btn" style="display:none;">Confirm Organization</button>
 
-      <div class="progress-container">
-        <div id="progressBar"><div class="fill"></div></div>
-      </div>
+  <button id="downloadBtn" class="download-btn" style="display:none;">
+    Download Organized PDF
+  </button>
+</section>
 
-      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+<footer class="footer">
+  <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+</footer>
 
-    </div>
-  </section>
+<script>
+  const fileInput = document.getElementById("fileInput");
+  const loadBtn = document.getElementById("loadBtn");
+  const pagesContainer = document.getElementById("pagesContainer");
+  const confirmBtn = document.getElementById("confirmBtn");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const progressBar = document.getElementById("progressBar");
+  const progressContainer = document.getElementById("progressContainer");
 
-  <!-- Thumbnails -->
-  <div id="pagesContainer"></div>
+  let pdfPages = [];
+  let sortedPages = [];
 
-  <center>
-    <button id="confirmBtn" style="display:none;">Confirm Organization</button>
-    <button id="downloadBtn" style="display:none;">Download Organized PDF</button>
-  </center>
+  loadBtn.addEventListener("click", () => {
+    const file = fileInput.files[0];
+    if (!file) return alert("Please select a PDF file!");
+    loadPDF(file);
+  });
 
-  <footer class="footer">
-    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-  </footer>
+  async function loadPDF(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
-  <script src="animation.js"></script>
-  <script src="organizepdf.js"></script>
+    pagesContainer.innerHTML = "";
+    pdfPages = [];
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 0.25 });
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      await page.render({ canvasContext: ctx, viewport }).promise;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "page-item";
+      wrapper.draggable = true;
+      wrapper.dataset.page = i;
+
+      wrapper.appendChild(canvas);
+
+      const label = document.createElement("p");
+      label.innerText = `Page ${i}`;
+      wrapper.appendChild(label);
+
+      pagesContainer.appendChild(wrapper);
+      pdfPages.push({ num: i, canvas });
+    }
+
+    enableDrag();
+    confirmBtn.style.display = "block";
+  }
+
+  function enableDrag() {
+    let dragged = null;
+
+    document.querySelectorAll(".page-item").forEach((item) => {
+      item.addEventListener("dragstart", () => {
+        dragged = item;
+        item.classList.add("dragging");
+      });
+
+      item.addEventListener("dragend", () => {
+        item.classList.remove("dragging");
+      });
+
+      item.addEventListener("dragover", (e) => e.preventDefault());
+
+      item.addEventListener("drop", (e) => {
+        e.preventDefault();
+        if (dragged !== item) {
+          pagesContainer.insertBefore(dragged, item);
+        }
+      });
+    });
+  }
+
+  confirmBtn.addEventListener("click", () => {
+    progressContainer.style.display = "block";
+    progressBar.style.width = "0%";
+
+    let p = 0;
+    const interval = setInterval(() => {
+      p += 25;
+      progressBar.style.width = p + "%";
+
+      if (p >= 100) {
+        clearInterval(interval);
+        sortedPages = Array.from(document.querySelectorAll(".page-item"))
+          .map((div) => parseInt(div.dataset.page) - 1);
+
+        downloadBtn.style.display = "block";
+      }
+    }, 300);
+  });
+
+  downloadBtn.addEventListener("click", generateFinalPDF);
+
+  async function generateFinalPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    sortedPages.forEach((index, i) => {
+      const canvas = pdfPages[index].canvas;
+      const img = canvas.toDataURL("image/jpeg", 1.0);
+
+      if (i !== 0) pdf.addPage();
+      pdf.addImage(img, "JPEG", 0, 0, 210, 297);
+    });
+
+    pdf.save("Organized.pdf");
+  }
+</script>
+
 </body>
 </html>

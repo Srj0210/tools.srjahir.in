@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remove Pages from PDF – Delete Unwanted PDF Pages Online | SRJ Tools</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Remove pages from PDF instantly. Select and delete unwanted pages online for free. Fast, secure, and no watermark — SRJ Tools." />
+  <meta name="keywords" content="Remove PDF pages, delete PDF page, delete pages from pdf, pdf page remover, SRJ Tools, free pdf editor" />
+  <meta property="og:title" content="Remove Pages from PDF | SRJ Tools" />
+  <meta property="og:description" content="Delete unwanted pages from PDF instantly — 100% free and secure." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta name="author" content="SRJahir Tech" />
+
+  <link rel="icon" type="image/png" href="tools.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <canvas id="waveCanvas"></canvas>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="./assets/cloud.png" class="logo-part cloud" />
+      <img src="./assets/gear-ring.png" class="logo-part gear" />
+      <img src="./assets/code-center.png" class="logo-part center" />
+    </div>
+    <h1 class="title-under-logo">Remove Pages from PDF</h1>
+    <p class="subtitle">Select & delete unwanted PDF pages instantly</p>
+  </header>
+
+  <!-- Main Tool -->
+  <section class="converter-section">
+    <div class="converter-box">
+      <input type="file" id="pdfFile" accept=".pdf" />
+      <p id="fileName"></p>
+
+      <div id="previewContainer" class="page-preview-grid"></div>
+
+      <button id="removeBtn" style="display:none;">Remove Selected Pages</button>
+
+      <div class="progress-container"><div id="progressBar"></div></div>
+
+      <div id="downloadBox"></div>
+
+      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <script src="animation.js"></script>
+
+<script>
+const pdfInput = document.getElementById("pdfFile");
+const previewBox = document.getElementById("previewContainer");
+const removeBtn = document.getElementById("removeBtn");
+const progressBar = document.getElementById("progressBar");
+const downloadBox = document.getElementById("downloadBox");
+
+let globalPDF = null;
+
+pdfInput.addEventListener("change", async () => {
+  const file = pdfInput.files[0];
+  if (!file) return;
+
+  document.getElementById("fileName").innerText = file.name;
+  previewBox.innerHTML = "<p style='margin-top:10px;'>Loading pages...</p>";
+
+  const url = URL.createObjectURL(file);
+  const pdf = await pdfjsLib.getDocument(url).promise;
+  globalPDF = pdf;
+
+  previewBox.innerHTML = "";
+  removeBtn.style.display = "inline-block";
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const viewport = page.getViewport({ scale: 0.25 });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const context = canvas.getContext("2d");
+
+    await page.render({ canvasContext: context, viewport }).promise;
+
+    const pageBox = document.createElement("div");
+    pageBox.className = "page-box";
+    pageBox.innerHTML = `
+      <img src="${canvas.toDataURL()}" class="thumb" />
+      <label class="page-label">
+        <input type="checkbox" value="${i}" /> Page ${i}
+      </label>
+    `;
+
+    previewBox.appendChild(pageBox);
+  }
+});
+
+removeBtn.addEventListener("click", async () => {
+  const file = pdfInput.files[0];
+  if (!file) return alert("Upload a PDF first.");
+
+  let pagesToDelete = [];
+  document.querySelectorAll("input[type='checkbox']:checked").forEach(c => {
+    pagesToDelete.push(c.value);
+  });
+
+  if (pagesToDelete.length === 0) return alert("Select pages to delete.");
+
+  progressBar.style.width = "50%";
+
+  const form = new FormData();
+  form.append("file", file);
+  form.append("pages", pagesToDelete.join(","));
+
+  const res = await fetch("https://api.srjahir.in/remove-pages", {
+    method: "POST",
+    body: form
+  });
+
+  progressBar.style.width = "100%";
+
+  if (!res.ok) return alert("Error removing pages.");
+
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+
+  downloadBox.innerHTML = `
+    <div class="success-box">
+      ✅ Pages Removed Successfully!
+      <button class="download-btn">Download Clean PDF</button>
+    </div>
+  `;
+
+  document.querySelector(".download-btn").addEventListener("click", () => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Cleaned_File.pdf";
+    a.click();
+  });
+});
+</script>
+
+</body>
+</html>

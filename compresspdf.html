@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compress PDF Online | Reduce PDF Size Without Losing Quality | SRJ Tools</title>
 
-  <!-- ✅ SEO Meta -->
+  <!-- SEO -->
   <meta name="description" content="Compress PDF files online using SRJ Tools. Reduce PDF size while keeping the best quality. Fast, free, secure, and no watermark." />
   <meta name="keywords" content="Compress PDF, Reduce PDF Size, Shrink PDF, PDF Compressor, Online PDF Tools, SRJ Tools, Free PDF Compression" />
   <meta name="author" content="SRJahir Tech" />
@@ -18,7 +18,6 @@
   <link rel="icon" type="image/png" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 
@@ -61,8 +60,10 @@
         <option value="low">Low Compression (Best quality)</option>
       </select>
 
-      <!-- Convert Button -->
-      <button id="compressBtn" class="convert-btn">Compress PDF</button>
+      <!-- FIXED BUTTON WRAPPER -->
+      <div style="width:100%; display:flex; justify-content:center; margin-top:18px;">
+        <button id="compressBtn" class="convert-btn" style="width:100%;">Compress PDF</button>
+      </div>
 
       <div class="progress-container"><div id="progressBar"></div></div>
 
@@ -113,7 +114,6 @@
       formData.append("level", compressionLevel.value);
 
       try {
-        // Progress animation
         const progressSim = setInterval(() => {
           const width = parseInt(progressBar.style.width) || 0;
           if (width < 90) progressBar.style.width = width + 10 + "%";

@@ -183,6 +183,32 @@ header p {
   background: rgba(0, 140, 255, 0.3);
 }
 
+
+
+/* 🔵 Universal Convert/Compress Action Button */
+.convert-btn {
+  margin-top: 15px;
+  background: linear-gradient(90deg, #007bff, #00bfff);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+  width: 100%;
+  box-shadow: 0 0 12px rgba(0, 170, 255, 0.4);
+}
+
+.convert-btn:hover {
+  background: linear-gradient(90deg, #00bfff, #007bff);
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+}
+
+
+
 /* 🔘 Primary Action Buttons (Merge, Convert, Compress etc.) */
 #mergeBtn,
 #convertBtn,

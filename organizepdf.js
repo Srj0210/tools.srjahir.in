@@ -1,109 +1,120 @@
-let pageOrder = [];
-let loadedPDF = null;
+const fileInput = document.getElementById("fileInput");
+const pagesContainer = document.getElementById("pagesContainer");
+const confirmBtn = document.getElementById("confirmBtn");
+const progressBar = document.getElementById("progressBar");
+const downloadBtn = document.getElementById("downloadBtn");
 
-document.getElementById("loadBtn").addEventListener("click", async () => {
-  const file = document.getElementById("pdfFile").files[0];
-  if (!file) return alert("Please upload a PDF file.");
+let pdfPages = [];
+let sortedPages = [];
 
-  const bar = document.getElementById("progressBar");
-  bar.style.width = "0%";
-
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += 10;
-    bar.style.width = progress + "%";
-    if (progress >= 100) clearInterval(interval);
-  }, 100);
-
-  const buffer = await file.arrayBuffer();
-  loadedPDF = await pdfjsLib.getDocument({ data: buffer }).promise;
-
-  const grid = document.getElementById("thumbGrid");
-  grid.innerHTML = "";
-  pageOrder = [];
-
-  for (let i = 1; i <= loadedPDF.numPages; i++) {
-    const page = await loadedPDF.getPage(i);
-    const viewport = page.getViewport({ scale: 0.3 });
-
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
-
-    await page.render({ canvasContext: ctx, viewport }).promise;
-
-    const item = document.createElement("div");
-    item.className = "thumb-item";
-    item.draggable = true;
-    item.dataset.page = i;
-
-    item.innerHTML = `<img src="${canvas.toDataURL()}"><span>Page ${i}</span>`;
-    grid.appendChild(item);
-    pageOrder.push(i);
-
-    enableDragging(item);
-  }
-
-  document.getElementById("organizeBtn").style.display = "block";
+// Auto load on upload
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (file) loadPDF(file);
 });
 
-function enableDragging(item) {
-  item.addEventListener("dragstart", () => {
-    item.classList.add("dragging");
-  });
+// Load PDF pages
+async function loadPDF(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-  item.addEventListener("dragend", () => {
-    item.classList.remove("dragging");
-    updateOrder();
-  });
+    pagesContainer.innerHTML = "";
+    pdfPages = [];
+    
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
 
-  document.getElementById("thumbGrid").addEventListener("dragover", (e) => {
-    e.preventDefault();
-    const dragging = document.querySelector(".dragging");
-    const grid = document.getElementById("thumbGrid");
-    const items = [...grid.querySelectorAll(".thumb-item:not(.dragging)")];
+        const viewport = page.getViewport({ scale: 0.5 });
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
 
-    let nearest = items[0];
-    let minDist = Infinity;
+        await page.render({
+            canvasContext: canvas.getContext("2d"),
+            viewport: viewport
+        }).promise;
 
-    items.forEach((el) => {
-      const box = el.getBoundingClientRect();
-      const dist = Math.abs(e.clientY - box.top);
-      if (dist < minDist) {
-        minDist = dist;
-        nearest = el;
-      }
+        const wrapper = document.createElement("div");
+        wrapper.className = "page-item";
+        wrapper.draggable = true;
+        wrapper.dataset.index = i - 1;
+
+        // IMPORTANT – stop image context menu
+        canvas.style.pointerEvents = "none";
+        canvas.style.userSelect = "none";
+        canvas.style.touchAction = "none";
+
+        wrapper.appendChild(canvas);
+        wrapper.appendChild(document.createElement("p")).innerText = `Page ${i}`;
+
+        pagesContainer.appendChild(wrapper);
+        pdfPages.push({ pageNumber: i, canvas });
+    }
+
+    enableDragAndDrop();
+}
+
+function enableDragAndDrop() {
+    let dragged;
+
+    document.querySelectorAll(".page-item").forEach(item => {
+
+        item.addEventListener("dragstart", () => {
+            dragged = item;
+        });
+
+        item.addEventListener("dragover", e => {
+            e.preventDefault();
+        });
+
+        item.addEventListener("drop", (e) => {
+            e.preventDefault();
+            if (dragged !== item) {
+                pagesContainer.insertBefore(dragged, item);
+            }
+        });
+
+    });
+}
+
+// CONFIRM organization
+confirmBtn.addEventListener("click", () => {
+    sortedPages = Array.from(document.querySelectorAll(".page-item"))
+        .map(div => parseInt(div.dataset.index));
+
+    progressBar.style.display = "block";
+    progressBar.value = 10;
+
+    setTimeout(() => {
+        progressBar.value = 40;
+    }, 500);
+
+    setTimeout(() => {
+        progressBar.value = 70;
+    }, 1000);
+
+    setTimeout(() => {
+        progressBar.value = 100;
+        downloadBtn.style.display = "block";
+    }, 1500);
+});
+
+// DOWNLOAD button
+downloadBtn.addEventListener("click", () => {
+    generateOrganizedPDF();
+});
+
+async function generateOrganizedPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    sortedPages.forEach((pIndex, i) => {
+        const canvas = pdfPages[pIndex].canvas;
+        const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+        if (i !== 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, 0, 210, 297);
     });
 
-    grid.insertBefore(dragging, nearest);
-  });
+    pdf.save("Organized.pdf");
 }
-
-function updateOrder() {
-  pageOrder = [...document.querySelectorAll(".thumb-item")].map(
-    (item) => Number(item.dataset.page)
-  );
-}
-
-document.getElementById("organizeBtn").addEventListener("click", async () => {
-  if (pageOrder.length === 0) return;
-
-  const formData = new FormData();
-  formData.append("file", document.getElementById("pdfFile").files[0]);
-  formData.append("order", pageOrder.join(","));
-
-  const res = await fetch("https://api.srjahir.in/organize-pdf", {
-    method: "POST",
-    body: formData,
-  });
-
-  const blob = await res.blob();
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "Organized_File.pdf";
-  a.click();
-});

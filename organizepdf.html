@@ -3,67 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Organize PDF — Reorder Pages Online | SRJ Tools</title>
+  <title>Organize PDF Online — Drag & Reorder Pages | SRJ Tools</title>
 
-  <meta name="description" content="Organize your PDF pages by dragging and dropping them into any order. Free, secure, fast — SRJ Tools." />
+  <meta name="description" content="Reorder PDF pages online easily by dragging thumbnails. Organize PDF instantly, free, secure & fast — Powered by SRJ Tools." />
+  <meta name="keywords" content="organize pdf, reorder pdf pages, rearrange pdf, pdf tools, srj tools" />
+  <meta name="author" content="SRJahir Tech" />
+
   <link rel="icon" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
+
   <style>
-    /* Thumbnail Grid */
-    .thumb-grid {
+    /* Disable long press popup on thumbnails */
+    .page-item canvas {
+      pointer-events: none !important;
+      touch-action: none !important;
+      user-select: none !important;
+    }
+
+    /* Thumbnail grid */
+    #pagesContainer {
       max-width: 900px;
       margin: 30px auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 15px;
       padding: 10px;
-      z-index: 3;
-      position: relative;
     }
 
-    .thumb-item {
-      background: rgba(0, 20, 50, 0.6);
-      border: 1px solid rgba(0, 140, 255, 0.3);
-      border-radius: 10px;
-      padding: 8px;
+    .page-item {
+      background: rgba(0, 25, 60, 0.6);
+      border: 1px solid rgba(0, 150, 255, 0.3);
+      border-radius: 12px;
+      padding: 10px;
       cursor: grab;
       text-align: center;
-      color: #a9caff;
-      user-select: none;
+      color: #b7d7ff;
       transition: 0.2s;
+      user-select: none;
     }
 
-    .thumb-item img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 5px;
-    }
-
-    .thumb-item.dragging {
-      opacity: 0.4;
+    .page-item.dragging {
+      opacity: 0.5;
       transform: scale(0.9);
     }
 
-    #organizeBtn {
+    #confirmBtn, #downloadBtn {
       margin-top: 20px;
       background: linear-gradient(90deg, #007bff, #00bfff);
-      padding: 10px 18px;
+      padding: 12px 20px;
       border-radius: 10px;
-      font-size: 1rem;
       border: none;
       color: white;
       cursor: pointer;
-      width: 100%;
+      width: 90%;
       max-width: 350px;
+      font-size: 1rem;
     }
 
-    #organizeBtn:hover {
+    #confirmBtn:hover, #downloadBtn:hover {
       transform: scale(1.05);
+    }
+
+    #progressBar {
+      width: 90%;
+      max-width: 400px;
+      height: 10px;
+      background: #003b70;
+      border-radius: 10px;
+      margin-top: 20px;
+      display: none;
+      overflow: hidden;
+    }
+
+    #progressBar .fill {
+      height: 100%;
+      width: 0%;
+      background: #00bfff;
+      transition: width 0.3s;
+      border-radius: 10px;
     }
   </style>
 </head>
 
 <body>
+
   <canvas id="waveCanvas"></canvas>
 
   <header class="header">
@@ -79,20 +102,25 @@
 
   <section class="converter-section">
     <div class="converter-box">
-      <input type="file" id="pdfFile" accept=".pdf" />
-      <button id="loadBtn">Load PDF Pages</button>
 
-      <div class="progress-container"><div id="progressBar"></div></div>
+      <!-- Auto load PDF when selected -->
+      <input type="file" id="fileInput" accept=".pdf" />
+
+      <div class="progress-container">
+        <div id="progressBar"><div class="fill"></div></div>
+      </div>
 
       <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+
     </div>
   </section>
 
-  <!-- Thumbnail Grid -->
-  <div id="thumbGrid" class="thumb-grid"></div>
+  <!-- Thumbnails -->
+  <div id="pagesContainer"></div>
 
   <center>
-    <button id="organizeBtn" style="display:none;">Download Organized PDF</button>
+    <button id="confirmBtn" style="display:none;">Confirm Organization</button>
+    <button id="downloadBtn" style="display:none;">Download Organized PDF</button>
   </center>
 
   <footer class="footer">

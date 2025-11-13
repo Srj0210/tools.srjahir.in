@@ -2,11 +2,12 @@ const fileInput = document.getElementById("fileInput");
 const pagesContainer = document.getElementById("pagesContainer");
 const confirmBtn = document.getElementById("confirmBtn");
 const downloadBtn = document.getElementById("downloadBtn");
-const progressBar = document.querySelector("#progressBar .fill");
+const progressFill = document.querySelector("#progressBar .fill");
 
 let pdfPages = [];
 let sortedPages = [];
 
+// Auto load when file selected
 fileInput.addEventListener("change", () => {
     const file = fileInput.files[0];
     if (file) loadPDF(file);
@@ -21,27 +22,34 @@ async function loadPDF(file) {
 
     for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 0.5 });
+
+        // ✨ Perfect thumbnail size (same as before)
+        const viewport = page.getViewport({ scale: 0.25 });
 
         const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
         canvas.width = viewport.width;
         canvas.height = viewport.height;
 
-        await page.render({
-            canvasContext: canvas.getContext("2d"),
-            viewport: viewport
-        }).promise;
+        await page.render({ canvasContext: context, viewport }).promise;
 
+        // Prevent long-press Google popup
+        canvas.style.pointerEvents = "none";
+        canvas.style.touchAction = "none";
+        canvas.style.userSelect = "none";
+
+        // Wrapper div
         const wrapper = document.createElement("div");
         wrapper.className = "page-item";
         wrapper.draggable = true;
         wrapper.dataset.index = i - 1;
 
-        canvas.style.pointerEvents = "none";
-        canvas.style.touchAction = "none";
-
         wrapper.appendChild(canvas);
-        wrapper.append(`Page ${i}`);
+
+        const label = document.createElement("p");
+        label.innerText = `Page ${i}`;
+        wrapper.appendChild(label);
 
         pagesContainer.appendChild(wrapper);
         pdfPages.push({ pageNumber: i, canvas });
@@ -52,9 +60,9 @@ async function loadPDF(file) {
 }
 
 function enableDragAndDrop() {
-    let draggedItem;
+    let draggedItem = null;
 
-    document.querySelectorAll(".page-item").forEach(item => {
+    document.querySelectorAll(".page-item").forEach((item) => {
         item.addEventListener("dragstart", () => {
             draggedItem = item;
             item.classList.add("dragging");
@@ -64,9 +72,9 @@ function enableDragAndDrop() {
             item.classList.remove("dragging");
         });
 
-        item.addEventListener("dragover", e => e.preventDefault());
+        item.addEventListener("dragover", (e) => e.preventDefault());
 
-        item.addEventListener("drop", e => {
+        item.addEventListener("drop", (e) => {
             e.preventDefault();
             if (draggedItem !== item) {
                 pagesContainer.insertBefore(draggedItem, item);
@@ -75,40 +83,43 @@ function enableDragAndDrop() {
     });
 }
 
+// Confirm organization
 confirmBtn.addEventListener("click", () => {
     sortedPages = Array.from(document.querySelectorAll(".page-item"))
-        .map(div => parseInt(div.dataset.index));
+        .map((div) => parseInt(div.dataset.index));
 
-    showProgress(() => {
+    startProgress(() => {
         downloadBtn.style.display = "block";
     });
 });
 
-function showProgress(callback) {
-    progressBar.parentElement.style.display = "block";
+// Fake smooth progress
+function startProgress(callback) {
+    progressFill.parentElement.style.display = "block";
 
-    let progress = 0;
+    let width = 0;
     const interval = setInterval(() => {
-        progress += 20;
-        progressBar.style.width = progress + "%";
+        width += 20;
+        progressFill.style.width = width + "%";
 
-        if (progress >= 100) {
+        if (width >= 100) {
             clearInterval(interval);
             callback();
         }
     }, 300);
 }
 
+// Download final PDF
 downloadBtn.addEventListener("click", () => {
-    generateOrganizedPDF();
+    generateFinalPDF();
 });
 
-async function generateOrganizedPDF() {
+async function generateFinalPDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
 
-    sortedPages.forEach((pIndex, i) => {
-        const canvas = pdfPages[pIndex].canvas;
+    sortedPages.forEach((index, i) => {
+        const canvas = pdfPages[index].canvas;
         const imgData = canvas.toDataURL("image/jpeg", 1.0);
 
         if (i !== 0) pdf.addPage();

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Repair PDF Online | Fix Corrupted or Damaged PDF | SRJ Tools</title>
+
+  <!-- ✅ SEO Meta -->
+  <meta name="description" content="Repair corrupted or damaged PDF files online using SRJ Tools. Fix unreadable PDFs, recover structure, and download a clean working PDF. Free and secure." />
+  <meta name="keywords" content="Repair PDF, Fix PDF, Corrupted PDF, Damaged PDF Recover, Online PDF Repair, SRJ Tools" />
+  <meta name="author" content="SRJahir Tech" />
+  <meta property="og:title" content="Repair PDF Online | SRJ Tools" />
+  <meta property="og:description" content="Fix and repair corrupted PDF files online. 100% Free, secure & fast PDF repair tool by SRJ Tools." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/repairpdf.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/png" href="tools.png" />
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+
+<body>
+  <canvas id="waveCanvas"></canvas>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="./assets/cloud.png" class="logo-part cloud" />
+      <img src="./assets/gear-ring.png" class="logo-part gear" />
+      <img src="./assets/code-center.png" class="logo-part center" />
+    </div>
+    <h1 class="title-under-logo">Repair PDF</h1>
+    <p class="subtitle">Fix corrupted or damaged PDF files instantly</p>
+  </header>
+
+  <!-- MAIN TOOL -->
+  <section class="converter-section">
+    <div class="converter-box">
+
+      <!-- File Input -->
+      <input type="file" id="pdfFile" accept="application/pdf" />
+
+      <!-- Convert Button -->
+      <button id="repairBtn" class="convert-btn">Repair PDF</button>
+
+      <!-- Progress Bar -->
+      <div class="progress-container">
+        <div id="progressBar"></div>
+      </div>
+
+      <!-- Success Box -->
+      <div id="successBox" class="success-box" style="display:none;">
+        ✅ PDF Repaired Successfully!<br/>
+        <button id="downloadBtn" class="download-btn">⬇ Download Repaired PDF</button>
+      </div>
+
+      <!-- Back Button -->
+      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+  </footer>
+
+  <script src="animation.js"></script>
+
+  <script>
+    const API_BASE = "https://api.srjahir.in";
+
+    const pdfFile = document.getElementById("pdfFile");
+    const repairBtn = document.getElementById("repairBtn");
+
+    const progressBar = document.getElementById("progressBar");
+    const successBox = document.getElementById("successBox");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    let repairedBlob = null;
+    let finalName = "repaired.pdf";
+
+    repairBtn.addEventListener("click", async () => {
+      const file = pdfFile.files[0];
+      if (!file) return alert("📄 Please select a PDF file first!");
+
+      finalName = file.name.replace(".pdf", "_repaired.pdf");
+
+      successBox.style.display = "none";
+      repairedBlob = null;
+      progressBar.style.width = "0%";
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        // Smooth Progress Animation
+        const progressSim = setInterval(() => {
+          const width = parseInt(progressBar.style.width) || 0;
+          if (width < 90) progressBar.style.width = width + 10 + "%";
+        }, 250);
+
+        const res = await fetch(`${API_BASE}/repair-pdf`, {
+          method: "POST",
+          body: formData,
+        });
+
+        clearInterval(progressSim);
+        progressBar.style.width = "100%";
+
+        if (!res.ok) throw new Error("Repair failed");
+
+        repairedBlob = await res.blob();
+        successBox.style.display = "block";
+
+        downloadBtn.onclick = () => {
+          if (!repairedBlob) return alert("⚠️ File not ready!");
+
+          const url = URL.createObjectURL(repairedBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = finalName;
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+
+      } catch (error) {
+        alert("❌ Failed to repair PDF! Try another file.");
+        console.error(error);
+      }
+    });
+  </script>
+
+</body>
+</html>

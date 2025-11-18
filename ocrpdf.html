@@ -1,122 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR PDF | Extract Text From Scanned PDF – SRJ Tools</title>
-    <meta name="description" content="Convert scanned PDFs into readable text instantly using OCR. Free, fast, accurate OCR tool by SRJ Tools. No signup required.">
-    <meta name="keywords" content="OCR PDF, extract text from PDF, scanned PDF to text, OCR tool, SRJ Tools OCR">
-    
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OCR PDF Online | Extract Text from Scanned PDFs | SRJ Tools</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Extract text from scanned or image-based PDF files online using OCR. 100% Free, fast, and accurate OCR tool by SRJ Tools." />
+  <meta name="keywords" content="OCR PDF, extract text, scanned PDF, OCR online, PDF to text, SRJ Tools OCR" />
+  <meta name="author" content="SRJahir Tech" />
+  <meta property="og:title" content="OCR PDF Online | SRJ Tools" />
+  <meta property="og:description" content="Convert scanned PDFs into text using OCR. Online, free and fast." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/ocrpdf.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/png" href="tools.png" />
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 
 <body>
-    <header>
-        <div class="logo">
-            <img src="assets/logo.png" alt="SRJ Tools Logo">
-        </div>
-    </header>
+  <canvas id="waveCanvas"></canvas>
 
-    <section class="tool-container fade-in">
-        <h1 class="tool-title">OCR PDF</h1>
-        <p class="tool-subtitle">Extract text from scanned or image-based PDFs</p>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="./assets/cloud.png" class="logo-part cloud" />
+      <img src="./assets/gear-ring.png" class="logo-part gear" />
+      <img src="./assets/code-center.png" class="logo-part center" />
+    </div>
+    <h1 class="title-under-logo">OCR PDF</h1>
+    <p class="subtitle">Extract text from scanned or image-based PDFs</p>
+  </header>
 
-        <div class="tool-card">
-            
-            <!-- File Input -->
-            <label class="file-label">
-                <span>Choose file</span>
-                <input type="file" id="pdfInput" accept="application/pdf">
-            </label>
-            
-            <!-- Convert Button -->
-            <button class="action-btn" onclick="startOCR()">Run OCR</button>
+  <!-- MAIN TOOL -->
+  <section class="converter-section">
+    <div class="converter-box">
 
-            <!-- Progress Bar -->
-            <div class="progress">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
+      <!-- File Input -->
+      <input type="file" id="pdfFile" accept="application/pdf" />
 
-            <!-- Download Section -->
-            <div id="downloadSection" class="download-box" style="display:none;">
-                <p class="success-msg">✅ OCR Completed Successfully!</p>
-                <a id="downloadLink" class="download-btn" download>↓ Download OCR Result</a>
-            </div>
+      <!-- Convert Button -->
+      <button id="ocrBtn" class="convert-btn">Run OCR</button>
 
-            <!-- Back to Home -->
-            <a href="/" class="back-home">← Back to Home</a>
+      <!-- Progress Bar -->
+      <div class="progress-container">
+        <div id="progressBar"></div>
+      </div>
 
-        </div>
-    </section>
+      <!-- Success Box -->
+      <div id="successBox" class="success-box" style="display:none;">
+        ✅ OCR Completed Successfully!<br/>
+        <button id="downloadBtn" class="download-btn">⬇ Download OCR Text</button>
+      </div>
 
-    <footer>
-        <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-    </footer>
+      <!-- Back Button -->
+      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
 
-<script>
-function startOCR() {
-    const input = document.getElementById("pdfInput");
-    const progress = document.getElementById("progressBar");
-    const downloadBox = document.getElementById("downloadSection");
+    </div>
+  </section>
 
-    if (!input.files.length) {
-        alert("Please select a PDF first!");
-        return;
-    }
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+  </footer>
 
-    const file = input.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
+  <script src="animation.js"></script>
 
-    // Reset UI
-    progress.style.width = "0%";
-    downloadBox.style.display = "none";
+  <script>
+    const API_BASE = "https://api.srjahir.in";
 
-    // Animate progress bar slowly to show loading
-    let load = 0;
-    let fakeLoading = setInterval(() => {
-        if (load < 90) {
-            load += 2;
-            progress.style.width = load + "%";
-        }
-    }, 100);
+    const pdfFile = document.getElementById("pdfFile");
+    const ocrBtn = document.getElementById("ocrBtn");
 
-    fetch("https://api.srjahir.in/ocr-pdf", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => {
-        clearInterval(fakeLoading);
+    const progressBar = document.getElementById("progressBar");
+    const successBox = document.getElementById("successBox");
+    const downloadBtn = document.getElementById("downloadBtn");
 
-        if (!response.ok) {
-            progress.style.width = "0%";
-            alert("❌ OCR failed! Try another file.");
-            return;
-        }
+    let ocrBlob = null;
+    let finalName = "OCR_Text.txt";
 
-        progress.style.width = "100%";
+    ocrBtn.addEventListener("click", async () => {
+      const file = pdfFile.files[0];
+      if (!file) return alert("📄 Please select a PDF file first!");
 
-        return response.blob();
-    })
-    .then(blob => {
-        if (!blob) return;
+      finalName = file.name.replace(".pdf", "_OCR.txt");
 
-        let downloadURL = URL.createObjectURL(blob);
-        let downloadFileName = file.name.replace(".pdf", "_OCR.txt");
+      successBox.style.display = "none";
+      ocrBlob = null;
+      progressBar.style.width = "0%";
 
-        const link = document.getElementById("downloadLink");
-        link.href = downloadURL;
-        link.download = downloadFileName;
+      const formData = new FormData();
+      formData.append("file", file);
 
-        document.getElementById("downloadSection").style.display = "block";
-    })
-    .catch(() => {
-        clearInterval(fakeLoading);
-        progress.style.width = "0%";
-        alert("❌ Something went wrong!");
+      try {
+        // Smooth progress animation 
+        const progressSim = setInterval(() => {
+          const width = parseInt(progressBar.style.width) || 0;
+          if (width < 90) progressBar.style.width = width + 10 + "%";
+        }, 250);
+
+        const res = await fetch(`${API_BASE}/ocr-pdf`, {
+          method: "POST",
+          body: formData,
+        });
+
+        clearInterval(progressSim);
+        progressBar.style.width = "100%";
+
+        if (!res.ok) throw new Error("OCR failed");
+
+        ocrBlob = await res.blob();
+        successBox.style.display = "block";
+
+        downloadBtn.onclick = () => {
+          if (!ocrBlob) return alert("⚠️ File not ready!");
+
+          const url = URL.createObjectURL(ocrBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = finalName;
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+
+      } catch (error) {
+        alert("❌ OCR failed! Try another file.");
+        console.error(error);
+      }
     });
-}
-</script>
+  </script>
 
 </body>
 </html>

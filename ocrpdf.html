@@ -6,11 +6,11 @@
   <title>OCR PDF Online | Extract Text from Scanned PDFs | SRJ Tools</title>
 
   <!-- SEO -->
-  <meta name="description" content="Extract text from scanned or image-based PDF files online using OCR. 100% Free, fast, and accurate OCR tool by SRJ Tools." />
-  <meta name="keywords" content="OCR PDF, extract text, scanned PDF, OCR online, PDF to text, SRJ Tools OCR" />
+  <meta name="description" content="Run OCR on scanned or image-based PDFs. Extract text or convert into searchable PDF. Fast, Free, Secure — SRJ Tools." />
+  <meta name="keywords" content="OCR PDF, Extract Text, Scanned PDF OCR, Searchable PDF, Free OCR Tool, SRJ Tools" />
   <meta name="author" content="SRJahir Tech" />
   <meta property="og:title" content="OCR PDF Online | SRJ Tools" />
-  <meta property="og:description" content="Convert scanned PDFs into text using OCR. Online, free and fast." />
+  <meta property="og:description" content="Extract text from scanned PDFs and images. Convert to text or searchable PDF online." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/ocrpdf.html" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -32,7 +32,7 @@
       <img src="./assets/code-center.png" class="logo-part center" />
     </div>
     <h1 class="title-under-logo">OCR PDF</h1>
-    <p class="subtitle">Extract text from scanned or image-based PDFs</p>
+    <p class="subtitle">Extract text from scanned PDFs or images instantly</p>
   </header>
 
   <!-- MAIN TOOL -->
@@ -40,7 +40,13 @@
     <div class="converter-box">
 
       <!-- File Input -->
-      <input type="file" id="pdfFile" accept="application/pdf" />
+      <input type="file" id="pdfFile" accept="application/pdf,image/*" />
+
+      <!-- Select Output Type -->
+      <select id="outputType" class="select-box">
+        <option value="text">Extract as Text (.txt)</option>
+        <option value="pdf">Convert to Searchable PDF (.pdf)</option>
+      </select>
 
       <!-- Convert Button -->
       <button id="ocrBtn" class="convert-btn">Run OCR</button>
@@ -53,7 +59,7 @@
       <!-- Success Box -->
       <div id="successBox" class="success-box" style="display:none;">
         ✅ OCR Completed Successfully!<br/>
-        <button id="downloadBtn" class="download-btn">⬇ Download OCR Text</button>
+        <button id="downloadBtn" class="download-btn">⬇ Download Output</button>
       </div>
 
       <!-- Back Button -->
@@ -73,6 +79,7 @@
     const API_BASE = "https://api.srjahir.in";
 
     const pdfFile = document.getElementById("pdfFile");
+    const outputType = document.getElementById("outputType");
     const ocrBtn = document.getElementById("ocrBtn");
 
     const progressBar = document.getElementById("progressBar");
@@ -80,13 +87,14 @@
     const downloadBtn = document.getElementById("downloadBtn");
 
     let ocrBlob = null;
-    let finalName = "OCR_Text.txt";
+    let finalName = "ocr_output";
 
     ocrBtn.addEventListener("click", async () => {
       const file = pdfFile.files[0];
-      if (!file) return alert("📄 Please select a PDF file first!");
+      if (!file) return alert("📄 Please select a PDF or Image file first!");
 
-      finalName = file.name.replace(".pdf", "_OCR.txt");
+      const type = outputType.value;
+      finalName = file.name.replace(/\.[^/.]+$/, "") + (type === "text" ? "_ocr.txt" : "_ocr.pdf");
 
       successBox.style.display = "none";
       ocrBlob = null;
@@ -94,15 +102,16 @@
 
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("type", type);
 
       try {
-        // Smooth progress animation 
+        // Smooth progress animation
         const progressSim = setInterval(() => {
           const width = parseInt(progressBar.style.width) || 0;
           if (width < 90) progressBar.style.width = width + 10 + "%";
         }, 250);
 
-        const res = await fetch(`${API_BASE}/ocr-pdf`, {
+        const res = await fetch(`${API_BASE}/ocr`, {
           method: "POST",
           body: formData,
         });

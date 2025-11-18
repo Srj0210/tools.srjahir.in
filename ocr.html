@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR PDF | Extract Text From Scanned PDF – SRJ Tools</title>
+    <meta name="description" content="Convert scanned PDFs into readable text instantly using OCR. Free, fast, accurate OCR tool by SRJ Tools. No signup required.">
+    <meta name="keywords" content="OCR PDF, extract text from PDF, scanned PDF to text, OCR tool, SRJ Tools OCR">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="assets/logo.png" alt="SRJ Tools Logo">
+        </div>
+    </header>
+
+    <section class="tool-container fade-in">
+        <h1 class="tool-title">OCR PDF</h1>
+        <p class="tool-subtitle">Extract text from scanned or image-based PDFs</p>
+
+        <div class="tool-card">
+            
+            <!-- File Input -->
+            <label class="file-label">
+                <span>Choose file</span>
+                <input type="file" id="pdfInput" accept="application/pdf">
+            </label>
+            
+            <!-- Convert Button -->
+            <button class="action-btn" onclick="startOCR()">Run OCR</button>
+
+            <!-- Progress Bar -->
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <!-- Download Section -->
+            <div id="downloadSection" class="download-box" style="display:none;">
+                <p class="success-msg">✅ OCR Completed Successfully!</p>
+                <a id="downloadLink" class="download-btn" download>↓ Download OCR Result</a>
+            </div>
+
+            <!-- Back to Home -->
+            <a href="/" class="back-home">← Back to Home</a>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+    </footer>
+
+<script>
+function startOCR() {
+    const input = document.getElementById("pdfInput");
+    const progress = document.getElementById("progressBar");
+    const downloadBox = document.getElementById("downloadSection");
+
+    if (!input.files.length) {
+        alert("Please select a PDF first!");
+        return;
+    }
+
+    const file = input.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Reset UI
+    progress.style.width = "0%";
+    downloadBox.style.display = "none";
+
+    // Animate progress bar slowly to show loading
+    let load = 0;
+    let fakeLoading = setInterval(() => {
+        if (load < 90) {
+            load += 2;
+            progress.style.width = load + "%";
+        }
+    }, 100);
+
+    fetch("https://api.srjahir.in/ocr-pdf", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        clearInterval(fakeLoading);
+
+        if (!response.ok) {
+            progress.style.width = "0%";
+            alert("❌ OCR failed! Try another file.");
+            return;
+        }
+
+        progress.style.width = "100%";
+
+        return response.blob();
+    })
+    .then(blob => {
+        if (!blob) return;
+
+        let downloadURL = URL.createObjectURL(blob);
+        let downloadFileName = file.name.replace(".pdf", "_OCR.txt");
+
+        const link = document.getElementById("downloadLink");
+        link.href = downloadURL;
+        link.download = downloadFileName;
+
+        document.getElementById("downloadSection").style.display = "block";
+    })
+    .catch(() => {
+        clearInterval(fakeLoading);
+        progress.style.width = "0%";
+        alert("❌ Something went wrong!");
+    });
+}
+</script>
+
+</body>
+</html>

@@ -172,4 +172,71 @@
   </script>
 
 </body>
+</html>  <script>
+    const API_BASE = "https://api.srjahir.in";
+
+    const fileInput = document.getElementById("pdfFile");
+    const outputType = document.getElementById("outputType");
+    const ocrBtn = document.getElementById("ocrBtn");
+
+    const progressBar = document.getElementById("progressBar");
+    const successBox = document.getElementById("successBox");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    let finalBlob = null;
+    let finalName = "ocr_output";
+
+    ocrBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+      if (!file) return alert("📄 Please select a PDF or Image first!");
+
+      const type = outputType.value;
+      finalName = file.name.replace(/\.[^/.]+$/, "") + (type === "text" ? "_OCR.txt" : "_OCR.pdf");
+
+      successBox.style.display = "none";
+      finalBlob = null;
+      progressBar.style.width = "0%";
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", type);
+
+      try {
+        const loader = setInterval(() => {
+          let w = parseInt(progressBar.style.width) || 0;
+          if (w < 90) progressBar.style.width = (w + 8) + "%";
+        }, 200);
+
+        // Route FIXED → /ocr-pdf
+        const res = await fetch(`${API_BASE}/ocr-pdf`, {
+          method: "POST",
+          body: formData,
+        });
+
+        clearInterval(loader);
+        progressBar.style.width = "100%";
+
+        if (!res.ok) throw new Error("OCR failed");
+
+        finalBlob = await res.blob();
+        successBox.style.display = "block";
+
+        downloadBtn.onclick = () => {
+          if (!finalBlob) return;
+          const url = URL.createObjectURL(finalBlob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = finalName;
+          a.click();
+          URL.revokeObjectURL(url);
+        };
+
+      } catch (err) {
+        alert("❌ OCR failed! Try another file.");
+        console.error(err);
+      }
+    });
+  </script>
+
+</body>
 </html>

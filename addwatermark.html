@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coming Soon | SRJ Tools</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="tools.png" />
+
+  <style>
+    .soon-section {
+      text-align: center;
+      margin-top: 80px;
+      padding: 20px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .soon-box {
+      display: inline-block;
+      background: rgba(10, 25, 60, 0.6);
+      border: 1px solid rgba(0, 140, 255, 0.25);
+      border-radius: 20px;
+      padding: 40px 25px;
+      width: 90%;
+      max-width: 420px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.45);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .soon-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1e90ff;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .soon-text {
+      font-size: 1rem;
+      color: #b9c7e8;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: transparent;
+      border: 1px solid rgba(0, 140, 255, 0.3);
+      color: #1e90ff;
+      border-radius: 10px;
+      padding: 10px 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.25s;
+      margin-top: 10px;
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 140, 255, 0.2);
+      color: #fff;
+      border-color: rgba(0, 140, 255, 0.4);
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="waveCanvas"></canvas>
+
+  <header class="header">
+    <div class="logo-container">
+      <img src="./assets/cloud.png" class="logo-part cloud" />
+      <img src="./assets/gear-ring.png" class="logo-part gear" />
+      <img src="./assets/code-center.png" class="logo-part center" />
+    </div>
+
+    <h1 class="title-under-logo">Coming Soon</h1>
+    <p class="subtitle">This tool is under development</p>
+  </header>
+
+  <section class="soon-section">
+    <div class="soon-box">
+      <h2 class="soon-title">🚀 Coming Soon</h2>
+      <p class="soon-text">
+        This tool is currently being built with CloudAI.<br>
+        Please check back later!
+      </p>
+
+      <button onclick="window.location.href='index.html'" class="back-btn">
+        ← Back to Home
+      </button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+  </footer>
+
+  <script src="animation.js"></script>
+</body>
+</html>

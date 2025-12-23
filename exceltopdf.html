@@ -159,34 +159,4 @@ convertBtn.addEventListener("click", async () => {
 </script>
 
 </body>
-</html>          method: "POST",
-          body: form,
-        });
-
-        clearInterval(loader);
-        progressBar.style.width = "100%";
-
-        if (!res.ok) throw new Error("Conversion failed");
-
-        finalBlob = await res.blob();
-        successBox.style.display = "block";
-
-        downloadBtn.onclick = () => {
-          if (!finalBlob) return;
-          const url = URL.createObjectURL(finalBlob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = finalName;
-          a.click();
-          URL.revokeObjectURL(url);
-        };
-
-      } catch (err) {
-        alert("❌ Failed to convert! Try another file.");
-        console.error(err);
-      }
-    });
-  </script>
-
-</body>
-</html>
+</html>          

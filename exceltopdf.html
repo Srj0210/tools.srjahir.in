@@ -1,111 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Excel to PDF Online | Convert XLSX to PDF | SRJ Tools</title>
+  <title>Free Excel to PDF Converter Online | High Quality & Secure | SRJ Tools</title>
 
-  <!-- SEO -->
-  <meta name="description" content="Convert Excel spreadsheets to PDF online. Auto-fit, multi-sheet support, clean formatting — same as iLovePDF. Free & fast SRJ Tools." />
-  <meta name="keywords" content="Excel to PDF, XLSX to PDF, Online Converter, iLovePDF Excel Convert, SRJ Tools" />
+  <!-- ✅ SEO META -->
+  <meta name="description" content="Convert Excel (.xls, .xlsx) files into high-quality PDFs instantly. 100% free, secure, and accurate Excel to PDF converter by SRJ Tools — No signup required." />
+  <meta name="keywords" content="Excel to PDF, Convert XLSX to PDF, Free Excel PDF Converter, SRJ Tools, XLS to PDF Online, Spreadsheet to PDF, Secure Excel Converter" />
   <meta name="author" content="SRJahir Tech" />
-  <meta property="og:title" content="Excel to PDF Online | SRJ Tools" />
-  <meta property="og:description" content="Convert .xlsx into clean, auto-fit PDF pages online. Free Excel to PDF converter." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Free Excel to PDF Converter | SRJ Tools" />
+  <meta property="og:description" content="Convert Excel spreadsheets into clean, printable PDFs online — fast, secure, and watermark-free." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/exceltopdf.html" />
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="tools.png" />
+  <link rel="stylesheet" href="style.css" />
 
+  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="ga.js"></script>
+
+  <!-- Analytics -->
+  <script src="ga.js"></script>
 </head>
 
 <body>
 
-  <canvas id="waveCanvas"></canvas>
+<canvas id="waveCanvas"></canvas>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo-container">
-      <img src="./assets/cloud.png" class="logo-part cloud" />
-      <img src="./assets/gear-ring.png" class="logo-part gear" />
-      <img src="./assets/code-center.png" class="logo-part center" />
+<!-- 🔰 Header -->
+<header class="header">
+  <div class="logo-container">
+    <img src="./assets/cloud.png" class="logo-part cloud" />
+    <img src="./assets/gear-ring.png" class="logo-part gear" />
+    <img src="./assets/code-center.png" class="logo-part center" />
+  </div>
+
+  <h1 class="title-under-logo">Free Excel to PDF Converter</h1>
+  <p class="subtitle">Convert Excel (.xls, .xlsx) spreadsheets into high-quality PDFs instantly</p>
+</header>
+
+<!-- ⚙️ Converter -->
+<section class="converter-section">
+  <div class="converter-box">
+
+    <input type="file" id="excelFile" accept=".xls,.xlsx" />
+    <button id="convertBtn">Convert to PDF</button>
+
+    <div class="progress-container">
+      <div id="progressBar"></div>
     </div>
-    <h1>Excel to PDF</h1>
-    <p>Convert Excel files into clean, auto-fit PDF instantly</p>
-  </header>
 
-  <!-- TOOL BOX -->
-  <section class="converter-section">
-    <div class="converter-box">
-
-      <!-- File Input -->
-      <input type="file" id="excelFile" accept=".xls,.xlsx" />
-
-      <!-- Convert Button -->
-      <button id="convertExcel" class="convert-btn">Convert Excel to PDF</button>
-
-      <!-- Progress Bar -->
-      <div class="progress-container">
-        <div id="progressBar"></div>
-      </div>
-
-      <!-- Success Box -->
-      <div id="successBox" class="success-box" style="display:none;">
-        ✅ Converted Successfully!<br>
-        <button id="downloadBtn" class="download-btn">⬇ Download PDF</button>
-      </div>
-
-      <!-- Back -->
-      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
-
+    <div id="successBox" class="success-box" style="display:none;">
+      ✅ Conversion Successful!<br />
+      <button id="downloadBtn" class="download-btn">⬇ Download PDF File</button>
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-  </footer>
+    <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+  </div>
 
-  <script src="animation.js"></script>
+  <!-- 🧠 Info / SEO Content -->
+  <div class="info-section">
+    <h2>About SRJ Tools – Excel to PDF Converter</h2>
+    <p>
+      SRJ Tools lets you convert any <b>Microsoft Excel spreadsheet</b> into a clean,
+      professional <b>PDF document</b>. Perfect for reports, invoices, data sheets,
+      and financial statements — without losing formatting.
+    </p>
 
-  <script>
-    const API_BASE = "https://api.srjahir.in";
+    <h3>🔹 Features & Benefits</h3>
+    <ul>
+      <li>📊 Converts XLS & XLSX files with high accuracy</li>
+      <li>🖨 Preserves tables, borders, alignment & fonts</li>
+      <li>🔒 Secure processing – files auto-deleted after conversion</li>
+      <li>📱 Mobile & desktop friendly</li>
+      <li>💯 Free forever – no signup, no watermark</li>
+    </ul>
 
-    const fileInput = document.getElementById("excelFile");
-    const convertBtn = document.getElementById("convertExcel");
+    <h3>🔹 Frequently Asked Questions</h3>
+    <p><b>Q1:</b> Can I convert large Excel files?<br>✅ Yes, large spreadsheets are supported.</p>
+    <p><b>Q2:</b> Will formulas be affected?<br>✅ Formulas are rendered correctly in the PDF output.</p>
+    <p><b>Q3:</b> Is my data safe?<br>✅ Yes, all files are processed securely and deleted automatically.</p>
+  </div>
+</section>
 
-    const progressBar = document.getElementById("progressBar");
-    const successBox = document.getElementById("successBox");
-    const downloadBtn = document.getElementById("downloadBtn");
+<!-- 🧩 Footer -->
+<footer class="footer">
+  <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+</footer>
 
-    let finalBlob = null;
-    let finalName = "converted.pdf";
+<!-- 🌊 Scripts -->
+<script src="animation.js"></script>
 
-    convertBtn.addEventListener("click", async () => {
-      const file = fileInput.files[0];
-      if (!file) return alert("📄 Please select an Excel file!");
+<script>
+const API_BASE = "https://api.srjahir.in";
 
-      finalName = file.name.replace(/\.[^/.]+$/, "") + "_converted.pdf";
-      successBox.style.display = "none";
-      progressBar.style.width = "0%";
-      finalBlob = null;
+const excelFile  = document.getElementById("excelFile");
+const convertBtn = document.getElementById("convertBtn");
+const progressBar = document.getElementById("progressBar");
+const successBox  = document.getElementById("successBox");
+const downloadBtn = document.getElementById("downloadBtn");
 
-      const form = new FormData();
-      form.append("file", file);
+let fileBlob = null;
+let fileName = "Converted_Excel.pdf";
 
-      try {
-        const loader = setInterval(() => {
-          let w = parseInt(progressBar.style.width) || 0;
-          if (w < 90) progressBar.style.width = (w + 10) + "%";
-        }, 250);
+convertBtn.addEventListener("click", async () => {
+  const file = excelFile.files[0];
+  if (!file) return alert("📊 Please select an Excel file first!");
 
-        const res = await fetch(`${API_BASE}/excel-to-pdf`, {
-          method: "POST",
+  fileName = file.name.replace(/\.[^/.]+$/, "") + ".pdf";
+  successBox.style.display = "none";
+  progressBar.style.width = "0%";
+  fileBlob = null;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const progressSim = setInterval(() => {
+      const w = parseInt(progressBar.style.width) || 0;
+      if (w < 90) progressBar.style.width = (w + 10) + "%";
+    }, 250);
+
+    const res = await fetch(`${API_BASE}/excel-to-pdf`, {
+      method: "POST",
+      body: formData,
+    });
+
+    clearInterval(progressSim);
+    progressBar.style.width = "100%";
+
+    if (!res.ok) throw new Error("Conversion failed");
+
+    fileBlob = await res.blob();
+    successBox.style.display = "block";
+
+    downloadBtn.onclick = () => {
+      if (!fileBlob) return;
+      const url = URL.createObjectURL(fileBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+  } catch (err) {
+    alert("❌ Conversion failed! Please try again.");
+    console.error(err);
+  }
+});
+</script>
+
+</body>
+</html>          method: "POST",
           body: form,
         });
 

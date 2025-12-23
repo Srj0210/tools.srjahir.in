@@ -6,12 +6,19 @@
 
     <title>HTML to PDF Converter | SRJ Tools</title>
     <meta name="description" content="Convert any HTML file into high-quality PDF online. Free, fast, secure — SRJ Tools."/>
+
     <link rel="stylesheet" href="style.css"/>
     <link rel="icon" href="tools.png"/>
-<script src="ga.js"></script>
+
+    <!-- Analytics (unchanged) -->
+    <script src="ga.js"></script>
+
+    <!-- HTML to PDF (Client-side) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
+
 <canvas id="waveCanvas"></canvas>
 
 <header>
@@ -27,8 +34,12 @@
 
 <section class="converter-section">
     <div class="converter-box">
+
         <input type="file" id="htmlFile" accept=".html,.htm"/>
-        <button id="convertBtn" class="convert-btn">Convert to PDF</button>
+
+        <button id="convertBtn" class="convert-btn">
+            Convert to PDF
+        </button>
 
         <div class="progress-container">
             <div id="progressBar"></div>
@@ -37,10 +48,15 @@
         <div id="successBox" class="success-box" style="display:none;">
             ✅ Conversion Successful!
             <br/>
-            <button id="downloadBtn" class="download-btn">⬇ Download PDF</button>
+            <button id="downloadBtn" class="download-btn">
+                ⬇ Download PDF
+            </button>
         </div>
 
-        <button onclick="location.href='index.html'" class="back-btn">← Back to Home</button>
+        <button onclick="location.href='index.html'" class="back-btn">
+            ← Back to Home
+        </button>
+
     </div>
 </section>
 
@@ -51,61 +67,72 @@
 <script src="animation.js"></script>
 
 <script>
-const API = "https://api.srjahir.in";
-
-const htmlFile = document.getElementById("htmlFile");
+const htmlFile   = document.getElementById("htmlFile");
 const convertBtn = document.getElementById("convertBtn");
 const progressBar = document.getElementById("progressBar");
-const successBox = document.getElementById("successBox");
+const successBox  = document.getElementById("successBox");
 const downloadBtn = document.getElementById("downloadBtn");
 
-let finalBlob = null;
 let outputName = "output.pdf";
 
-convertBtn.onclick = async () => {
+convertBtn.onclick = () => {
     const file = htmlFile.files[0];
-    if (!file) return alert("Please select an HTML file first!");
+    if (!file) {
+        alert("Please select an HTML file first!");
+        return;
+    }
 
     outputName = file.name.replace(/\.[^/.]+$/, "") + ".pdf";
     progressBar.style.width = "0%";
     successBox.style.display = "none";
 
-    const form = new FormData();
-    form.append("file", file);
-
+    // Smooth fake progress (UX same as before)
     const loading = setInterval(() => {
         let w = parseInt(progressBar.style.width) || 0;
-        if (w < 90) progressBar.style.width = (w + 8) + "%";
+        if (w < 90) progressBar.style.width = (w + 6) + "%";
     }, 200);
 
-    try {
-        const res = await fetch(`${API}/html-to-pdf`, {
-            method: "POST",
-            body: form,
-        });
+    const reader = new FileReader();
 
+    reader.onload = () => {
         clearInterval(loading);
         progressBar.style.width = "100%";
 
-        if (!res.ok) throw new Error("Failed");
+        // Temporary container (not visible)
+        const container = document.createElement("div");
+        container.style.padding = "20px";
+        container.innerHTML = reader.result;
 
-        finalBlob = await res.blob();
-        successBox.style.display = "block";
+        html2pdf()
+            .from(container)
+            .set({
+                margin: 10,
+                filename: outputName,
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true
+                },
+                jsPDF: {
+                    unit: "mm",
+                    format: "a4",
+                    orientation: "portrait"
+                }
+            })
+            .save()
+            .then(() => {
+                successBox.style.display = "block";
+            })
+            .catch(() => {
+                alert("❌ Conversion failed. Try another file.");
+            });
+    };
 
-    } catch (e) {
-        alert("❌ Conversion failed. Try another file.");
-    }
+    reader.readAsText(file);
 };
 
-downloadBtn.onclick = () => {
-    if (!finalBlob) return;
-    const url = URL.createObjectURL(finalBlob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = outputName;
-    a.click();
-    URL.revokeObjectURL(url);
-};
+// Download button (optional, PDF auto-downloads anyway)
+downloadBtn.onclick = () => {};
 </script>
+
 </body>
 </html>

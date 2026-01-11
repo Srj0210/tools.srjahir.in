@@ -6,27 +6,21 @@
 
   <title>Free PDF to Excel Converter Online | Accurate & Secure | SRJ Tools</title>
 
-  <!-- ✅ SEO META -->
-  <meta name="description" content="Convert PDF tables into editable Excel (.xlsx) files instantly. Free, secure, and accurate PDF to Excel converter by SRJ Tools — no signup required." />
-  <meta name="keywords" content="PDF to Excel, Convert PDF to XLSX, PDF Table Extraction, Free PDF Converter, SRJ Tools, PDF to Spreadsheet Online, Secure PDF to Excel" />
+  <!-- SEO -->
+  <meta name="description" content="Convert PDF tables into editable Excel (.xlsx) files instantly. Free, secure, and accurate PDF to Excel converter by SRJ Tools." />
+  <meta name="keywords" content="PDF to Excel, Convert PDF to XLSX, PDF Table Extraction, Free PDF Converter, SRJ Tools" />
   <meta name="author" content="SRJahir Tech" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Free PDF to Excel Converter | SRJ Tools" />
-  <meta property="og:description" content="Extract tables from PDF and convert them into Excel spreadsheets — fast, secure, and watermark-free." />
+  <meta property="og:description" content="Extract tables from PDF and convert them into Excel spreadsheets — fast and secure." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/pdftoexcel.html" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="icon" type="image/png" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
-  <!-- Analytics -->
   <script src="ga.js"></script>
 </head>
 
@@ -34,7 +28,7 @@
 
 <canvas id="waveCanvas"></canvas>
 
-<!-- 🔰 HEADER -->
+<!-- HEADER -->
 <header class="header">
   <div class="logo-container">
     <img src="./assets/cloud.png" class="logo-part cloud" />
@@ -46,7 +40,7 @@
   <p class="subtitle">Convert PDF tables into editable Excel spreadsheets instantly</p>
 </header>
 
-<!-- ⚙️ CONVERTER -->
+<!-- CONVERTER -->
 <section class="converter-section">
   <div class="converter-box">
 
@@ -57,103 +51,85 @@
       <div id="progressBar"></div>
     </div>
 
-    <div id="successBox" class="success-box" style="display:none;">
-      ✅ Conversion Successful!<br />
-      <button id="downloadBtn" class="download-btn">⬇ Download Excel File</button>
-    </div>
-
-    <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+    <button onclick="window.location.href='index.html'" class="back-btn">
+      ← Back to Home
+    </button>
   </div>
 
-  <!-- 🧠 INFO / SEO CONTENT -->
+  <!-- INFO -->
   <div class="info-section">
     <h2>About SRJ Tools – PDF to Excel Converter</h2>
     <p>
       SRJ Tools helps you convert <b>PDF files containing tables</b> into fully
-      editable <b>Excel (.xlsx) spreadsheets</b>. Ideal for invoices, bank statements,
-      financial reports, and data sheets.
+      editable <b>Excel (.xlsx) spreadsheets</b>.
     </p>
 
-    <h3>🔹 Features & Benefits</h3>
+    <h3>Features</h3>
     <ul>
-      <li>📊 Accurate table extraction from PDF</li>
-      <li>📄 Converts PDF data into clean Excel rows & columns</li>
-      <li>🔒 Secure processing – files auto-deleted after conversion</li>
-      <li>📱 Works on mobile & desktop browsers</li>
-      <li>💯 Free forever – no watermark, no signup</li>
+      <li>Accurate PDF table extraction</li>
+      <li>Excel-ready rows & columns</li>
+      <li>Secure processing (auto delete)</li>
+      <li>Mobile & desktop friendly</li>
+      <li>Free forever</li>
     </ul>
 
-    <h3>🔹 Frequently Asked Questions</h3>
-    <p><b>Q1:</b> Does this work with scanned PDFs?<br>⚠️ Best results with text-based PDFs.</p>
-    <p><b>Q2:</b> Are multiple tables supported?<br>✅ Yes, all detected tables are included.</p>
-    <p><b>Q3:</b> Is my data safe?<br>✅ Files are processed securely and deleted automatically.</p>
+    <h3>FAQ</h3>
+    <p><b>Q:</b> Does this work with scanned PDFs?<br>⚠️ Best for text-based PDFs.</p>
   </div>
 </section>
 
-<!-- 🧩 FOOTER -->
 <footer class="footer">
   <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
 </footer>
 
-<!-- 🌊 Scripts -->
 <script src="animation.js"></script>
 
+<!-- ✅ SIMPLE + BULLETPROOF JS -->
 <script>
-const API_BASE = "https://api.srjahir.in";
+const API = "https://api.srjahir.in";
 
-const convertBtn  = document.getElementById("convertBtn");
-const pdfFile     = document.getElementById("pdfFile");
+const fileInput  = document.getElementById("pdfFile");
+const convertBtn = document.getElementById("convertBtn");
 const progressBar = document.getElementById("progressBar");
-const successBox  = document.getElementById("successBox");
-const downloadBtn = document.getElementById("downloadBtn");
-
-let fileBlob = null;
-let fileName = "Converted_File.xlsx";
 
 convertBtn.addEventListener("click", async () => {
-  const file = pdfFile.files[0];
-  if (!file) return alert("📄 Please select a PDF file first!");
-
-  fileName = file.name.replace(/\.[^/.]+$/, "") + ".xlsx";
-
-  successBox.style.display = "none";
-  progressBar.style.width = "0%";
-  fileBlob = null;
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please select a PDF file");
+    return;
+  }
 
   const formData = new FormData();
   formData.append("file", file);
 
-  try {
-    const progressSim = setInterval(() => {
-      const w = parseInt(progressBar.style.width) || 0;
-      if (w < 90) progressBar.style.width = (w + 10) + "%";
-    }, 250);
+  progressBar.style.width = "30%";
 
-    const res = await fetch(`${API_BASE}/pdf-to-excel`, {
+  try {
+    const res = await fetch(`${API}/pdf-to-excel`, {
       method: "POST",
-      body: formData,
+      body: formData
     });
 
-    clearInterval(progressSim);
+    if (!res.ok) throw new Error("Server error");
+
+    progressBar.style.width = "70%";
+
+    const blob = await res.blob();
+
+    // 🔥 ALWAYS DOWNLOAD (even notice excel)
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = file.name.replace(/\.pdf$/i, "") + ".xlsx";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
     progressBar.style.width = "100%";
 
-    if (!res.ok) throw new Error("Conversion failed");
-
-    fileBlob = await res.blob();
-    successBox.style.display = "block";
-
-    downloadBtn.onclick = () => {
-      if (!fileBlob) return;
-      const url = URL.createObjectURL(fileBlob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      URL.revokeObjectURL(url);
-    };
-
   } catch (err) {
-    alert("❌ Conversion failed! Please try another file.");
+    alert("Conversion failed. Try another PDF.");
     console.error(err);
   }
 });

@@ -4,18 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Free PDF to JPG Converter Online | High Quality & Secure | SRJ Tools</title>
+  <title>Free PDF to image Converter Online | High Quality & Secure | SRJ Tools</title>
 
   <!-- ✅ SEO META -->
-  <meta name="description" content="Convert PDF pages into high-quality JPG images instantly. Free, secure, and fast PDF to JPG converter by SRJ Tools — no signup required." />
-  <meta name="keywords" content="PDF to JPG, Convert PDF to Image, PDF to JPEG, Free PDF Converter, SRJ Tools, PDF Image Converter Online" />
+  <meta name="description" content="Convert PDF pages into high-quality image images instantly. Free, secure, and fast PDF to image converter by SRJ Tools — no signup required." />
+  <meta name="keywords" content="PDF to image, Convert PDF to Image, PDF to JPEG, Free PDF Converter, SRJ Tools, PDF Image Converter Online" />
   <meta name="author" content="SRJahir Tech" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Free PDF to JPG Converter | SRJ Tools" />
-  <meta property="og:description" content="Convert PDF pages into high-quality JPG images online — secure, fast, and watermark-free." />
+  <meta property="og:title" content="Free PDF to image Converter | SRJ Tools" />
+  <meta property="og:description" content="Convert PDF pages into high-quality image images online — secure, fast, and watermark-free." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
-  <meta property="og:url" content="https://tools.srjahir.in/pdftojpg.html" />
+  <meta property="og:url" content="https://tools.srjahir.in/pdftoimage.html" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="icon" type="image/png" href="tools.png" />
@@ -40,8 +40,8 @@
     <img src="./assets/code-center.png" class="logo-part center" />
   </div>
 
-  <h1 class="title-under-logo">Free PDF to JPG Converter</h1>
-  <p class="subtitle">Convert each PDF page into high-quality JPG images instantly</p>
+  <h1 class="title-under-logo">Free PDF to image Converter</h1>
+  <p class="subtitle">Convert each PDF page into high-quality image images instantly</p>
 </header>
 
 <!-- ⚙️ CONVERTER -->
@@ -49,7 +49,7 @@
   <div class="converter-box">
 
     <input type="file" id="pdfFile" accept=".pdf" />
-    <button id="convertBtn">Convert to JPG</button>
+    <button id="convertBtn">Convert to image</button>
 
     <div class="progress-container">
       <div id="progressBar"></div>
@@ -57,7 +57,7 @@
 
     <div id="successBox" class="success-box" style="display:none;">
       ✅ Conversion Successful!<br />
-      <button id="downloadBtn" class="download-btn">⬇ Download JPG Images (ZIP)</button>
+      <button id="downloadBtn" class="download-btn">⬇ Download image Images (ZIP)</button>
     </div>
 
     <button onclick="window.location.href='index.html'" class="back-btn">
@@ -67,15 +67,15 @@
 
   <!-- 🧠 INFO / SEO CONTENT -->
   <div class="info-section">
-    <h2>About SRJ Tools – PDF to JPG Converter</h2>
+    <h2>About SRJ Tools – PDF to image Converter</h2>
     <p>
-      SRJ Tools lets you convert <b>PDF documents into JPG images</b> page by page.
+      SRJ Tools lets you convert <b>PDF documents into image images</b> page by page.
       Perfect for sharing, previewing, printing, or uploading PDF content as images.
     </p>
 
     <h3>🔹 Features & Benefits</h3>
     <ul>
-      <li>🖼️ High-quality JPG output (each page)</li>
+      <li>🖼️ High-quality image output (each page)</li>
       <li>📦 ZIP download for multi-page PDFs</li>
       <li>🔒 Secure processing – files auto-deleted</li>
       <li>📱 Works on mobile & desktop browsers</li>
@@ -83,8 +83,8 @@
     </ul>
 
     <h3>🔹 Frequently Asked Questions</h3>
-    <p><b>Q1:</b> Are all pages converted?<br>✅ Yes, every page becomes a JPG image.</p>
-    <p><b>Q2:</b> What do I download?<br>✅ A ZIP file containing all JPG images.</p>
+    <p><b>Q1:</b> Are all pages converted?<br>✅ Yes, every page becomes a image image.</p>
+    <p><b>Q2:</b> What do I download?<br>✅ A ZIP file containing all image images.</p>
     <p><b>Q3:</b> Is my data safe?<br>✅ Files are processed securely and deleted automatically.</p>
   </div>
 </section>
@@ -113,7 +113,7 @@ convertBtn.addEventListener("click", async () => {
   const file = pdfFile.files[0];
   if (!file) return alert("📄 Please select a PDF file first!");
 
-  fileName = file.name.replace(/\.[^/.]+$/, "") + "_JPG.zip";
+  fileName = file.name.replace(/\.[^/.]+$/, "") + "_image.zip";
 
   successBox.style.display = "none";
   progressBar.style.width = "0%";
@@ -128,7 +128,7 @@ convertBtn.addEventListener("click", async () => {
       if (w < 90) progressBar.style.width = (w + 10) + "%";
     }, 250);
 
-    const res = await fetch(`${API_BASE}/pdf-to-jpg`, {
+    const res = await fetch(`${API_BASE}/pdf-to-image`, {
       method: "POST",
       body: formData,
     });

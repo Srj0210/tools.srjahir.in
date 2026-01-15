@@ -3,99 +3,180 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming Soon | SRJ Tools</title>
 
-  <link rel="stylesheet" href="style.css" />
+  <title>Unlock PDF Online Free | Remove PDF Password | SRJ Tools</title>
+
+  <!-- ✅ SEO META -->
+  <meta name="description" content="Unlock password-protected PDF files online for free. Remove PDF password securely using SRJ Tools. Fast, safe & watermark-free." />
+  <meta name="keywords" content="Unlock PDF, Remove PDF Password, PDF Unlock Online, PDF Security Removal, SRJ Tools, Unlock PDF Free" />
+  <meta name="author" content="SRJahir Tech" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Unlock PDF Online Free | SRJ Tools" />
+  <meta property="og:description" content="Remove password from PDF instantly. Secure, fast and no watermark." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/unlockpdf.html" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+
   <link rel="icon" type="image/png" href="tools.png" />
+  <link rel="stylesheet" href="style.css" />
 
-  <style>
-    .soon-section {
-      text-align: center;
-      margin-top: 80px;
-      padding: 20px;
-      z-index: 2;
-      position: relative;
-    }
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
-    .soon-box {
-      display: inline-block;
-      background: rgba(10, 25, 60, 0.6);
-      border: 1px solid rgba(0, 140, 255, 0.25);
-      border-radius: 20px;
-      padding: 40px 25px;
-      width: 90%;
-      max-width: 420px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.45);
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    .soon-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #1e90ff;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-    }
-
-    .soon-text {
-      font-size: 1rem;
-      color: #b9c7e8;
-      margin-bottom: 20px;
-    }
-
-    .back-btn {
-      background: transparent;
-      border: 1px solid rgba(0, 140, 255, 0.3);
-      color: #1e90ff;
-      border-radius: 10px;
-      padding: 10px 16px;
-      cursor: pointer;
-      width: 100%;
-      transition: 0.25s;
-      margin-top: 10px;
-    }
-
-    .back-btn:hover {
-      background: rgba(0, 140, 255, 0.2);
-      color: #fff;
-      border-color: rgba(0, 140, 255, 0.4);
-    }
-  </style>
-<script src="ga.js"></script>
+  <!-- Analytics -->
+  <script src="ga.js"></script>
 </head>
 
 <body>
-  <canvas id="waveCanvas"></canvas>
 
-  <header class="header">
-    <div class="logo-container">
-      <img src="./assets/cloud.png" class="logo-part cloud" />
-      <img src="./assets/gear-ring.png" class="logo-part gear" />
-      <img src="./assets/code-center.png" class="logo-part center" />
+<canvas id="waveCanvas"></canvas>
+
+<!-- 🔰 HEADER -->
+<header class="header">
+  <div class="logo-container">
+    <img src="./assets/cloud.png" class="logo-part cloud" />
+    <img src="./assets/gear-ring.png" class="logo-part gear" />
+    <img src="./assets/code-center.png" class="logo-part center" />
+  </div>
+
+  <h1 class="title-under-logo">Unlock PDF</h1>
+  <p class="subtitle">Remove password protection from PDF files</p>
+</header>
+
+<!-- ⚙️ CONVERTER -->
+<section class="converter-section">
+  <div class="converter-box">
+
+    <!-- 📄 FILE -->
+    <input type="file" id="pdfFile" accept=".pdf" />
+
+    <!-- 🔑 PASSWORD -->
+    <input
+      type="password"
+      id="password"
+      class="password-input"
+      placeholder="Enter PDF password"
+    />
+
+    <!-- 👁 TOGGLE -->
+    <div class="password-toggle">
+      <label>
+        <input type="checkbox" id="togglePassword" />
+        Show password
+      </label>
     </div>
 
-    <h1 class="title-under-logo">Coming Soon</h1>
-    <p class="subtitle">This tool is under development</p>
-  </header>
+    <!-- 🔓 ACTION -->
+    <button id="convertBtn">Unlock PDF</button>
 
-  <section class="soon-section">
-    <div class="soon-box">
-      <h2 class="soon-title">🚀 Coming Soon</h2>
-      <p class="soon-text">
-        This tool is currently being built with CloudAI.<br>
-        Please check back later!
-      </p>
+    <!-- 📊 PROGRESS -->
+    <div class="progress-container">
+      <div id="progressBar"></div>
+    </div>
 
-      <button onclick="window.location.href='index.html'" class="back-btn">
-        ← Back to Home
+    <!-- ✅ SUCCESS -->
+    <div id="successBox" class="success-box" style="display:none;">
+      🔓 PDF Unlocked Successfully!
+      <button id="downloadBtn" class="download-btn">
+        ⬇ Download Unlocked PDF
       </button>
     </div>
-  </section>
 
-  <footer class="footer">
-    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-  </footer>
+    <!-- 🔙 BACK -->
+    <button onclick="window.location.href='index.html'" class="back-btn">
+      ← Back to Home
+    </button>
+  </div>
 
-  <script src="animation.js"></script>
+  <!-- 🧠 INFO -->
+  <div class="info-section">
+    <h2>About SRJ Tools – Unlock PDF</h2>
+    <p>
+      SRJ Tools lets you <b>remove password protection from PDFs</b> online.
+      Unlock secured documents quickly without installing any software.
+    </p>
+
+    <h3>🔹 Features & Benefits</h3>
+    <ul>
+      <li>🔓 Remove PDF password instantly</li>
+      <li>📄 No quality or layout loss</li>
+      <li>🔒 Secure processing – files auto-deleted</li>
+      <li>📱 Works on mobile & desktop</li>
+      <li>💯 Free forever – no watermark</li>
+    </ul>
+
+    <h3>🔹 FAQs</h3>
+    <p><b>Q1:</b> Is my PDF safe?<br>✅ Yes, files are deleted automatically.</p>
+    <p><b>Q2:</b> Can I unlock any PDF?<br>⚠️ Password must be correct.</p>
+  </div>
+</section>
+
+<!-- 🧩 FOOTER -->
+<footer class="footer">
+  <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+</footer>
+
+<script src="animation.js"></script>
+
+<script>
+const API = "https://api.srjahir.in";
+
+const convertBtn = document.getElementById("convertBtn");
+const pdfFile = document.getElementById("pdfFile");
+const password = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
+const progressBar = document.getElementById("progressBar");
+const successBox = document.getElementById("successBox");
+const downloadBtn = document.getElementById("downloadBtn");
+
+let blob = null;
+
+/* 👁 Show / Hide */
+togglePassword.addEventListener("change", () => {
+  password.type = togglePassword.checked ? "text" : "password";
+});
+
+/* 🔓 Unlock PDF */
+convertBtn.addEventListener("click", async () => {
+  if (!pdfFile.files[0] || !password.value.trim()) {
+    return alert("📄 Please select PDF and enter password");
+  }
+
+  const formData = new FormData();
+  formData.append("file", pdfFile.files[0]);
+  formData.append("password", password.value);
+
+  progressBar.style.width = "20%";
+  successBox.style.display = "none";
+
+  try {
+    const res = await fetch(`${API}/unlock-pdf`, {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) throw new Error();
+
+    progressBar.style.width = "100%";
+    blob = await res.blob();
+    successBox.style.display = "block";
+
+    downloadBtn.onclick = () => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "unlocked.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+  } catch {
+    alert("❌ Unlock failed. Please check password.");
+  }
+});
+</script>
+
 </body>
 </html>

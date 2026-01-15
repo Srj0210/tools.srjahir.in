@@ -333,3 +333,37 @@ footer {
     margin: 15px 10px;
   }
 }
+
+
+/* 🔐 Password Input (Protect PDF) */
+.password-input {
+  margin-top: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 140, 255, 0.35);
+  background: rgba(0, 60, 120, 0.35);
+  color: #ffffff; /* ✅ white text */
+  outline: none;
+  box-shadow: inset 0 0 8px rgba(0, 140, 255, 0.25);
+}
+
+.password-input::placeholder {
+  color: #a9caff;
+}
+
+/* 👁 Show / Hide password */
+.password-toggle {
+  margin-top: 8px;
+  text-align: left;
+  font-size: 0.85rem;
+  color: #a9caff;
+  cursor: pointer;
+  user-select: none;
+}
+
+.password-toggle input {
+  margin-right: 6px;
+  accent-color: #1e90ff;
+}

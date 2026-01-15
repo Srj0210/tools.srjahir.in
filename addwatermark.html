@@ -13,7 +13,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="Add Watermark to PDF | SRJ Tools" />
-  <meta property="og:description" content="Add text or image watermark to your PDF documents instantly. Free, secure & watermark-free tool." />
+  <meta property="og:description" content="Add text or image watermark instantly. Free, secure & no watermark." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/addwatermark.html" />
 
@@ -22,16 +22,13 @@
   <link rel="icon" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="ga.js"></script>
 </head>
 
 <body>
-
 <canvas id="waveCanvas"></canvas>
 
-<!-- 🔰 HEADER -->
 <header class="header">
   <div class="logo-container">
     <img src="./assets/cloud.png" class="logo-part cloud" />
@@ -43,83 +40,45 @@
   <p class="subtitle">Protect your PDF documents with text or image watermark</p>
 </header>
 
-<!-- ⚙️ CONVERTER -->
 <section class="converter-section">
   <div class="converter-box">
 
-    <!-- PDF FILE -->
+    <label>📄 Choose PDF file</label>
     <input type="file" id="pdfFile" accept=".pdf" />
 
-    <!-- TEXT WATERMARK -->
-    <input
-      type="password"
-      id="watermarkText"
+    <input type="password" id="watermarkText"
       placeholder="Enter watermark text (optional)"
-      style="
-        margin-top:12px;
-        background: rgba(0,140,255,0.15);
-        color:#ffffff;
-        border:1px solid rgba(0,140,255,0.45);
-        padding:12px;
-        border-radius:10px;
-        width:100%;
-        font-size:1rem;"
-    />
+      style="margin-top:12px;background:rgba(0,140,255,0.15);color:#fff;border:1px solid rgba(0,140,255,0.45);padding:12px;border-radius:10px;width:100%;" />
 
-    <!-- SHOW / HIDE -->
-    <label style="display:flex;align-items:center;margin-top:8px;font-size:0.85rem;color:#a9d6ff;">
-      <input type="checkbox" id="toggleText" style="margin-right:6px;">
-      Show watermark text
+    <label style="display:flex;align-items:center;margin-top:6px;color:#a9d6ff;">
+      <input type="checkbox" id="toggleText" style="margin-right:6px;"> Show watermark text
     </label>
 
-    <!-- IMAGE WATERMARK -->
-    <input
-      type="file"
-      id="imageWatermark"
-      accept="image/png,image/jpeg"
-      style="margin-top:12px"
-    />
+    <label style="margin-top:10px;">📐 Watermark position</label>
+    <select id="position">
+      <option value="diagonal">Diagonal (Cross)</option>
+      <option value="center">Center (Straight)</option>
+      <option value="bottom-right">Bottom Right</option>
+    </select>
 
-    <!-- ACTION -->
+    <div style="margin:12px 0;text-align:center;color:#5faeff;">— OR IMAGE WATERMARK —</div>
+
+    <label>🖼 Choose Image watermark</label>
+    <input type="file" id="imageWatermark" accept="image/png,image/jpeg" />
+
     <button id="convertBtn">Add Watermark</button>
 
-    <!-- PROGRESS -->
-    <div class="progress-container">
-      <div id="progressBar"></div>
-    </div>
+    <div class="progress-container"><div id="progressBar"></div></div>
 
-    <!-- SUCCESS -->
     <div id="successBox" class="success-box" style="display:none;">
-      ✅ Watermark Added Successfully!
-      <button id="downloadBtn" class="download-btn">
-        ⬇ Download Watermarked PDF
-      </button>
+      ✅ Watermark Added!
+      <button id="downloadBtn" class="download-btn">⬇ Download PDF</button>
     </div>
 
-    <button onclick="window.location.href='index.html'" class="back-btn">
-      ← Back to Home
-    </button>
-  </div>
-
-  <!-- 🧠 INFO -->
-  <div class="info-section">
-    <h2>About SRJ Tools – Add Watermark</h2>
-    <p>
-      SRJ Tools lets you <b>add text or image watermark to PDF</b> files online to protect your
-      documents from unauthorized use.
-    </p>
-
-    <ul>
-      <li>🛡 Text & image watermark support</li>
-      <li>📄 No quality loss</li>
-      <li>🔒 Secure processing – auto delete</li>
-      <li>📱 Works on all devices</li>
-      <li>💯 Free forever</li>
-    </ul>
+    <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
   </div>
 </section>
 
-<!-- 🧩 FOOTER -->
 <footer class="footer">
   <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
 </footer>
@@ -128,69 +87,36 @@
 
 <script>
 const API = "https://api.srjahir.in";
-
-const convertBtn = document.getElementById("convertBtn");
-const pdfFile = document.getElementById("pdfFile");
-const watermarkText = document.getElementById("watermarkText");
-const imageWatermark = document.getElementById("imageWatermark");
 const toggleText = document.getElementById("toggleText");
-const progressBar = document.getElementById("progressBar");
-const successBox = document.getElementById("successBox");
-const downloadBtn = document.getElementById("downloadBtn");
-
-toggleText.addEventListener("change", () => {
+toggleText.onchange = () => {
   watermarkText.type = toggleText.checked ? "text" : "password";
-});
+};
 
-convertBtn.addEventListener("click", async () => {
-  if (!pdfFile.files[0]) {
-    return alert("Please select a PDF file");
-  }
+convertBtn.onclick = async () => {
+  if (!pdfFile.files[0]) return alert("Select PDF");
 
-  if (!watermarkText.value.trim() && !imageWatermark.files[0]) {
-    return alert("Enter watermark text or choose image");
-  }
+  if (!watermarkText.value && !imageWatermark.files[0])
+    return alert("Enter text or choose image");
 
-  const formData = new FormData();
-  formData.append("file", pdfFile.files[0]);
+  const fd = new FormData();
+  fd.append("file", pdfFile.files[0]);
+  fd.append("position", position.value);
 
-  if (watermarkText.value.trim()) {
-    formData.append("text", watermarkText.value.trim());
-  }
+  if (watermarkText.value) fd.append("text", watermarkText.value);
+  if (imageWatermark.files[0]) fd.append("image", imageWatermark.files[0]);
 
-  if (imageWatermark.files[0]) {
-    formData.append("image", imageWatermark.files[0]);
-  }
+  const res = await fetch(`${API}/add-watermark`, { method:"POST", body:fd });
+  if (!res.ok) return alert("Watermark failed");
 
-  progressBar.style.width = "30%";
-  successBox.style.display = "none";
-
-  try {
-    const res = await fetch(`${API}/add-watermark`, {
-      method: "POST",
-      body: formData
-    });
-
-    if (!res.ok) throw new Error();
-
-    progressBar.style.width = "100%";
-    const blob = await res.blob();
-    successBox.style.display = "block";
-
-    downloadBtn.onclick = () => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "watermarked.pdf";
-      a.click();
-      URL.revokeObjectURL(url);
-    };
-
-  } catch {
-    alert("Watermark failed. Try again later.");
-  }
-});
+  const blob = await res.blob();
+  successBox.style.display="block";
+  downloadBtn.onclick=()=>{
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="watermarked.pdf";
+    a.click();
+  };
+};
 </script>
-
 </body>
 </html>

@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# Block server API paths (only frontend should be indexed)
+
 Disallow: /api/
 Disallow: /server/
 Disallow: /backend/

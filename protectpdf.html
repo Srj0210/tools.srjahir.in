@@ -3,99 +3,155 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming Soon | SRJ Tools</title>
 
+  <title>Protect PDF with Password Online | Secure PDF Lock | SRJ Tools</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Protect PDF files with password online for free. Lock your PDF securely using SRJ Tools — fast, safe, and watermark-free." />
+  <meta name="keywords" content="Protect PDF, Lock PDF, Password Protect PDF, PDF Security, SRJ Tools, Secure PDF Online" />
+  <meta name="author" content="SRJahir Tech" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Protect PDF with Password | SRJ Tools" />
+  <meta property="og:description" content="Lock your PDF files with password instantly. Free, secure & no watermark." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/protectpdf.html" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="tools.png" />
 
-  <style>
-    .soon-section {
-      text-align: center;
-      margin-top: 80px;
-      padding: 20px;
-      z-index: 2;
-      position: relative;
-    }
-
-    .soon-box {
-      display: inline-block;
-      background: rgba(10, 25, 60, 0.6);
-      border: 1px solid rgba(0, 140, 255, 0.25);
-      border-radius: 20px;
-      padding: 40px 25px;
-      width: 90%;
-      max-width: 420px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.45);
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    .soon-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #1e90ff;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-    }
-
-    .soon-text {
-      font-size: 1rem;
-      color: #b9c7e8;
-      margin-bottom: 20px;
-    }
-
-    .back-btn {
-      background: transparent;
-      border: 1px solid rgba(0, 140, 255, 0.3);
-      color: #1e90ff;
-      border-radius: 10px;
-      padding: 10px 16px;
-      cursor: pointer;
-      width: 100%;
-      transition: 0.25s;
-      margin-top: 10px;
-    }
-
-    .back-btn:hover {
-      background: rgba(0, 140, 255, 0.2);
-      color: #fff;
-      border-color: rgba(0, 140, 255, 0.4);
-    }
-  </style>
-<script src="ga.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="ga.js"></script>
 </head>
 
 <body>
-  <canvas id="waveCanvas"></canvas>
 
-  <header class="header">
-    <div class="logo-container">
-      <img src="./assets/cloud.png" class="logo-part cloud" />
-      <img src="./assets/gear-ring.png" class="logo-part gear" />
-      <img src="./assets/code-center.png" class="logo-part center" />
+<canvas id="waveCanvas"></canvas>
+
+<!-- 🔰 HEADER -->
+<header class="header">
+  <div class="logo-container">
+    <img src="./assets/cloud.png" class="logo-part cloud" />
+    <img src="./assets/gear-ring.png" class="logo-part gear" />
+    <img src="./assets/code-center.png" class="logo-part center" />
+  </div>
+
+  <h1 class="title-under-logo">Protect PDF</h1>
+  <p class="subtitle">Secure your PDF with password protection</p>
+</header>
+
+<!-- ⚙️ CONVERTER -->
+<section class="converter-section">
+  <div class="converter-box">
+
+    <input type="file" id="pdfFile" accept=".pdf" />
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Enter PDF password"
+      style="margin-top:12px"
+    />
+
+    <button id="convertBtn">Protect PDF</button>
+
+    <div class="progress-container">
+      <div id="progressBar"></div>
     </div>
 
-    <h1 class="title-under-logo">Coming Soon</h1>
-    <p class="subtitle">This tool is under development</p>
-  </header>
-
-  <section class="soon-section">
-    <div class="soon-box">
-      <h2 class="soon-title">🚀 Coming Soon</h2>
-      <p class="soon-text">
-        This tool is currently being built with CloudAI.<br>
-        Please check back later!
-      </p>
-
-      <button onclick="window.location.href='index.html'" class="back-btn">
-        ← Back to Home
+    <div id="successBox" class="success-box" style="display:none;">
+      🔒 PDF Protected Successfully!
+      <button id="downloadBtn" class="download-btn">
+        ⬇ Download Protected PDF
       </button>
     </div>
-  </section>
 
-  <footer class="footer">
-    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-  </footer>
+    <button onclick="window.location.href='index.html'" class="back-btn">
+      ← Back to Home
+    </button>
+  </div>
 
-  <script src="animation.js"></script>
+  <!-- INFO -->
+  <div class="info-section">
+    <h2>About SRJ Tools – Protect PDF</h2>
+    <p>
+      SRJ Tools allows you to <b>lock PDF files with password</b> online.
+      Keep your documents private and secure without installing any software.
+    </p>
+
+    <ul>
+      <li>🔐 Password-protect PDF files</li>
+      <li>📄 No quality loss</li>
+      <li>🔒 Secure processing</li>
+      <li>📱 Works on all devices</li>
+      <li>💯 Free forever</li>
+    </ul>
+
+    <h3>FAQ</h3>
+    <p><b>Q:</b> Is password strong?<br>✅ Yes, AES-128 encryption.</p>
+    <p><b>Q:</b> Files stored?<br>❌ No, auto-deleted.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+</footer>
+
+<script src="animation.js"></script>
+
+<script>
+const API = "https://api.srjahir.in";
+
+const convertBtn = document.getElementById("convertBtn");
+const pdfFile = document.getElementById("pdfFile");
+const password = document.getElementById("password");
+const progressBar = document.getElementById("progressBar");
+const successBox = document.getElementById("successBox");
+const downloadBtn = document.getElementById("downloadBtn");
+
+let blob = null;
+
+convertBtn.addEventListener("click", async () => {
+  if (!pdfFile.files[0] || !password.value.trim()) {
+    return alert("Please select PDF and enter password");
+  }
+
+  const formData = new FormData();
+  formData.append("file", pdfFile.files[0]);
+  formData.append("password", password.value);
+
+  progressBar.style.width = "20%";
+  successBox.style.display = "none";
+
+  try {
+    const res = await fetch(`${API}/protect-pdf`, {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) throw new Error();
+
+    progressBar.style.width = "100%";
+    blob = await res.blob();
+    successBox.style.display = "block";
+
+    downloadBtn.onclick = () => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "protected.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+  } catch {
+    alert("PDF protection failed. Try again.");
+  }
+});
+</script>
+
 </body>
 </html>

@@ -22,11 +22,13 @@
   <link rel="icon" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
 
+  <!-- GSAP + Analytics -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="ga.js"></script>
 </head>
 
 <body>
+
 <canvas id="waveCanvas"></canvas>
 
 <header class="header">
@@ -43,39 +45,62 @@
 <section class="converter-section">
   <div class="converter-box">
 
+    <!-- PDF -->
     <label>📄 Choose PDF file</label>
     <input type="file" id="pdfFile" accept=".pdf" />
 
-    <input type="password" id="watermarkText"
+    <!-- TEXT -->
+    <input
+      type="password"
+      id="watermarkText"
       placeholder="Enter watermark text (optional)"
-      style="margin-top:12px;background:rgba(0,140,255,0.15);color:#fff;border:1px solid rgba(0,140,255,0.45);padding:12px;border-radius:10px;width:100%;" />
+      style="margin-top:12px;background:rgba(0,140,255,0.15);color:#fff;
+             border:1px solid rgba(0,140,255,0.45);padding:12px;
+             border-radius:10px;width:100%;font-size:1rem;"
+    />
 
     <label style="display:flex;align-items:center;margin-top:6px;color:#a9d6ff;">
-      <input type="checkbox" id="toggleText" style="margin-right:6px;"> Show watermark text
+      <input type="checkbox" id="toggleText" style="margin-right:6px;">
+      Show watermark text
     </label>
 
+    <!-- POSITION -->
     <label style="margin-top:10px;">📐 Watermark position</label>
-    <select id="position">
+    <select id="position"
+      style="width:100%;padding:12px;border-radius:10px;
+             background:rgba(0,140,255,0.15);color:#ffffff;
+             border:1px solid rgba(0,140,255,0.45);">
       <option value="diagonal">Diagonal (Cross)</option>
       <option value="center">Center (Straight)</option>
       <option value="bottom-right">Bottom Right</option>
     </select>
 
-    <div style="margin:12px 0;text-align:center;color:#5faeff;">— OR IMAGE WATERMARK —</div>
+    <div style="margin:12px 0;text-align:center;color:#5faeff;">
+      — OR IMAGE WATERMARK —
+    </div>
 
+    <!-- IMAGE -->
     <label>🖼 Choose Image watermark</label>
     <input type="file" id="imageWatermark" accept="image/png,image/jpeg" />
 
-    <button id="convertBtn">Add Watermark</button>
+    <!-- ACTION -->
+    <button id="convertBtn" class="convert-btn">Add Watermark</button>
 
-    <div class="progress-container"><div id="progressBar"></div></div>
+    <!-- PROGRESS -->
+    <div class="progress-container">
+      <div id="progressBar"></div>
+    </div>
 
+    <!-- SUCCESS -->
     <div id="successBox" class="success-box" style="display:none;">
-      ✅ Watermark Added!
+      ✅ Watermark Added Successfully!
       <button id="downloadBtn" class="download-btn">⬇ Download PDF</button>
     </div>
 
-    <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+    <button onclick="window.location.href='index.html'" class="back-btn">
+      ← Back to Home
+    </button>
+
   </div>
 </section>
 
@@ -87,36 +112,77 @@
 
 <script>
 const API = "https://api.srjahir.in";
+
+/* ELEMENTS */
+const convertBtn = document.getElementById("convertBtn");
+const pdfFile = document.getElementById("pdfFile");
+const watermarkText = document.getElementById("watermarkText");
+const imageWatermark = document.getElementById("imageWatermark");
 const toggleText = document.getElementById("toggleText");
-toggleText.onchange = () => {
+const position = document.getElementById("position");
+const progressBar = document.getElementById("progressBar");
+const successBox = document.getElementById("successBox");
+const downloadBtn = document.getElementById("downloadBtn");
+
+/* SHOW / HIDE TEXT */
+toggleText.addEventListener("change", () => {
   watermarkText.type = toggleText.checked ? "text" : "password";
-};
+});
 
-convertBtn.onclick = async () => {
-  if (!pdfFile.files[0]) return alert("Select PDF");
+/* SUBMIT */
+convertBtn.addEventListener("click", async () => {
+  if (!pdfFile.files.length) {
+    alert("Please select a PDF file");
+    return;
+  }
 
-  if (!watermarkText.value && !imageWatermark.files[0])
-    return alert("Enter text or choose image");
+  if (!watermarkText.value.trim() && !imageWatermark.files.length) {
+    alert("Enter watermark text or choose image");
+    return;
+  }
 
-  const fd = new FormData();
-  fd.append("file", pdfFile.files[0]);
-  fd.append("position", position.value);
+  const formData = new FormData();
+  formData.append("file", pdfFile.files[0]);
+  formData.append("position", position.value);
 
-  if (watermarkText.value) fd.append("text", watermarkText.value);
-  if (imageWatermark.files[0]) fd.append("image", imageWatermark.files[0]);
+  if (watermarkText.value.trim()) {
+    formData.append("text", watermarkText.value.trim());
+  }
 
-  const res = await fetch(`${API}/add-watermark`, { method:"POST", body:fd });
-  if (!res.ok) return alert("Watermark failed");
+  if (imageWatermark.files.length) {
+    formData.append("image", imageWatermark.files[0]);
+  }
 
-  const blob = await res.blob();
-  successBox.style.display="block";
-  downloadBtn.onclick=()=>{
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download="watermarked.pdf";
-    a.click();
-  };
-};
+  progressBar.style.width = "40%";
+  successBox.style.display = "none";
+
+  try {
+    const res = await fetch(`${API}/add-watermark`, {
+      method: "POST",
+      body: formData
+    });
+
+    if (!res.ok) throw new Error();
+
+    progressBar.style.width = "100%";
+    const blob = await res.blob();
+    successBox.style.display = "block";
+
+    downloadBtn.onclick = () => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "watermarked.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+  } catch (e) {
+    alert("Watermark failed. Try again later.");
+    console.error(e);
+  }
+});
 </script>
+
 </body>
 </html>

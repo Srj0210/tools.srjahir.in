@@ -4,25 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Protect PDF with Password Online | Secure PDF Lock | SRJ Tools</title>
+  <title>Protect PDF with Password Online Free | Secure PDF Lock | SRJ Tools</title>
 
-  <!-- SEO -->
-  <meta name="description" content="Protect PDF files with password online for free. Lock your PDF securely using SRJ Tools — fast, safe, and watermark-free." />
-  <meta name="keywords" content="Protect PDF, Lock PDF, Password Protect PDF, PDF Security, SRJ Tools, Secure PDF Online" />
+  <!-- ✅ SEO META -->
+  <meta name="description" content="Protect PDF files with password online for free. Lock your PDF securely using AES encryption. Fast, secure & watermark-free PDF protection by SRJ Tools." />
+  <meta name="keywords" content="Protect PDF, Lock PDF, Password Protect PDF, Secure PDF Online, PDF Security Tool, SRJ Tools, Lock PDF Free" />
   <meta name="author" content="SRJahir Tech" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Protect PDF with Password | SRJ Tools" />
-  <meta property="og:description" content="Lock your PDF files with password instantly. Free, secure & no watermark." />
+  <meta property="og:description" content="Lock PDF files with password instantly. Free, secure, no watermark PDF protection tool." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/protectpdf.html" />
 
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="icon" href="tools.png" />
+  <link rel="icon" type="image/png" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
 
+  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- Analytics -->
   <script src="ga.js"></script>
 </head>
 
@@ -46,21 +50,34 @@
 <section class="converter-section">
   <div class="converter-box">
 
+    <!-- 📄 PDF FILE -->
     <input type="file" id="pdfFile" accept=".pdf" />
 
+    <!-- 🔐 PASSWORD INPUT -->
     <input
       type="password"
       id="password"
-      placeholder="Enter PDF password"
-      style="margin-top:12px"
+      class="password-input"
+      placeholder="Enter strong PDF password"
     />
 
+    <!-- 👁 SHOW / HIDE -->
+    <div class="password-toggle">
+      <label>
+        <input type="checkbox" id="togglePassword" />
+        Show password
+      </label>
+    </div>
+
+    <!-- 🔒 ACTION -->
     <button id="convertBtn">Protect PDF</button>
 
+    <!-- 📊 PROGRESS -->
     <div class="progress-container">
       <div id="progressBar"></div>
     </div>
 
+    <!-- ✅ SUCCESS -->
     <div id="successBox" class="success-box" style="display:none;">
       🔒 PDF Protected Successfully!
       <button id="downloadBtn" class="download-btn">
@@ -68,38 +85,42 @@
       </button>
     </div>
 
+    <!-- 🔙 BACK -->
     <button onclick="window.location.href='index.html'" class="back-btn">
       ← Back to Home
     </button>
   </div>
 
-  <!-- INFO -->
+  <!-- 🧠 INFO -->
   <div class="info-section">
     <h2>About SRJ Tools – Protect PDF</h2>
     <p>
-      SRJ Tools allows you to <b>lock PDF files with password</b> online.
-      Keep your documents private and secure without installing any software.
+      SRJ Tools allows you to <b>lock PDF files with password online</b>.
+      Protect confidential documents using strong encryption without installing any software.
     </p>
 
+    <h3>🔹 Features & Benefits</h3>
     <ul>
-      <li>🔐 Password-protect PDF files</li>
-      <li>📄 No quality loss</li>
-      <li>🔒 Secure processing</li>
-      <li>📱 Works on all devices</li>
-      <li>💯 Free forever</li>
+      <li>🔐 Password-protect PDF using AES encryption</li>
+      <li>📄 No quality or layout loss</li>
+      <li>🔒 Secure processing – auto-delete files</li>
+      <li>📱 Works on mobile & desktop</li>
+      <li>💯 Free forever – no watermark</li>
     </ul>
 
-    <h3>FAQ</h3>
-    <p><b>Q:</b> Is password strong?<br>✅ Yes, AES-128 encryption.</p>
-    <p><b>Q:</b> Files stored?<br>❌ No, auto-deleted.</p>
+    <h3>🔹 Frequently Asked Questions</h3>
+    <p><b>Q1:</b> Is my password secure?<br>✅ Yes, strong encryption is used.</p>
+    <p><b>Q2:</b> Are my files stored?<br>❌ No, files are deleted automatically.</p>
+    <p><b>Q3:</b> Any file size limit?<br>✅ Works with most PDFs.</p>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- 🧩 FOOTER -->
 <footer class="footer">
   <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
 </footer>
 
+<!-- 🌊 Scripts -->
 <script src="animation.js"></script>
 
 <script>
@@ -111,12 +132,19 @@ const password = document.getElementById("password");
 const progressBar = document.getElementById("progressBar");
 const successBox = document.getElementById("successBox");
 const downloadBtn = document.getElementById("downloadBtn");
+const togglePassword = document.getElementById("togglePassword");
 
 let blob = null;
 
+/* 👁 Show / Hide password */
+togglePassword.addEventListener("change", () => {
+  password.type = togglePassword.checked ? "text" : "password";
+});
+
+/* 🔒 Protect PDF */
 convertBtn.addEventListener("click", async () => {
   if (!pdfFile.files[0] || !password.value.trim()) {
-    return alert("Please select PDF and enter password");
+    return alert("📄 Please select PDF and enter password");
   }
 
   const formData = new FormData();
@@ -148,7 +176,7 @@ convertBtn.addEventListener("click", async () => {
     };
 
   } catch {
-    alert("PDF protection failed. Try again.");
+    alert("❌ PDF protection failed. Please try again.");
   }
 });
 </script>

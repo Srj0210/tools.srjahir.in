@@ -49,26 +49,33 @@
 <section class="converter-section">
   <div class="converter-box">
 
+    <!-- FILE INPUT -->
     <input type="file" id="pdfFile" accept=".pdf" />
 
-    <!-- 🔄 ROTATION OPTIONS -->
-    <select id="rotation">
+    <!-- 🔄 ROTATION DROPDOWN (THEME FIXED) -->
+    <select id="rotation" class="convert-btn" style="margin-top:12px">
       <option value="90">Rotate 90° Clockwise</option>
       <option value="180">Rotate 180°</option>
       <option value="270">Rotate 270°</option>
     </select>
 
-    <button id="rotateBtn">Rotate PDF</button>
+    <!-- 🔵 MAIN ACTION BUTTON -->
+    <button id="convertBtn">Rotate PDF</button>
 
+    <!-- 📊 PROGRESS -->
     <div class="progress-container">
       <div id="progressBar"></div>
     </div>
 
+    <!-- ✅ SUCCESS -->
     <div id="successBox" class="success-box" style="display:none;">
       ✅ PDF Rotated Successfully!<br />
-      <button id="downloadBtn" class="download-btn">⬇ Download Rotated PDF</button>
+      <button id="downloadBtn" class="download-btn">
+        ⬇ Download Rotated PDF
+      </button>
     </div>
 
+    <!-- 🔙 BACK -->
     <button onclick="window.location.href='index.html'" class="back-btn">
       ← Back to Home
     </button>
@@ -109,7 +116,7 @@
 <script>
 const API_BASE = "https://api.srjahir.in";
 
-const rotateBtn   = document.getElementById("rotateBtn");
+const convertBtn  = document.getElementById("convertBtn");
 const pdfFile     = document.getElementById("pdfFile");
 const rotationSel = document.getElementById("rotation");
 const progressBar = document.getElementById("progressBar");
@@ -119,7 +126,7 @@ const downloadBtn = document.getElementById("downloadBtn");
 let fileBlob = null;
 let fileName = "Rotated_PDF.pdf";
 
-rotateBtn.addEventListener("click", async () => {
+convertBtn.addEventListener("click", async () => {
   const file = pdfFile.files[0];
   if (!file) return alert("📄 Please select a PDF file!");
 

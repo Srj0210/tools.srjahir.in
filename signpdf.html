@@ -6,14 +6,14 @@
 
   <title>Sign PDF Online Free | Add Digital Signature to PDF | SRJ Tools</title>
 
-  <!-- SEO -->
-  <meta name="description" content="Sign PDF online for free. Add image or text signature to PDF securely using SRJ Tools. No watermark, fast & private." />
-  <meta name="keywords" content="Sign PDF, PDF Signature Online, Add Signature PDF, Digital Signature PDF, SRJ Tools" />
+  <!-- ✅ SEO -->
+  <meta name="description" content="Sign PDF online for free. Add text or image signature to PDF securely with live preview. Choose pages, position & size signature using SRJ Tools." />
+  <meta name="keywords" content="Sign PDF, PDF Signature Online, Digital Signature PDF, Add Signature PDF, SRJ Tools PDF" />
   <meta name="author" content="SRJahir Tech" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Sign PDF Online Free | SRJ Tools" />
-  <meta property="og:description" content="Add digital signature to PDF files instantly. Secure, fast & free." />
+  <meta property="og:title" content="Sign PDF Online | SRJ Tools" />
+  <meta property="og:description" content="Add digital signature to PDF securely with live preview & page selection." />
   <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
   <meta property="og:url" content="https://tools.srjahir.in/signpdf.html" />
 
@@ -22,13 +22,14 @@
   <link rel="icon" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- GSAP + Analytics -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- Analytics -->
   <script src="ga.js"></script>
 </head>
 
 <body>
-
 <canvas id="waveCanvas"></canvas>
 
 <header class="header">
@@ -46,66 +47,53 @@
   <div class="converter-box">
 
     <!-- PDF -->
-    <label>📄 Choose PDF file</label>
+    <label>📄 Choose PDF</label>
     <input type="file" id="pdfFile" accept=".pdf" />
 
-    <!-- SIGN TEXT -->
-    <input
-      type="text"
-      id="signText"
-      placeholder="Type your signature (optional)"
-      style="margin-top:12px;background:rgba(0,140,255,0.15);
-      color:#fff;border:1px solid rgba(0,140,255,0.45);
-      padding:12px;border-radius:10px;width:100%;"
-    />
-
-    <!-- IMAGE SIGN -->
-    <label style="margin-top:10px;">✍ Upload signature image</label>
-    <input type="file" id="signImage" accept="image/png,image/jpeg" />
-
-    <!-- POSITION -->
-    <label style="margin-top:10px;">📐 Signature position</label>
-    <select id="position"
-      style="width:100%;padding:12px;border-radius:10px;
-      background:rgba(0,140,255,0.15);color:#fff;
-      border:1px solid rgba(0,140,255,0.45);">
-      <option value="bottom-right">Bottom Right</option>
-      <option value="bottom-left">Bottom Left</option>
-      <option value="center">Center</option>
+    <!-- PAGE MODE -->
+    <label>📑 Pages</label>
+    <select id="pageMode">
+      <option value="all">All Pages</option>
+      <option value="single">Single Page</option>
     </select>
 
-    <button id="signBtn" class="convert-btn">Sign PDF</button>
+    <input type="number" id="pageNumber" placeholder="Page number" min="1" style="display:none;margin-top:6px" />
 
-    <div class="progress-container">
-      <div id="progressBar"></div>
+    <!-- SIGNATURE -->
+    <label style="margin-top:10px">✍️ Signature</label>
+    <input type="text" id="signText" placeholder="Type signature (optional)"
+      style="background:rgba(0,140,255,.15);color:#fff;border:1px solid rgba(0,140,255,.4)" />
+
+    <label style="margin-top:8px">🖼 Upload signature image</label>
+    <input type="file" id="signImage" accept="image/png,image/jpeg" />
+
+    <!-- POSITION MODE -->
+    <label>📐 Position mode</label>
+    <select id="positionMode">
+      <option value="same">Same for all pages</option>
+      <option value="different">Different for each page</option>
+    </select>
+
+    <!-- PREVIEW -->
+    <div id="previewWrapper" style="margin-top:15px;position:relative;border:1px solid rgba(0,140,255,.3)">
+      <canvas id="pdfCanvas"></canvas>
+      <div id="signatureBox"
+        style="position:absolute;border:2px dashed #00bfff;
+        padding:6px;color:#fff;cursor:move;">
+        Signature
+      </div>
     </div>
+
+    <button id="signBtn">Sign PDF</button>
+
+    <div class="progress-container"><div id="progressBar"></div></div>
 
     <div id="successBox" class="success-box" style="display:none;">
       ✅ PDF Signed Successfully
       <button id="downloadBtn" class="download-btn">⬇ Download Signed PDF</button>
     </div>
 
-    <button onclick="window.location.href='index.html'" class="back-btn">
-      ← Back to Home
-    </button>
-
-  </div>
-
-  <!-- INFO -->
-  <div class="info-section">
-    <h2>About SRJ Tools – Sign PDF</h2>
-    <p>
-      SRJ Tools lets you <b>sign PDF documents online</b> using typed or image signatures.
-      Secure, private & no watermark.
-    </p>
-
-    <ul>
-      <li>✍ Text & image signature</li>
-      <li>🔒 Secure processing – auto delete</li>
-      <li>📄 No quality loss</li>
-      <li>📱 Works on all devices</li>
-      <li>💯 Free forever</li>
-    </ul>
+    <button onclick="location.href='index.html'" class="back-btn">← Back to Home</button>
   </div>
 </section>
 
@@ -113,55 +101,85 @@
   <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
 </footer>
 
-<script src="animation.js"></script>
-
 <script>
 const API = "https://api.srjahir.in";
 
-const signBtn = document.getElementById("signBtn");
 const pdfFile = document.getElementById("pdfFile");
-const signText = document.getElementById("signText");
-const signImage = document.getElementById("signImage");
-const position = document.getElementById("position");
-const progressBar = document.getElementById("progressBar");
-const successBox = document.getElementById("successBox");
-const downloadBtn = document.getElementById("downloadBtn");
+const canvas = document.getElementById("pdfCanvas");
+const ctx = canvas.getContext("2d");
+const signBox = document.getElementById("signatureBox");
+const signBtn = document.getElementById("signBtn");
 
+let pdfDoc, currentPage = 1;
+let dragging = false, offsetX, offsetY;
+
+/* ===== PDF PREVIEW ===== */
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+pdfFile.onchange = async () => {
+  const fileURL = URL.createObjectURL(pdfFile.files[0]);
+  pdfDoc = await pdfjsLib.getDocument(fileURL).promise;
+  renderPage(1);
+};
+
+async function renderPage(num) {
+  const page = await pdfDoc.getPage(num);
+  const viewport = page.getViewport({ scale: 1.3 });
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  signBox.style.left = "50px";
+  signBox.style.top = "50px";
+  await page.render({ canvasContext: ctx, viewport }).promise;
+}
+
+/* ===== DRAG SIGNATURE ===== */
+signBox.onmousedown = e => {
+  dragging = true;
+  offsetX = e.offsetX;
+  offsetY = e.offsetY;
+};
+
+document.onmousemove = e => {
+  if (!dragging) return;
+  const rect = canvas.getBoundingClientRect();
+  signBox.style.left = (e.clientX - rect.left - offsetX) + "px";
+  signBox.style.top  = (e.clientY - rect.top - offsetY) + "px";
+};
+
+document.onmouseup = () => dragging = false;
+
+/* ===== SIGN SUBMIT ===== */
 signBtn.onclick = async () => {
-  if (!pdfFile.files.length) return alert("Select PDF");
-  if (!signText.value && !signImage.files.length)
-    return alert("Type signature or upload image");
-
   const fd = new FormData();
   fd.append("file", pdfFile.files[0]);
-  fd.append("position", position.value);
+  fd.append("page_mode", pageMode.value);
+  fd.append("position_mode", positionMode.value);
+
+  if (pageMode.value === "single") {
+    fd.append("page", pageNumber.value);
+  }
+
+  fd.append("x", signBox.offsetLeft / canvas.width);
+  fd.append("y", signBox.offsetTop / canvas.height);
+  fd.append("w", signBox.offsetWidth / canvas.width);
+  fd.append("h", signBox.offsetHeight / canvas.height);
 
   if (signText.value) fd.append("text", signText.value);
-  if (signImage.files.length) fd.append("image", signImage.files[0]);
+  if (signImage.files[0]) fd.append("image", signImage.files[0]);
 
-  progressBar.style.width = "40%";
-  successBox.style.display = "none";
+  const res = await fetch(`${API}/sign-pdf`, { method:"POST", body:fd });
+  if (!res.ok) return alert("Sign failed");
 
-  try {
-    const res = await fetch(`${API}/sign-pdf`, { method: "POST", body: fd });
-    if (!res.ok) throw new Error();
-
-    progressBar.style.width = "100%";
-    const blob = await res.blob();
-    successBox.style.display = "block";
-
-    downloadBtn.onclick = () => {
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "signed.pdf";
-      a.click();
-    };
-
-  } catch {
-    alert("Signing failed. Try again.");
-  }
+  const blob = await res.blob();
+  successBox.style.display="block";
+  downloadBtn.onclick = () => {
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="signed.pdf";
+    a.click();
+  };
 };
 </script>
-
 </body>
 </html>

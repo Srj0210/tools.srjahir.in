@@ -3,99 +3,165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coming Soon | SRJ Tools</title>
 
+  <title>Sign PDF Online Free | Add Digital Signature to PDF | SRJ Tools</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Sign PDF online for free. Add image or text signature to PDF securely using SRJ Tools. No watermark, fast & private." />
+  <meta name="keywords" content="Sign PDF, PDF Signature Online, Add Signature PDF, Digital Signature PDF, SRJ Tools" />
+  <meta name="author" content="SRJahir Tech" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Sign PDF Online Free | SRJ Tools" />
+  <meta property="og:description" content="Add digital signature to PDF files instantly. Secure, fast & free." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/signpdf.html" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="tools.png" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="tools.png" />
 
-  <style>
-    .soon-section {
-      text-align: center;
-      margin-top: 80px;
-      padding: 20px;
-      z-index: 2;
-      position: relative;
-    }
-
-    .soon-box {
-      display: inline-block;
-      background: rgba(10, 25, 60, 0.6);
-      border: 1px solid rgba(0, 140, 255, 0.25);
-      border-radius: 20px;
-      padding: 40px 25px;
-      width: 90%;
-      max-width: 420px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.45);
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    .soon-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #1e90ff;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-    }
-
-    .soon-text {
-      font-size: 1rem;
-      color: #b9c7e8;
-      margin-bottom: 20px;
-    }
-
-    .back-btn {
-      background: transparent;
-      border: 1px solid rgba(0, 140, 255, 0.3);
-      color: #1e90ff;
-      border-radius: 10px;
-      padding: 10px 16px;
-      cursor: pointer;
-      width: 100%;
-      transition: 0.25s;
-      margin-top: 10px;
-    }
-
-    .back-btn:hover {
-      background: rgba(0, 140, 255, 0.2);
-      color: #fff;
-      border-color: rgba(0, 140, 255, 0.4);
-    }
-  </style>
-<script src="ga.js"></script>
+  <!-- GSAP + Analytics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="ga.js"></script>
 </head>
 
 <body>
-  <canvas id="waveCanvas"></canvas>
 
-  <header class="header">
-    <div class="logo-container">
-      <img src="./assets/cloud.png" class="logo-part cloud" />
-      <img src="./assets/gear-ring.png" class="logo-part gear" />
-      <img src="./assets/code-center.png" class="logo-part center" />
+<canvas id="waveCanvas"></canvas>
+
+<header class="header">
+  <div class="logo-container">
+    <img src="./assets/cloud.png" class="logo-part cloud" />
+    <img src="./assets/gear-ring.png" class="logo-part gear" />
+    <img src="./assets/code-center.png" class="logo-part center" />
+  </div>
+
+  <h1 class="title-under-logo">Sign PDF</h1>
+  <p class="subtitle">Add digital signature to PDF securely</p>
+</header>
+
+<section class="converter-section">
+  <div class="converter-box">
+
+    <!-- PDF -->
+    <label>📄 Choose PDF file</label>
+    <input type="file" id="pdfFile" accept=".pdf" />
+
+    <!-- SIGN TEXT -->
+    <input
+      type="text"
+      id="signText"
+      placeholder="Type your signature (optional)"
+      style="margin-top:12px;background:rgba(0,140,255,0.15);
+      color:#fff;border:1px solid rgba(0,140,255,0.45);
+      padding:12px;border-radius:10px;width:100%;"
+    />
+
+    <!-- IMAGE SIGN -->
+    <label style="margin-top:10px;">✍ Upload signature image</label>
+    <input type="file" id="signImage" accept="image/png,image/jpeg" />
+
+    <!-- POSITION -->
+    <label style="margin-top:10px;">📐 Signature position</label>
+    <select id="position"
+      style="width:100%;padding:12px;border-radius:10px;
+      background:rgba(0,140,255,0.15);color:#fff;
+      border:1px solid rgba(0,140,255,0.45);">
+      <option value="bottom-right">Bottom Right</option>
+      <option value="bottom-left">Bottom Left</option>
+      <option value="center">Center</option>
+    </select>
+
+    <button id="signBtn" class="convert-btn">Sign PDF</button>
+
+    <div class="progress-container">
+      <div id="progressBar"></div>
     </div>
 
-    <h1 class="title-under-logo">Coming Soon</h1>
-    <p class="subtitle">This tool is under development</p>
-  </header>
-
-  <section class="soon-section">
-    <div class="soon-box">
-      <h2 class="soon-title">🚀 Coming Soon</h2>
-      <p class="soon-text">
-        This tool is currently being built with CloudAI.<br>
-        Please check back later!
-      </p>
-
-      <button onclick="window.location.href='index.html'" class="back-btn">
-        ← Back to Home
-      </button>
+    <div id="successBox" class="success-box" style="display:none;">
+      ✅ PDF Signed Successfully
+      <button id="downloadBtn" class="download-btn">⬇ Download Signed PDF</button>
     </div>
-  </section>
 
-  <footer class="footer">
-    <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
-  </footer>
+    <button onclick="window.location.href='index.html'" class="back-btn">
+      ← Back to Home
+    </button>
 
-  <script src="animation.js"></script>
+  </div>
+
+  <!-- INFO -->
+  <div class="info-section">
+    <h2>About SRJ Tools – Sign PDF</h2>
+    <p>
+      SRJ Tools lets you <b>sign PDF documents online</b> using typed or image signatures.
+      Secure, private & no watermark.
+    </p>
+
+    <ul>
+      <li>✍ Text & image signature</li>
+      <li>🔒 Secure processing – auto delete</li>
+      <li>📄 No quality loss</li>
+      <li>📱 Works on all devices</li>
+      <li>💯 Free forever</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 SRJahir Tech | Powered by CloudAI</p>
+</footer>
+
+<script src="animation.js"></script>
+
+<script>
+const API = "https://api.srjahir.in";
+
+const signBtn = document.getElementById("signBtn");
+const pdfFile = document.getElementById("pdfFile");
+const signText = document.getElementById("signText");
+const signImage = document.getElementById("signImage");
+const position = document.getElementById("position");
+const progressBar = document.getElementById("progressBar");
+const successBox = document.getElementById("successBox");
+const downloadBtn = document.getElementById("downloadBtn");
+
+signBtn.onclick = async () => {
+  if (!pdfFile.files.length) return alert("Select PDF");
+  if (!signText.value && !signImage.files.length)
+    return alert("Type signature or upload image");
+
+  const fd = new FormData();
+  fd.append("file", pdfFile.files[0]);
+  fd.append("position", position.value);
+
+  if (signText.value) fd.append("text", signText.value);
+  if (signImage.files.length) fd.append("image", signImage.files[0]);
+
+  progressBar.style.width = "40%";
+  successBox.style.display = "none";
+
+  try {
+    const res = await fetch(`${API}/sign-pdf`, { method: "POST", body: fd });
+    if (!res.ok) throw new Error();
+
+    progressBar.style.width = "100%";
+    const blob = await res.blob();
+    successBox.style.display = "block";
+
+    downloadBtn.onclick = () => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "signed.pdf";
+      a.click();
+    };
+
+  } catch {
+    alert("Signing failed. Try again.");
+  }
+};
+</script>
+
 </body>
 </html>

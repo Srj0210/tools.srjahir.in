@@ -4,26 +4,92 @@
   <url>
     <loc>https://tools.srjahir.in/</loc>
     <priority>1.0</priority>
+    <changefreq>daily</changefreq>
   </url>
 
-  <url><loc>https://tools.srjahir.in/wordtopdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/pdftoword.html</loc></url>
-  <url><loc>https://tools.srjahir.in/mergepdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/splitpdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/removepages.html</loc></url>
-  <url><loc>https://tools.srjahir.in/organizepdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/rotatepdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/compresspdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/repairpdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/protectpdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/unlockpdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/addwatermark.html</loc></url>
-  <url><loc>https://tools.srjahir.in/pdftoimage.html</loc></url>
-  <url><loc>https://tools.srjahir.in/pdftoexcel.html</loc></url>
-  <url><loc>https://tools.srjahir.in/exceltopdf.html</loc></url>
-  
-  <url><loc>https://tools.srjahir.in/ocrpdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/htmltopdf.html</loc></url>
-  <url><loc>https://tools.srjahir.in/positioner.html</loc></url>
+  <url>
+    <loc>https://tools.srjahir.in/wordtopdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/pdftoword.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/mergepdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/splitpdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/removepages.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/organizepdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/rotatepdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/compresspdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/repairpdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/ocrpdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/addwatermark.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/protectpdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/unlockpdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/pdftoimage.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/pdftoexcel.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/exceltopdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/htmltopdf.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
 
 </urlset>

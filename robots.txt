@@ -1,9 +1,10 @@
 User-agent: *
 Allow: /
 
-
 Disallow: /api/
 Disallow: /server/
 Disallow: /backend/
+Disallow: /positioner.html
+Disallow: /logo.html
 
 Sitemap: https://tools.srjahir.in/sitemap.xml

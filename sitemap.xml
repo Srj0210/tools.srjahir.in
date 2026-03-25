@@ -3,92 +3,239 @@
 
   <url>
     <loc>https://tools.srjahir.in/</loc>
+    <lastmod>2026-03-24</lastmod>
     <priority>1.0</priority>
-    <changefreq>daily</changefreq>
+    <changefreq>weekly</changefreq>
   </url>
 
   <url>
-    <loc>https://tools.srjahir.in/wordtopdf.html</loc>
+    <loc>https://tools.srjahir.in/about.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
-    <loc>https://tools.srjahir.in/pdftoword.html</loc>
+    <loc>https://tools.srjahir.in/contact.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/privacy.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.5</priority>
+    <changefreq>yearly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/terms.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.5</priority>
+    <changefreq>yearly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/mergepdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/splitpdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/removepages.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/organizepdf.html</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://tools.srjahir.in/rotatepdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/compresspdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/repairpdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/ocrpdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
-    <loc>https://tools.srjahir.in/addwatermark.html</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://tools.srjahir.in/protectpdf.html</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://tools.srjahir.in/unlockpdf.html</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://tools.srjahir.in/pdftoimage.html</loc>
-    <changefreq>monthly</changefreq>
-  </url>
-
-  <url>
-    <loc>https://tools.srjahir.in/pdftoexcel.html</loc>
+    <loc>https://tools.srjahir.in/wordtopdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/exceltopdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
 
   <url>
     <loc>https://tools.srjahir.in/htmltopdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/pdftoword.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/pdftoexcel.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/pdftoimage.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/rotatepdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/addwatermark.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/signpdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/protectpdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/unlockpdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/how-to-merge-pdf-online-free.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/how-to-convert-word-to-pdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/how-to-compress-pdf-without-losing-quality.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/how-to-split-pdf-pages.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/how-to-protect-pdf-with-password.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/how-to-convert-pdf-to-word.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/how-to-remove-pages-from-pdf.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/pdf-file-management-tips.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/best-free-online-pdf-tools-2026.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+
+  <url>
+    <loc>https://tools.srjahir.in/blog/ocr-pdf-guide.html</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
 

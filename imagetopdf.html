@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image to PDF Converter – Convert JPG PNG to PDF Free | SRJ Tools</title>
+  <meta name="description" content="Convert JPG, PNG, WEBP images to PDF instantly. Free, no watermark, no signup. Combine multiple images into one PDF. Works on phone and PC." />
+  <meta name="keywords" content="image to PDF, JPG to PDF, PNG to PDF, convert photo to PDF, image to PDF free, multiple images to PDF" />
+  <meta name="author" content="SRJahir Tech" />
+  <meta property="og:title" content="Free Image to PDF Converter | SRJ Tools" />
+  <meta property="og:description" content="Convert JPG, PNG, WEBP images to PDF — free, instant, no watermark." />
+  <meta property="og:image" content="https://tools.srjahir.in/tools.png" />
+  <meta property="og:url" content="https://tools.srjahir.in/imagetopdf.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://tools.srjahir.in/imagetopdf.html" />
+  <link rel="icon" type="image/png" href="tools.png" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"SRJ Tools Image to PDF","url":"https://tools.srjahir.in/imagetopdf.html","description":"Free online tool to convert JPG, PNG, WEBP images to PDF instantly.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script src="ga.js"></script>
+  <style>
+    .image-preview-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+      justify-content: center;
+    }
+    .preview-item {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2a4a6a;
+    }
+    .preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .preview-item .remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.7);
+      color: #ff4444;
+      border: none;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .options-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 14px 0;
+      align-items: center;
+      justify-content: center;
+    }
+    .options-row label {
+      font-size: 13px;
+      color: #aac;
+    }
+    .options-row select {
+      background: #1a2a3a;
+      color: #ddd;
+      border: 1px solid #2a4a6a;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 13px;
+    }
+    .success-box {
+      margin-top: 20px;
+      text-align: center;
+      background: rgba(0,255,150,0.08);
+      border: 1px solid #00ffaa;
+      border-radius: 10px;
+      padding: 15px;
+      animation: fadeIn 0.4s ease;
+      color: #00ffaa;
+      font-size: 15px;
+    }
+    .download-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .download-btn:hover { background: #00aaff; transform: scale(1.05); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="waveCanvas"></canvas>
+  <header class="header">
+    <div class="logo-container">
+      <img src="./assets/cloud.png" class="logo-part cloud" alt="Cloud" />
+      <img src="./assets/gear-ring.png" class="logo-part gear" alt="Gear" />
+      <img src="./assets/code-center.png" class="logo-part center" alt="Code" />
+    </div>
+    <h1 class="title-under-logo">Image to PDF Converter</h1>
+    <p class="subtitle">Convert JPG, PNG, WEBP images to PDF — free, instant, no watermark</p>
+  </header>
+
+  <section class="converter-section">
+    <div class="converter-box">
+      <input type="file" id="imageFiles" accept="image/jpeg,image/png,image/webp,image/gif" multiple />
+      <div class="image-preview-grid" id="previewGrid"></div>
+
+      <div class="options-row">
+        <label>Page Size:
+          <select id="pageSize">
+            <option value="A4">A4 (Standard)</option>
+            <option value="A3">A3 (Large)</option>
+            <option value="Letter">Letter (US)</option>
+            <option value="fit">Fit to Image</option>
+          </select>
+        </label>
+        <label>Orientation:
+          <select id="orientation">
+            <option value="portrait">Portrait</option>
+            <option value="landscape">Landscape</option>
+          </select>
+        </label>
+        <label>Margin:
+          <select id="margin">
+            <option value="10">Small (10px)</option>
+            <option value="20" selected>Normal (20px)</option>
+            <option value="40">Large (40px)</option>
+            <option value="0">None</option>
+          </select>
+        </label>
+      </div>
+
+      <button id="convertBtn">Convert to PDF</button>
+      <div class="progress-container"><div id="progressBar"></div></div>
+      <button onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+    </div>
+
+    <div class="info-section">
+      <h2>About Image to PDF Converter</h2>
+      <p>Convert any number of JPG, PNG, or WEBP images into a single PDF document instantly. Great for scanned documents, photos, screenshots, and certificates. Works entirely in your browser — no upload to any server needed for basic conversions.</p>
+
+      <h3>🔹 Supported Formats</h3>
+      <ul>
+        <li>📸 JPG / JPEG — Photos and scanned documents</li>
+        <li>🖼️ PNG — Screenshots, graphics with transparency</li>
+        <li>🌐 WEBP — Modern web image format</li>
+        <li>🎨 GIF — Animated images (first frame used)</li>
+      </ul>
+
+      <h3>🔹 Features</h3>
+      <ul>
+        <li>⚡ Multiple images → one PDF in seconds</li>
+        <li>📐 Choose page size: A4, A3, Letter, or fit to image</li>
+        <li>🔄 Portrait or landscape orientation</li>
+        <li>📏 Adjustable margins</li>
+        <li>🔒 100% private — no files leave your browser</li>
+        <li>📱 Works on phone, tablet, and PC</li>
+      </ul>
+
+      <h3>🔹 Common Questions</h3>
+      <p><b>Q: Can I convert multiple images at once?</b><br>✅ Yes — select as many images as you need. Each image becomes one page.</p>
+      <p><b>Q: Does it keep image quality?</b><br>✅ Yes — images are embedded at full resolution in the PDF.</p>
+      <p><b>Q: Is it free?</b><br>✅ 100% free, no account needed, no watermark on output.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <nav style="margin-bottom:10px;">
+      <a href="index.html" style="color:#5f7b9b; margin:0 8px;">Home</a> |
+      <a href="about.html" style="color:#5f7b9b; margin:0 8px;">About</a> |
+      <a href="contact.html" style="color:#5f7b9b; margin:0 8px;">Contact</a> |
+      <a href="privacy.html" style="color:#5f7b9b; margin:0 8px;">Privacy Policy</a> |
+      <a href="terms.html" style="color:#5f7b9b; margin:0 8px;">Terms</a> |
+      <a href="blog/" style="color:#5f7b9b; margin:0 8px;">Blog</a>
+    </nav>
+    <p>&copy; 2026 SRJahir Tech | Powered by CloudAI</p>
+  </footer>
+
+  <script src="animation.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const { jsPDF } = window.jspdf;
+    let selectedFiles = [];
+
+    document.getElementById('imageFiles').addEventListener('change', function(e) {
+      const newFiles = Array.from(e.target.files);
+      selectedFiles = [...selectedFiles, ...newFiles];
+      renderPreviews();
+      this.value = '';
+    });
+
+    function renderPreviews() {
+      const grid = document.getElementById('previewGrid');
+      grid.innerHTML = '';
+      selectedFiles.forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const item = document.createElement('div');
+          item.className = 'preview-item';
+          item.innerHTML = `
+            <img src="${ev.target.result}" alt="Image ${idx+1}" />
+            <button class="remove-btn" onclick="removeImage(${idx})">✕</button>
+          `;
+          grid.appendChild(item);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function removeImage(idx) {
+      selectedFiles.splice(idx, 1);
+      renderPreviews();
+    }
+
+    document.getElementById('convertBtn').addEventListener('click', async () => {
+      if (selectedFiles.length === 0) {
+        alert('Please select at least one image.');
+        return;
+      }
+
+      const bar = document.getElementById('progressBar');
+      const box = document.querySelector('.converter-box');
+      const oldMsg = document.querySelector('.success-box');
+      if (oldMsg) oldMsg.remove();
+
+      bar.style.width = '0%';
+
+      const pageSizeVal  = document.getElementById('pageSize').value;
+      const orientation  = document.getElementById('orientation').value;
+      const marginPx     = parseInt(document.getElementById('margin').value);
+
+      let pdfOpts = { orientation, unit: 'px' };
+      if (pageSizeVal === 'A4')     pdfOpts.format = 'a4';
+      else if (pageSizeVal === 'A3')     pdfOpts.format = 'a3';
+      else if (pageSizeVal === 'Letter') pdfOpts.format = 'letter';
+
+      const pdf = new jsPDF(pdfOpts);
+      let firstPage = true;
+
+      for (let i = 0; i < selectedFiles.length; i++) {
+        bar.style.width = ((i / selectedFiles.length) * 90) + '%';
+
+        const imgData = await readFileAsDataURL(selectedFiles[i]);
+        const imgProps = await getImageDimensions(imgData);
+
+        if (!firstPage) pdf.addPage();
+        firstPage = false;
+
+        let pdfW = pdf.internal.pageSize.getWidth();
+        let pdfH = pdf.internal.pageSize.getHeight();
+
+        if (pageSizeVal === 'fit') {
+          pdf.internal.pageSize.width  = imgProps.w + marginPx * 2;
+          pdf.internal.pageSize.height = imgProps.h + marginPx * 2;
+          pdfW = imgProps.w + marginPx * 2;
+          pdfH = imgProps.h + marginPx * 2;
+        }
+
+        const availW = pdfW - marginPx * 2;
+        const availH = pdfH - marginPx * 2;
+        const ratio  = Math.min(availW / imgProps.w, availH / imgProps.h);
+        const drawW  = imgProps.w * ratio;
+        const drawH  = imgProps.h * ratio;
+        const x = marginPx + (availW - drawW) / 2;
+        const y = marginPx + (availH - drawH) / 2;
+
+        const ext = selectedFiles[i].type === 'image/png' ? 'PNG' : 'JPEG';
+        pdf.addImage(imgData, ext, x, y, drawW, drawH);
+      }
+
+      bar.style.width = '100%';
+      const pdfBlob = pdf.output('blob');
+      const url = URL.createObjectURL(pdfBlob);
+
+      const success = document.createElement('div');
+      success.className = 'success-box';
+      success.innerHTML = `✅ Conversion Successful! ${selectedFiles.length} image${selectedFiles.length > 1 ? 's' : ''} converted.<br>
+        <button class="download-btn">⬇ Download PDF</button>`;
+      box.appendChild(success);
+
+      success.querySelector('.download-btn').addEventListener('click', () => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'images-to-pdf.pdf';
+        a.click();
+      });
+    });
+
+    function readFileAsDataURL(file) {
+      return new Promise((res) => {
+        const r = new FileReader();
+        r.onload = (e) => res(e.target.result);
+        r.readAsDataURL(file);
+      });
+    }
+
+    function getImageDimensions(dataUrl) {
+      return new Promise((res) => {
+        const img = new Image();
+        img.onload = () => res({ w: img.naturalWidth, h: img.naturalHeight });
+        img.src = dataUrl;
+      });
+    }
+  </script>
+</body>
+</html>
